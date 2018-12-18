@@ -17,7 +17,7 @@ import { AuthRouter, SwaggerAPIRouter, UserRouter } from './routes';
 const MongoStore = mongo(session);
 
 // Load environment variables from .env file, where API keys and passwords are configured
-dotenv.config({path: '.env' || '.env.example'});
+dotenv.config({ path: '.env' || '.env.example' });
 
 // Create Express server
 const app = express();
@@ -25,44 +25,44 @@ const app = express();
 // Connect to MongoDB
 const mongoUrl = process.env.MONGODB_URI;
 (<any>mongoose).Promise = bluebird;
-mongoose.connect(mongoUrl, {useMongoClient: true}).then(
-  () => { /** ready to use. The `mongoose.connect()` promise resolves to undefined. */
-  },
-).catch(err => {
-  console.log('MongoDB connection error. Please make sure MongoDB is running. ' + err);
-  // process.exit();
-});
+mongoose.connect(mongoUrl, { useMongoClient: true })
+  .then(() => {
+    /** ready to use. The `mongoose.connect()` promise resolves to undefined. */
+  }).catch(err => {
+    console.log('MongoDB connection error. Please make sure MongoDB is running. ' + err);
+    // process.exit();
+  });
 
 // Express configuration
 app.set('port', process.env.PORT || 3000);
 app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 app.use(session({
   resave: true,
   saveUninitialized: true,
   secret: process.env.SESSION_SECRET,
   store: new MongoStore({
-    url: mongoUrl,
-    autoReconnect: true
+    autoReconnect: true,
+    mongooseConnection: mongoose.connection
   })
 }));
 app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
-
 app.use(expressJwt({
-    secret: process.env.JWT_SECRET,
-    requestProperty: 'auth',
-    getToken: function fromHeader(req: express.Request) {
-      const tokenHeader = req.headers.Authorization || req.headers.authorization;
-      if (tokenHeader && (tokenHeader as string).split(' ')[0] === 'Bearer') {
-        return (tokenHeader as string).split(' ')[1];
-      }
+  secret: process.env.JWT_SECRET,
+  credentialsRequired: false,
+  requestProperty: 'auth',
+  getToken: function fromHeader(req: express.Request) {
+    const tokenHeader = req.headers.Authorization || req.headers.authorization;
+    if (tokenHeader && (tokenHeader as string).split(' ')[0] === 'Bearer') {
+      return (tokenHeader as string).split(' ')[1];
     }
-  })
-    .unless({path: [/\/api-docs\//g, {url: '/', method: 'OPTIONS'}, /\/auth\//g]})
+  }
+})
+  .unless({ path: [/\/api-docs\//g, { url: '/', method: 'OPTIONS' }, /\/auth\//g] })
 );
 
 app.use(function (err, req, res, next) {
@@ -76,6 +76,7 @@ app.use(function (err, req, res, next) {
 
 app.use('/auth', AuthRouter);
 app.use('/users', UserRouter);
+
 /**
  * Add swagger endpoints
  */
