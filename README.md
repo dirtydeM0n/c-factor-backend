@@ -71,7 +71,7 @@ curl -i -H "Accept: application/json" -H "Content-Type: application/json" -H "Au
 
 # Import mock users
 ```
-mongoimport --db cryptobounce-db --collection users --file users.json --jsonArray
+mongoimport --db cryptobounce-db --collection users --file dump/users.json --jsonArray
 ```
 
 # Tests
