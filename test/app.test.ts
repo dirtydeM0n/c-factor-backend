@@ -1,7 +1,7 @@
 import * as request from 'supertest';
 import * as app from '../src/app';
-import { default as UserService } from '../src/services/user.service';
-import { User } from '../src/models/user';
+import { default as UserService } from '../src/routes/user/user.service';
+import { IUser } from '../src/routes/user/user';
 
 let JWT: String;
 
@@ -18,7 +18,7 @@ describe('GET /random-url', () => {
 });
 
 describe('/auth', () => {
-  let user: User;
+  let user: IUser;
   const userForm = {
     email: 'tester@chester.com',
     password: 'PASSWORD',

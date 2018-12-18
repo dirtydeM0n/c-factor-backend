@@ -3,15 +3,15 @@ import * as jwt from 'jsonwebtoken';
 import * as util from 'util';
 import * as crypto from 'crypto';
 import * as nodemailer from 'nodemailer';
-import { User } from '../models/user';
-import { default as UserService } from '../services/user.service';
+import { IUser } from '../user/user';
+import { default as UserService } from '../user/user.service';
 
 class AuthController {
 
   async login(req: Request, resp: Response) {
     req.assert('email', 'Email is not valid').isEmail();
     req.assert('password', 'Password cannot be blank').notEmpty();
-    req.sanitize('email').normalizeEmail({gmail_remove_dots: false});
+    req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
 
     const errors = req.validationErrors();
 
@@ -23,7 +23,7 @@ class AuthController {
     }
 
     try {
-      const user: User = await UserService.findByEmail(req.body.email);
+      const user: IUser = await UserService.findByEmail(req.body.email);
       if (!user) {
         return resp.status(404).send({
           msg: 'User not found',
@@ -36,8 +36,8 @@ class AuthController {
           email: user.email,
           role: user.role,
           username: user.username
-        }, process.env.JWT_SECRET, {expiresIn: '1h'});
-        return resp.status(200).send({token: token});
+        }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        return resp.status(200).send({ token: token });
       } else {
         return resp.status(401).send({
           msg: 'Unauthorized',
@@ -60,7 +60,7 @@ class AuthController {
     req.assert('role', 'Role must be specified').notEmpty();
 
     req.assert('email', 'Email is not valid').isEmail();
-    req.sanitize('email').normalizeEmail({gmail_remove_dots: false});
+    req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
 
     const errors = req.validationErrors();
 
@@ -70,7 +70,7 @@ class AuthController {
         status: 401
       });
     }
-    const user: User = req.body;
+    const user: IUser = req.body;
     try {
       // Check if user already exists
       const existingUser = await UserService.findByUsernameOrEmail(user.username, user.email);
@@ -108,7 +108,7 @@ class AuthController {
           If you did not request this, please ignore this email\n`
       };
       await transporter.sendMail(mailOptions);
-      const savedUser: User = await UserService.save(user);
+      const savedUser: IUser = await UserService.save(user);
       res.status(200).send(savedUser);
     } catch (error) {
       console.log(error);
@@ -121,13 +121,13 @@ class AuthController {
 
   async activate(req: Request, res: Response) {
     try {
-      const user: User = await UserService.findOneAndUpdate(req.params.activationToken);
+      const user: IUser = await UserService.findOneAndUpdate(req.params.activationToken);
       const token = jwt.sign({
         email: user.email,
         role: user.role,
         username: user.username
-      }, process.env.JWT_SECRET, {expiresIn: '1h'});
-      return res.status(200).send({token: token});
+      }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      return res.status(200).send({ token: token });
     } catch (error) {
       console.log(error);
       res.status(400).send({

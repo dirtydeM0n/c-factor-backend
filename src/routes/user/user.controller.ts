@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { default as UserService } from '../services/user.service';
+import { default as UserService } from './user.service';
 
 class UserController {
   async getAll(req: Request, resp: Response) {

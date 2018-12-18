@@ -1,7 +1,7 @@
-import { User } from '../models/user';
+import { IUser } from './user';
 import * as bcrypt from 'bcrypt-nodejs';
 import * as util from 'util';
-import UserRepository, { UserType } from '../schemas/user.schema';
+import UserModel, { UserType } from './user.model';
 
 /**
  * @class UserService
@@ -11,10 +11,10 @@ class UserService {
   /**
    * @description Fetches single user from the storage by email
    * @param email
-   * @returns {Promise<User>}
+   * @returns {Promise<IUser>}
    */
-  async findByEmail(email): Promise<User> {
-    const user: UserType = await UserRepository.findOne({email: email});
+  async findByEmail(email): Promise<IUser> {
+    const user: UserType = await UserModel.findOne({email: email});
     return user;
   }
 
@@ -22,38 +22,38 @@ class UserService {
    * @description Fetches single user from the storage by email or username
    * @param username
    * @param email
-   * @returns {Promise<User>}
+   * @returns {Promise<IUser>}
    */
-  async findByUsernameOrEmail(username, email): Promise<User> {
-    const user: User = await UserRepository.findOne({$or: [{email: email}, {username: username}]});
+  async findByUsernameOrEmail(username, email): Promise<IUser> {
+    const user: IUser = await UserModel.findOne({$or: [{email: email}, {username: username}]});
     return user;
   }
 
   /**
    * @description Saves the user in the storage
    * @param {User} user
-   * @returns {Promise<User>}
+   * @returns {Promise<IUser>}
    */
-  async save(user: User): Promise<User> {
-    return (await new UserRepository(user).save()).toObject({ virtuals: true });
+  async save(user: IUser): Promise<IUser> {
+    return (await new UserModel(user).save()).toObject({ virtuals: true });
   }
 
   /**
    * @description Fetches single user by activationToken and sets active flag
    * @param activationToken
-   * @returns {Promise<User>}
+   * @returns {Promise<IUser>}
    */
-  async findOneAndUpdate(activationToken): Promise<User> {
-    const user: User = await UserRepository.findOneAndUpdate({activationToken: activationToken}, {active: true}, {new: true});
+  async findOneAndUpdate(activationToken): Promise<IUser> {
+    const user: IUser = await UserModel.findOneAndUpdate({activationToken: activationToken}, {active: true}, {new: true});
     return user;
   }
 
   /**
    * @description Fetches all users from the storage
-   * @returns {Promise<User[]>}
+   * @returns {Promise<IUser[]>}
    */
-  async findAll(): Promise<User[]> {
-    return await UserRepository.find() as User[];
+  async findAll(): Promise<IUser[]> {
+    return await UserModel.find() as IUser[];
   }
 
   /**
@@ -61,7 +61,7 @@ class UserService {
    * @returns {Promise<void>}
    */
   async deleteOne(username: string): Promise<void> {
-    return await UserRepository.deleteOne({username: username});
+    return await UserModel.deleteOne({username: username});
   }
 
   /**

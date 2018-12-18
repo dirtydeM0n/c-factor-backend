@@ -12,7 +12,7 @@ import * as bluebird from 'bluebird';
 import * as expressJwt from 'express-jwt';
 import * as swaggerUI from 'swagger-ui-express';
 import * as swaggerDocument from '../swagger.json';
-import { AuthRouter, SwaggerAPIRouter, UserRouter } from './routes';
+import { SwaggerAPIRouter, RootRouter, AuthRouter, UserRouter } from './routes/index';
 
 const MongoStore = mongo(session);
 
@@ -74,6 +74,7 @@ app.use(function (err, req, res, next) {
   }
 });
 
+app.use('/', RootRouter);
 app.use('/auth', AuthRouter);
 app.use('/users', UserRouter);
 

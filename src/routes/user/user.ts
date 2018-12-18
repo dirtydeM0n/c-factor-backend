@@ -1,7 +1,15 @@
-import { AuthToken } from './auth-token';
-import { Profile } from './profile';
+export type AuthToken = {
+  accessToken: string,
+  kind: string
+};
 
-export interface User {
+export interface IProfile {
+  info: string;
+  fname: string;
+  lname: string;
+}
+
+export interface IUser {
 
   email?: string;
   username?: string;
@@ -18,5 +26,5 @@ export interface User {
 
   tokens?: Array<AuthToken>;
 
-  profile?: Profile;
+  profile?: IProfile;
 }

@@ -1,9 +1,7 @@
 import * as mongoose from 'mongoose';
-import { AuthToken } from '../models/auth-token';
-import { Profile } from '../models/profile';
 import * as bcrypt from 'bcrypt-nodejs';
 import * as util from 'util';
-import { User } from '../models/user';
+import { IUser, AuthToken, IProfile } from './user';
 
 export type UserType = mongoose.Document & {
 
@@ -22,13 +20,13 @@ export type UserType = mongoose.Document & {
 
   tokens: Array<AuthToken>,
 
-  profile: Profile,
+  profile: IProfile,
 
   comparePassword: (candidatePassword: string, cb: (err: any, isMatch: any) => {}) => void
 };
 
 const UserSchema = new mongoose.Schema({
-  email: {type: String, unique: true},
+  email: { type: String, unique: true },
   username: String,
   password: String,
   role: String,
@@ -46,7 +44,7 @@ const UserSchema = new mongoose.Schema({
     lname: String,
     info: String
   }
-}, {timestamps: true});
+}, { timestamps: true });
 
 /**
  * Password hash middleware.
@@ -75,6 +73,7 @@ UserSchema.methods.comparePassword = function (candidatePassword: string) {
   return qCompare(candidatePassword, this.password);
 };
 
-type UserType = User & mongoose.Document;
-const UserRepository = mongoose.model<UserType>('User', UserSchema);
-export default UserRepository;
+type UserType = IUser & mongoose.Document;
+
+const UserModel = mongoose.model<UserType>('User', UserSchema);
+export default UserModel;
