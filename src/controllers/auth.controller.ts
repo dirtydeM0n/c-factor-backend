@@ -4,7 +4,7 @@ import * as util from 'util';
 import * as crypto from 'crypto';
 import * as nodemailer from 'nodemailer';
 import { User } from '../models/user';
-import { default as UserService } from '../services/user.srvc';
+import { default as UserService } from '../services/user.service';
 
 class AuthController {
 
@@ -21,6 +21,7 @@ class AuthController {
         code: 406
       });
     }
+
     try {
       const user: User = await UserService.findByEmail(req.body.email);
       if (!user) {

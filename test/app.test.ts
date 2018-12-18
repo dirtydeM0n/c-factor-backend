@@ -1,6 +1,6 @@
 import * as request from 'supertest';
 import * as app from '../src/app';
-import { default as UserService } from '../src/services/user.srvc';
+import { default as UserService } from '../src/services/user.service';
 import { User } from '../src/models/user';
 
 let JWT: String;

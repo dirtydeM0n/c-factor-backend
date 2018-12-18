@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import AuthController from './controllers/auth.ctrl';
-import UserController from './controllers/user.ctrl';
+import AuthController from './controllers/auth.controller';
+import UserController from './controllers/user.controller';
 
 const AuthRouter = Router();
 AuthRouter.post('/login', AuthController.login);
