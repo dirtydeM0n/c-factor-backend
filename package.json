@@ -23,6 +23,9 @@
     "serve-debug": "nodemon --inspect dist/server.js",
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\""
   },
+  "pre-commit": [
+    "tslint"
+  ],
   "dependencies": {
     "async": "^2.6.1",
     "bcrypt-nodejs": "0.0.3",
@@ -73,6 +76,7 @@
     "concurrently": "^3.6.1",
     "jest": "^21.2.1",
     "nodemon": "^1.18.9",
+    "pre-commit": "^1.2.2",
     "shelljs": "^0.7.7",
     "supertest": "^3.3.0",
     "ts-jest": "^21.2.4",
