@@ -189,8 +189,8 @@
       "required": [
         "email",
         "password",
-        "fname",
-        "lname",
+        "firstname",
+        "lastname",
         "role",
         "username"
       ],
@@ -202,10 +202,10 @@
         "password": {
           "type": "string"
         },
-        "lname": {
+        "lastname": {
           "type": "string"
         },
-        "fname": {
+        "firstname": {
           "type": "string"
         },
         "role": {

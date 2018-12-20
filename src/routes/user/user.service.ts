@@ -60,8 +60,8 @@ class UserService {
    * @description Deletes a single user from storage
    * @returns {Promise<void>}
    */
-  async deleteOne(username: string): Promise<void> {
-    return await UserModel.deleteOne({username: username});
+  async deleteOne(email: string): Promise<void> {
+    return await UserModel.deleteOne({email: email});
   }
 
   /**

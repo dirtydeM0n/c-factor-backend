@@ -14,7 +14,6 @@ class AuthController {
     req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
 
     const errors = req.validationErrors();
-
     if (errors) {
       return resp.status(401).send({
         msg: errors,
@@ -36,7 +35,7 @@ class AuthController {
           email: user.email,
           role: user.role,
           username: user.username
-        }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        }, process.env.JWT_SECRET, { expiresIn: '1d' });
         return resp.status(200).send({ token: token });
       } else {
         return resp.status(401).send({
@@ -54,26 +53,32 @@ class AuthController {
 
   async register(req: Request, res: Response, next: NextFunction) {
     req.assert('password', 'Password cannot be blank').notEmpty();
-    req.assert('fname', 'First name must be specified').notEmpty();
-    req.assert('lname', 'Last name must be specified').notEmpty();
-    req.assert('username', 'Username must be specified').notEmpty();
-    req.assert('role', 'Role must be specified').notEmpty();
+    req.assert('firstname', 'First name must be specified').notEmpty();
+    req.assert('lastname', 'Last name must be specified').notEmpty();
+    req.assert('country', 'Country must be specified').notEmpty();
+    req.assert('address', 'Address must be specified').notEmpty();
+    req.assert('phone', 'Phone must be specified').notEmpty();
+    req.assert('dob', 'DOB must be specified').notEmpty();
 
     req.assert('email', 'Email is not valid').isEmail();
     req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
 
-    const errors = req.validationErrors();
+    // req.assert('username', 'Username must be specified').notEmpty();
+    // req.assert('role', 'Role must be specified').notEmpty();
 
+    const errors = req.validationErrors();
     if (errors) {
       return res.status(401).send({
         msg: errors,
         status: 401
       });
     }
-    const user: IUser = req.body;
+
+    const user: IUser = { ...req.body, role: 0 };
     try {
       // Check if user already exists
-      const existingUser = await UserService.findByUsernameOrEmail(user.username, user.email);
+      const existingUser = await UserService.findByEmail(user.email);
+      console.log('existingUser:', existingUser);
       if (existingUser) {
         return res.status(409).send({
           msg: 'User already exists',
@@ -84,7 +89,7 @@ class AuthController {
       const qRandomBytes = (util as any).promisify(crypto.randomBytes);
       const cryptedValue = await qRandomBytes(16);
       user.activationToken = cryptedValue.toString('hex');
-      user.activationExpires = new Date(Date.now() + 3600000); // 1 hour
+      user.activationExpires = new Date(Date.now() + (60 * 60 * 1000)); // 1 hour
       // Send activation email
       const transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST,
@@ -109,7 +114,7 @@ class AuthController {
       };
       await transporter.sendMail(mailOptions);
       const savedUser: IUser = await UserService.save(user);
-      res.status(200).send(savedUser);
+      res.status(200).send({ msg: 'An activation email has been sent to your email. Please check!' });
     } catch (error) {
       console.log(error);
       res.status(400).send({
@@ -122,6 +127,99 @@ class AuthController {
   async activate(req: Request, res: Response) {
     try {
       const user: IUser = await UserService.findOneAndUpdate(req.params.activationToken);
+      if (!user) {
+        return res.status(400).send({
+          msg: 'Activation token invalid, please register again',
+          status: 400
+        });
+      }
+      console.log('user:', user);
+      /*if (user.active) {
+        return res.status(400).send({
+          msg: 'Already activated, please login to continue!',
+          status: 400
+        });
+      }*/
+      const token = jwt.sign({
+        email: user.email,
+        role: user.role,
+        username: user.username
+      }, process.env.JWT_SECRET, { expiresIn: '1d' });
+      // return res.status(200).send({ token: token });
+      res.redirect(process.env.FRONTEND_URI + '/enter/' + token);
+    } catch (error) {
+      console.log(error);
+      res.status(400).send({
+        msg: 'Activation token expired, please register again',
+        status: 400
+      });
+    }
+  }
+
+  async passwordReset(req: Request, res: Response, next: NextFunction) {
+    req.assert('email', 'Email is not valid').isEmail();
+    req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
+
+    const errors = req.validationErrors();
+    if (errors) {
+      return res.status(401).send({
+        msg: errors,
+        status: 401
+      });
+    }
+
+    const user: IUser = req.body;
+    try {
+      // Check if user exists
+      const existingUser = await UserService.findByEmail(user.email);
+      if (!existingUser) {
+        return res.status(409).send({
+          msg: 'User does not exist',
+          status: 409
+        });
+      }
+      // Generate reset activation token
+      const qRandomBytes = (util as any).promisify(crypto.randomBytes);
+      const cryptedValue = await qRandomBytes(16);
+      user.passwordResetToken = cryptedValue.toString('hex');
+      user.passwordResetExpires = new Date(Date.now() + (60 * 60 * 1000)); // 1 hour
+      // Send activation email
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port: Number(process.env.SMTP_PORT),
+        secure: process.env.NODE_ENV === 'production',
+        socketTimeout: 5000,
+        logger: true,
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASSWORD
+        }
+      });
+
+      const mailOptions = {
+        to: user.email,
+        from: process.env.SMTP_USER,
+        subject: 'Account password reset',
+        text: `You are receiving this email because you (or someone else) have requested reset password of your account.\n\n
+          Please click on the following link, or paste this into your browser to complete the process:\n\n
+          http://${req.headers.host}/auth/resetPassword/${user.activationToken}\n\n
+          If you did not request this, please ignore this email\n`
+      };
+      await transporter.sendMail(mailOptions);
+      const savedUser: IUser = await UserService.save(user);
+      res.status(200).send(savedUser);
+    } catch (error) {
+      console.log(error);
+      res.status(400).send({
+        msg: 'Unable to send email',
+        status: 400
+      });
+    }
+  }
+
+  async changePassword(req: Request, res: Response) {
+    try {
+      const user: IUser = await UserService.findOneAndUpdate(req.params.resetToken);
       const token = jwt.sign({
         email: user.email,
         role: user.role,

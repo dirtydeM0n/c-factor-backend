@@ -1,26 +1,34 @@
 [
   {
     "username": "tesla",
-    "email": "nikola@example.com",
-    "password": "$2a$04$Q1fly2sz6lfcaQmHyDV0POJ0zFx7ZkZlMPx7.3Pp3tnGgm7K.qGUu",
+    "email": "tesla@example.com",
+    "password": "test123!",
     "role": 0,
     "active": false,
     "profile": {
-      "fname": "Nikola",
-      "lname": "Tesla",
-      "info": "The father of our modern technological age"
+      "firstname": "Nikola",
+      "lastname": "Tesla",
+      "info": "The father of our modern technological age",
+      "country": "PK",
+      "phone": "00923123841914",
+      "address": "Karachi, Pakistan",
+      "dob": "25-12-1992"
     }
   },
   {
     "username": "aaronsw",
-    "email": "me@aaronsw.com",
-    "password": "$2a$04$Q1fly2sz6lfcaQmHyDV0POJ0zFx7ZkZlMPx7.3Pp3tnGgm7K.aaaA",
+    "email": "aaronsw@example.com",
+    "password": "test123!",
     "role": 0,
     "active": false,
     "profile": {
-      "fname": "Aaron",
-      "lname": "Swartz",
-      "info": "Internet's own boy"
+      "firstname": "Aaron",
+      "lastname": "Swartz",
+      "info": "Internet's own boy",
+      "country": "PK",
+      "phone": "00923123841914",
+      "address": "Karachi, Pakistan",
+      "dob": "25-12-1992"
     }
   }
 ]

@@ -40,9 +40,13 @@ const UserSchema = new mongoose.Schema({
   activationExpires: Date,
 
   profile: {
-    fname: String,
-    lname: String,
-    info: String
+    firstname: String,
+    lastname: String,
+    info: String,
+    country: String,
+    address: String,
+    phone: String,
+    dob: String
   }
 }, { timestamps: true });
 

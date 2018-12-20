@@ -22,8 +22,8 @@ describe('/auth', () => {
   const userForm = {
     email: 'tester@chester.com',
     password: 'PASSWORD',
-    lname: 'Tester',
-    fname: 'Chester',
+    lastname: 'Tester',
+    firstname: 'Chester',
     role: 'guest',
     username: 'testerchester'
   };

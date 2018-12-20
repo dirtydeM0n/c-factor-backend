@@ -3,7 +3,7 @@ import * as compression from 'compression';  // compresses requests
 import * as session from 'express-session';
 import * as bodyParser from 'body-parser';
 import * as logger from 'morgan';
-import * as lusca from 'lusca';
+// import * as lusca from 'lusca';
 import * as dotenv from 'dotenv';
 import * as mongo from 'connect-mongo';
 import * as mongoose from 'mongoose';
@@ -13,6 +13,7 @@ import * as expressJwt from 'express-jwt';
 import * as swaggerUI from 'swagger-ui-express';
 import * as swaggerDocument from '../swagger.json';
 import { SwaggerAPIRouter, RootRouter, AuthRouter, UserRouter } from './routes/index';
+const cors = require('cors');
 
 const MongoStore = mongo(session);
 
@@ -40,6 +41,19 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
+app.use(cors(/*{
+  origin: function(origin, callback) {
+      const whitelist = [
+        'http://127.0.0.1:3000',
+      ];
+      if (whitelist.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+  },
+  credentials: true
+}*/));
 app.use(session({
   resave: true,
   saveUninitialized: true,
@@ -49,8 +63,8 @@ app.use(session({
     mongooseConnection: mongoose.connection
   })
 }));
-app.use(lusca.xframe('SAMEORIGIN'));
-app.use(lusca.xssProtection(true));
+// app.use(lusca.xframe('SAMEORIGIN'));
+// app.use(lusca.xssProtection(true));
 app.use(expressJwt({
   secret: process.env.JWT_SECRET,
   credentialsRequired: false,

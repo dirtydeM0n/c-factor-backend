@@ -4,13 +4,16 @@ export type AuthToken = {
 };
 
 export interface IProfile {
-  info: string;
-  fname: string;
-  lname: string;
+  info?: string;
+  firstname: string;
+  lastname: string;
+  country: string;
+  address: string;
+  phone: string;
+  dob: string;
 }
 
 export interface IUser {
-
   email?: string;
   username?: string;
   password?: string;
