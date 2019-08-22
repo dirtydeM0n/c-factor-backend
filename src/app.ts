@@ -4,35 +4,15 @@ import * as session from 'express-session';
 import * as bodyParser from 'body-parser';
 import * as logger from 'morgan';
 // import * as lusca from 'lusca';
-import * as dotenv from 'dotenv';
-import * as mongo from 'connect-mongo';
-import * as mongoose from 'mongoose';
 import * as expressValidator from 'express-validator';
-import * as bluebird from 'bluebird';
 import * as expressJwt from 'express-jwt';
 import * as swaggerUI from 'swagger-ui-express';
 import * as swaggerDocument from '../swagger.json';
-import { SwaggerAPIRouter, RootRouter, AuthRouter, UserRouter } from './routes/index';
 const cors = require('cors');
-
-const MongoStore = mongo(session);
-
-// Load environment variables from .env file, where API keys and passwords are configured
-dotenv.config({ path: '.env' || '.env.example' });
+import { SwaggerAPIRouter, RootRouter, AuthRouter, UserRouter } from './routes/index';
 
 // Create Express server
 const app = express();
-
-// Connect to MongoDB
-const mongoUrl = process.env.MONGODB_URI;
-(<any>mongoose).Promise = bluebird;
-mongoose.connect(mongoUrl, { useMongoClient: true })
-  .then(() => {
-    /** ready to use. The `mongoose.connect()` promise resolves to undefined. */
-  }).catch(err => {
-    console.log('MongoDB connection error. Please make sure MongoDB is running. ' + err);
-    // process.exit();
-  });
 
 // Express configuration
 app.set('port', process.env.PORT || 3000);
@@ -58,10 +38,10 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   secret: process.env.SESSION_SECRET,
-  store: new MongoStore({
+  /*store: new MongoStore({
     autoReconnect: true,
     mongooseConnection: mongoose.connection
-  })
+  })*/
 }));
 // app.use(lusca.xframe('SAMEORIGIN'));
 // app.use(lusca.xssProtection(true));

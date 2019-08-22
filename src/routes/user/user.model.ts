@@ -1,83 +1,200 @@
-import * as mongoose from 'mongoose';
-import * as bcrypt from 'bcrypt-nodejs';
+import * as bcrypt from 'bcrypt';
+const Sequelize = require('sequelize');
 import * as util from 'util';
-import { IUser, AuthToken, IProfile } from './user';
+import { Database } from '../../db';
+import { createJWToken } from '../middleware/jwt';
 
-export type UserType = mongoose.Document & {
-
-  email: string,
-  username: string,
-  password: string,
-  role: string,
-
-  active: boolean,
-
-  passwordResetToken: string,
-  passwordResetExpires: Date,
-
-  activationToken: string,
-  activationExpires: Date,
-
-  tokens: Array<AuthToken>,
-
-  profile: IProfile,
-
-  comparePassword: (candidatePassword: string, cb: (err: any, isMatch: any) => {}) => void
-};
-
-const UserSchema = new mongoose.Schema({
-  email: { type: String, unique: true },
-  username: String,
-  password: String,
-  role: String,
-
-  active: Boolean,
-
-  passwordResetToken: String,
-  passwordResetExpires: Date,
-
-  activationToken: String,
-  activationExpires: Date,
-
-  profile: {
-    firstname: String,
-    lastname: String,
-    info: String,
-    country: String,
-    address: String,
-    phone: String,
-    dob: String
-  }
-}, { timestamps: true });
-
-/**
- * Password hash middleware.
- */
-UserSchema.pre('save', function save(next) {
-  const user = this;
-  if (!user.isModified('password')) {
-    return next();
-  }
-  bcrypt.genSalt(10, (err, salt) => {
-    if (err) {
-      return next(err);
+const User = Database.define('user', {
+    id: {
+        allowNull: false,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV1,
+        primaryKey: true
+    },
+    firstname: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    lastname: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    username: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    avatar: {
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    phone: {
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    email: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        validate: {
+            len: {
+                args: [6, 128],
+                msg: 'Email address must be between 6 and 128 characters in length'
+            },
+            isEmail: {
+                msg: 'Email address must be valid'
+            }
+        }
+    },
+    password: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        validate: {
+            notEmpty: true,
+            len: [6, 100]
+        }
+    },
+    country: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    address: {
+        allowNull: false,
+        type: Sequelize.TEXT,
+        defaultValue: ''
+    },
+    dob: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: ''
+    },
+    bio: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    role: {
+        allowNull: false,
+        type: Sequelize.ENUM,
+        values: ['admin', 'candidate', 'client'],
+        defaultValue: 'candidate',
+        validate: {
+            isIn: {
+                args: [['admin', 'candidate', 'client']],
+                msg: 'Invalid status.'
+            }
+        }
+    },
+    status: {
+        allowNull: false,
+        type: Sequelize.ENUM,
+        values: ['pending', 'accepted'],
+        defaultValue: 'pending',
+        validate: {
+            isIn: {
+                args: [['pending', 'accepted']],
+                msg: 'Invalid status.'
+            }
+        }
+    },
+    resetToken: {
+        type: Sequelize.STRING
+    },
+    resetTokenSentAt: {
+        type: Sequelize.DATE,
+        validate: {
+            isDate: true
+        }
+    },
+    resetTokenExpireAt: {
+        type: Sequelize.DATE,
+        validate: {
+            isDate: true
+        }
+    },
+    activationToken: {
+        type: Sequelize.STRING
+    },
+    activationTokenExpireAt: {
+        type: Sequelize.DATE,
+        validate: {
+            isDate: true
+        }
     }
-    bcrypt.hash(user.password, salt, undefined, (err: mongoose.Error, hash) => {
-      if (err) {
-        return next(err);
-      }
-      user.password = hash;
-      next();
+}, {
+        indexes: [{ unique: true, fields: ['email'] }],
+        timestamps: true,
+        freezeTableName: true,
+        tableName: 'users'
     });
-  });
+
+User.beforeSave((user, options) => {
+    if (user.changed('password')) {
+        user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
+    }
 });
 
-UserSchema.methods.comparePassword = function (candidatePassword: string) {
-  const qCompare = (util as any).promisify(bcrypt.compare);
-  return qCompare(candidatePassword, this.password);
+User.prototype.generateToken = function generateToken() {
+    console.log('JWT:' + process.env.JWT_SECRET);
+    return createJWToken({ email: this.email, id: this.id });
 };
 
-type UserType = IUser & mongoose.Document;
+User.prototype.authenticate = function authenticate(candidatePassword: string) {
+    if (bcrypt.compareSync(candidatePassword, this.password)) {
+        return this;
+    } else {
+        return false;
+    }
+};
 
-const UserModel = mongoose.model<UserType>('User', UserSchema);
-export default UserModel;
+User.prototype.comparePassword = function (candidatePassword: string) {
+    const qCompare = (util as any).promisify(bcrypt.compare);
+    return qCompare(candidatePassword, this.password);
+};
+
+
+const UserAuth = Database.define('userAuth', {
+    id: {
+        allowNull: false,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV1,
+        primaryKey: true
+    },
+    profile_id: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    source: {
+        allowNull: false,
+        type: Sequelize.ENUM,
+        values: ['custom', 'linkedin'],
+        defaultValue: 'custom',
+        validate: {
+            isIn: {
+                args: [['custom', 'linkedin']],
+                msg: 'Invalid status.'
+            }
+        }
+    },
+    token: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    token_secret: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    }
+}, {
+        indexes: [{ unique: true, fields: ['auth_id'] }],
+        timestamps: true,
+        freezeTableName: true,
+        tableName: 'users_auth'
+    });
+
+
+export { User, UserAuth };

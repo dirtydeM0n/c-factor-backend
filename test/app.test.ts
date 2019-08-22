@@ -6,7 +6,7 @@ import { IUser } from '../src/routes/user/user';
 let JWT: String;
 
 afterAll((done) => {
-  UserService.deleteOne('testerchester')
+  UserService.deleteByUsername('testerchester')
     .then(done);
 });
 

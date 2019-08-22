@@ -6,7 +6,7 @@ export async function ValidateToken(req: Request, res: Response, next: NextFunct
   const token = req.cookies.get('token');
   if (token) {
     try {
-      const tokenHash = await jwt.verify(token, process.env.JWT_SECRET);
+      await jwt.verify(token, process.env.JWT_SECRET);
       await next();
     } catch (err) {
       res.sendStatus(400).send(err);

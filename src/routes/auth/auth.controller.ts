@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 import * as util from 'util';
 import * as crypto from 'crypto';
-import * as nodemailer from 'nodemailer';
 import { IUser } from '../user/user';
 import { default as UserService } from '../user/user.service';
+import { sendMail } from '../services/mail.service';
 
 class AuthController {
 
@@ -74,7 +74,7 @@ class AuthController {
       });
     }
 
-    const user: IUser = { ...req.body, role: 0 };
+    const user: IUser = { ...req.body };
     try {
       // Check if user already exists
       const existingUser = await UserService.findByEmail(user.email);
@@ -89,20 +89,8 @@ class AuthController {
       const qRandomBytes = (util as any).promisify(crypto.randomBytes);
       const cryptedValue = await qRandomBytes(16);
       user.activationToken = cryptedValue.toString('hex');
-      user.activationExpires = new Date(Date.now() + (60 * 60 * 1000)); // 1 hour
+      user.activationTokenExpireAt = new Date(Date.now() + (60 * 60 * 1000)); // 1 hour
       // Send activation email
-      const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: Number(process.env.SMTP_PORT),
-        secure: process.env.NODE_ENV === 'production',
-        socketTimeout: 5000,
-        logger: true,
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASSWORD
-        }
-      });
-
       const mailOptions = {
         to: user.email,
         from: process.env.SMTP_USER,
@@ -112,7 +100,7 @@ class AuthController {
           http://${req.headers.host}/auth/activate/${user.activationToken}\n\n
           If you did not request this, please ignore this email\n`
       };
-      await transporter.sendMail(mailOptions);
+      await sendMail(mailOptions);
       const savedUser: IUser = await UserService.save(user);
       res.status(200).send({ msg: 'An activation email has been sent to your email. Please check!' });
     } catch (error) {
@@ -126,7 +114,7 @@ class AuthController {
 
   async activate(req: Request, res: Response) {
     try {
-      const user: IUser = await UserService.findOneAndUpdate(req.params.activationToken);
+      const user: IUser = await UserService.findOneAndUpdate({ activationToken: req.params.activationToken, status: 'pending' }, { status: 'accepted' });
       if (!user) {
         return res.status(400).send({
           msg: 'Activation token invalid, please register again',
@@ -134,19 +122,19 @@ class AuthController {
         });
       }
       console.log('user:', user);
-      /*if (user.active) {
+      if (user.status == 'accepted') {
         return res.status(400).send({
           msg: 'Already activated, please login to continue!',
           status: 400
         });
-      }*/
-      const token = jwt.sign({
+      }
+      /*const token = jwt.sign({
         email: user.email,
         role: user.role,
         username: user.username
       }, process.env.JWT_SECRET, { expiresIn: '1d' });
       // return res.status(200).send({ token: token });
-      res.redirect(process.env.FRONTEND_URI + '/enter/' + token);
+      res.redirect(process.env.FRONTEND_URI + '/enter/' + token);*/
     } catch (error) {
       console.log(error);
       res.status(400).send({
@@ -156,7 +144,7 @@ class AuthController {
     }
   }
 
-  async passwordReset(req: Request, res: Response, next: NextFunction) {
+  async resetPassword(req: Request, res: Response, next: NextFunction) {
     req.assert('email', 'Email is not valid').isEmail();
     req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
 
@@ -168,7 +156,7 @@ class AuthController {
       });
     }
 
-    const user: IUser = req.body;
+    const user: IUser = { ...req.body };
     try {
       // Check if user exists
       const existingUser = await UserService.findByEmail(user.email);
@@ -181,21 +169,9 @@ class AuthController {
       // Generate reset activation token
       const qRandomBytes = (util as any).promisify(crypto.randomBytes);
       const cryptedValue = await qRandomBytes(16);
-      user.passwordResetToken = cryptedValue.toString('hex');
-      user.passwordResetExpires = new Date(Date.now() + (60 * 60 * 1000)); // 1 hour
+      user.resetToken = cryptedValue.toString('hex');
+      user.resetTokenExpireAt = new Date(Date.now() + (60 * 60 * 1000)); // 1 hour
       // Send activation email
-      const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: Number(process.env.SMTP_PORT),
-        secure: process.env.NODE_ENV === 'production',
-        socketTimeout: 5000,
-        logger: true,
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASSWORD
-        }
-      });
-
       const mailOptions = {
         to: user.email,
         from: process.env.SMTP_USER,
@@ -205,7 +181,7 @@ class AuthController {
           http://${req.headers.host}/auth/resetPassword/${user.activationToken}\n\n
           If you did not request this, please ignore this email\n`
       };
-      await transporter.sendMail(mailOptions);
+      await sendMail(mailOptions);
       const savedUser: IUser = await UserService.save(user);
       res.status(200).send(savedUser);
     } catch (error) {
@@ -219,12 +195,13 @@ class AuthController {
 
   async changePassword(req: Request, res: Response) {
     try {
-      const user: IUser = await UserService.findOneAndUpdate(req.params.resetToken);
+      const user = await UserService.findOne({ resetToken: req.params.resetToken });
       const token = jwt.sign({
         email: user.email,
         role: user.role,
         username: user.username
       }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      await UserService.findOneAndUpdate({ resetToken: req.params.resetToken }, { resetToken: token });
       return res.status(200).send({ token: token });
     } catch (error) {
       console.log(error);

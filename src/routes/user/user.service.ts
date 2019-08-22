@@ -1,7 +1,7 @@
-import { IUser } from './user';
 import * as bcrypt from 'bcrypt-nodejs';
 import * as util from 'util';
-import UserModel, { UserType } from './user.model';
+import { User } from './user.model';
+import { IUser } from './user';
 
 /**
  * @class UserService
@@ -13,8 +13,12 @@ class UserService {
    * @param email
    * @returns {Promise<IUser>}
    */
-  async findByEmail(email): Promise<IUser> {
-    const user: UserType = await UserModel.findOne({email: email});
+  async findByEmail(email: string): Promise<IUser> {
+    const user = await User.findOne({
+      where: {
+        email: email,
+      }
+    });
     return user;
   }
 
@@ -25,7 +29,7 @@ class UserService {
    * @returns {Promise<IUser>}
    */
   async findByUsernameOrEmail(username, email): Promise<IUser> {
-    const user: IUser = await UserModel.findOne({$or: [{email: email}, {username: username}]});
+    const user: IUser = await User.findOne({ where: { $or: [{ email: email }, { username: username }] } });
     return user;
   }
 
@@ -35,7 +39,8 @@ class UserService {
    * @returns {Promise<IUser>}
    */
   async save(user: IUser): Promise<IUser> {
-    return (await new UserModel(user).save()).toObject({ virtuals: true });
+    const new_user = await User.create({ ...user });
+    return new_user;
   }
 
   /**
@@ -43,8 +48,18 @@ class UserService {
    * @param activationToken
    * @returns {Promise<IUser>}
    */
-  async findOneAndUpdate(activationToken): Promise<IUser> {
-    const user: IUser = await UserModel.findOneAndUpdate({activationToken: activationToken}, {active: true}, {new: true});
+  async findOneAndUpdate(findObj = {}, updateObj = {}): Promise<IUser> {
+    const user: IUser = await User.update({ ...updateObj }, { where: { ...findObj } });
+    return user;
+  }
+
+  /**
+   * @description Fetches single user from storage
+   * @param Object
+   * @returns {Promise<IUser>}
+   */
+  async findOne(findObj = {}): Promise<IUser> {
+    const user: IUser = await User.findOne({ where: { ...findObj } });
     return user;
   }
 
@@ -53,15 +68,39 @@ class UserService {
    * @returns {Promise<IUser[]>}
    */
   async findAll(): Promise<IUser[]> {
-    return await UserModel.find() as IUser[];
+    return await User.findAll({}) as IUser[];
   }
 
   /**
    * @description Deletes a single user from storage
    * @returns {Promise<void>}
    */
-  async deleteOne(email: string): Promise<void> {
-    return await UserModel.deleteOne({email: email});
+  async delete(obj = {}): Promise<void> {
+    return await User.destroy({ where: { ...obj } });
+  }
+
+  /**
+   * @description Deletes a single user from storage
+   * @returns {Promise<void>}
+   */
+  async deleteByEmail(email: string): Promise<void> {
+    return await User.destroy({ where: { email: email } });
+  }
+
+  /**
+   * @description Deletes a single user from storage
+   * @returns {Promise<void>}
+   */
+  async deleteByUsername(username: string): Promise<void> {
+    return await User.destroy({ where: { username: username } });
+  }
+
+  /**
+   * @description Deletes a single user from storage
+   * @returns {Promise<void>}
+   */
+  async deleteById(id: string): Promise<void> {
+    return await User.destroy({ where: { id: id } });
   }
 
   /**

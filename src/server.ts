@@ -1,4 +1,24 @@
+import * as dotenv from 'dotenv';
 import * as errorHandler from 'errorhandler';
+
+// Load environment variables from .env file, where API keys and passwords are configured
+dotenv.config({ path: '.env' || '.env.example' });
+
+import { Database } from './db';
+
+// authenticate and launch DB instance
+Database
+    .authenticate()
+    .then(() => {
+        console.log('*************************************************');
+        console.log('Connection has been established successfully.');
+        console.log('*************************************************');
+    })
+    .catch((err: any) => {
+        console.log('*************************************************');
+        console.error('Unable to connect to the database:', err);
+        console.log('*************************************************');
+    });
 
 const app = require('./app');
 
