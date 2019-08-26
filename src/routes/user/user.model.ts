@@ -3,6 +3,7 @@ const Sequelize = require('sequelize');
 import * as util from 'util';
 import { Database } from '../../db';
 import { createJWToken } from '../middleware/jwt';
+import config = require('../../config');
 
 const User = Database.define('user', {
     id: {
@@ -137,7 +138,7 @@ User.beforeSave((user, options) => {
 });
 
 User.prototype.generateToken = function generateToken() {
-    console.log('JWT:' + process.env.JWT_SECRET);
+    console.log('JWT:' + config.JWT_SECRET);
     return createJWToken({ email: this.email, id: this.id });
 };
 

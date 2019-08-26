@@ -5,6 +5,7 @@ import * as crypto from 'crypto';
 import { IUser } from '../user/user';
 import { default as UserService } from '../user/user.service';
 import { sendMail } from '../services/mail.service';
+import config = require('../../config');
 
 class AuthController {
 
@@ -35,7 +36,7 @@ class AuthController {
           email: user.email,
           role: user.role,
           username: user.username
-        }, process.env.JWT_SECRET, { expiresIn: '1d' });
+        }, config.JWT_SECRET, { expiresIn: '1d' });
         return resp.status(200).send({ token: token });
       } else {
         return resp.status(401).send({
@@ -93,7 +94,7 @@ class AuthController {
       // Send activation email
       const mailOptions = {
         to: user.email,
-        from: process.env.SMTP_USER,
+        from: config.mail.SMTP_USER,
         subject: 'Account activation',
         text: `You are receiving this email because you (or someone else) have requested account activation.\n\n
           Please click on the following link, or paste this into your browser to complete the process:\n\n
@@ -132,9 +133,9 @@ class AuthController {
         email: user.email,
         role: user.role,
         username: user.username
-      }, process.env.JWT_SECRET, { expiresIn: '1d' });
+      }, config.JWT_SECRET, { expiresIn: '1d' });
       // return res.status(200).send({ token: token });
-      res.redirect(process.env.FRONTEND_URI + '/enter/' + token);*/
+      res.redirect(config.FRONTEND_URI + '/enter/' + token);*/
     } catch (error) {
       console.log(error);
       res.status(400).send({
@@ -174,7 +175,7 @@ class AuthController {
       // Send activation email
       const mailOptions = {
         to: user.email,
-        from: process.env.SMTP_USER,
+        from: config.mail.SMTP_USER,
         subject: 'Account password reset',
         text: `You are receiving this email because you (or someone else) have requested reset password of your account.\n\n
           Please click on the following link, or paste this into your browser to complete the process:\n\n
@@ -200,7 +201,7 @@ class AuthController {
         email: user.email,
         role: user.role,
         username: user.username
-      }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      }, config.JWT_SECRET, { expiresIn: '1h' });
       await UserService.findOneAndUpdate({ resetToken: req.params.resetToken }, { resetToken: token });
       return res.status(200).send({ token: token });
     } catch (error) {

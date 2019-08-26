@@ -10,12 +10,13 @@ import * as swaggerUI from 'swagger-ui-express';
 import * as swaggerDocument from '../swagger.json';
 const cors = require('cors');
 import { SwaggerAPIRouter, RootRouter, AuthRouter, UserRouter, RoleRouter } from './routes/index';
+import config = require('./config');
 
 // Create Express server
 const app = express();
 
 // Express configuration
-app.set('port', process.env.PORT || 3000);
+app.set('port', config.PORT);
 app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -37,12 +38,12 @@ app.use(cors(/*{
 app.use(session({
   resave: true,
   saveUninitialized: true,
-  secret: process.env.SESSION_SECRET
+  secret: config.SESSION_SECRET
 }));
 // app.use(lusca.xframe('SAMEORIGIN'));
 // app.use(lusca.xssProtection(true));
 app.use(expressJwt({
-  secret: process.env.JWT_SECRET,
+  secret: config.JWT_SECRET,
   credentialsRequired: false,
   requestProperty: 'auth',
   getToken: function fromHeader(req: express.Request) {
