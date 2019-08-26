@@ -1,4 +1,4 @@
-# TypeScript REST Node Starter
+# c-factor-backend
 
 This repository can be used as a convenient starting point for building
 `NODE REST API`'s using `TypeScript` on top of `Express` web framework.  
