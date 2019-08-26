@@ -9,6 +9,9 @@
   "author": "Narain Sagar",
   "license": "MIT",
   "scripts": {
+    "tsc": "tsc",
+    "nodemon": "nodemon",
+    "concurrently": "concurrently",
     "start": "npm run build && npm run serve",
     "build:clean": "rm -rf dist",
     "build": "npm run build:clean && npm run build-ts && npm run tslint",
