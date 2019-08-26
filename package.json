@@ -6,7 +6,7 @@
     "type": "git",
     "url": "https://github.com/thetalentgames/c-factor-backend"
   },
-  "author": "Nenad Maljukan",
+  "author": "Narain Sagar",
   "license": "MIT",
   "scripts": {
     "start": "npm run build && npm run serve",
