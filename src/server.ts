@@ -32,11 +32,9 @@ app.use(errorHandler());
  * Start Express server.
  */
 
-const port = config.PORT || app.get('port');
-
-const server = app.listen(port, (o) => {
+const server = app.listen(app.get('port'), (o) => {
     console.log('o =>', o);
-    console.log(('App is running at http://localhost:%d in %s mode'), port, app.get('env'));
+    console.log(('App is running at http://localhost:%d in %s mode'), app.get('port'), app.get('env'));
     console.log('Press CTRL-C to stop\n');
 });
 
