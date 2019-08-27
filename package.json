@@ -9,7 +9,9 @@
   "author": "Narain Sagar",
   "license": "MIT",
   "scripts": {
+    "postinstall": "npm i -g typescript nodemon concurrently jest",
     "tsc": "tsc",
+    "jest": "jest",
     "nodemon": "nodemon",
     "concurrently": "concurrently",
     "start": "npm run build && npm run serve",
