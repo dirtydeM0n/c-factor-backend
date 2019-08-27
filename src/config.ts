@@ -9,7 +9,7 @@ const config = {
     loggerLevel: 'debug',
     PORT: Number(process.env.PORT) || 3000,
     NODE_ENV: process.env.NODE_ENV || 'development',
-    DB_URI: process.env.DB_URI || '',
+    DATABASE_URL: process.env.DATABASE_URL || '',
     SESSION_SECRET: process.env.SESSION_SECRET || '',
     JWT_SECRET: process.env.JWT_SECRET || 'Quick brown jumps over a lazy dog!',
     db: {

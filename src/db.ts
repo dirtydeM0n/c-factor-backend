@@ -2,10 +2,10 @@ import config = require('./config');
 const Sequelize = require('sequelize');
 
 let instance;
-if (config.DB_URI) {
+if (config.DATABASE_URL) {
   // Option 1: Passing a connection URI
   // const sequelize = new Sequelize('postgres://user:pass@example.com:5432/dbname');
-  instance = new Sequelize(config.DB_URI);
+  instance = new Sequelize(config.DATABASE_URL);
 } else {
   // Option 2: Passing parameters separately
   instance = new Sequelize(config.db.database, config.db.user, config.db.password, {
