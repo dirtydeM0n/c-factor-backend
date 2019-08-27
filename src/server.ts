@@ -5,6 +5,7 @@ import * as errorHandler from 'errorhandler';
 dotenv.config({ path: '.env' || '.env.example' });
 
 import { Database } from './db';
+import config = require('./config');
 
 // authenticate and launch DB instance
 Database
@@ -30,9 +31,13 @@ app.use(errorHandler());
 /**
  * Start Express server.
  */
-const server = app.listen(app.get('port'), () => {
-  console.log(('App is running at http://localhost:%d in %s mode'), app.get('port'), app.get('env'));
-  console.log('Press CTRL-C to stop\n');
+
+const port = config.PORT || app.get('port');
+
+const server = app.listen(port, (o) => {
+    console.log('o =>', o);
+    console.log(('App is running at http://localhost:%d in %s mode'), port, app.get('env'));
+    console.log('Press CTRL-C to stop\n');
 });
 
 export = server;
