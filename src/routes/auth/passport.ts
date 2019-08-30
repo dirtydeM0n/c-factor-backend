@@ -55,9 +55,9 @@ passport.use(new LinkedInStrategy({
     try {
       const existingUser = await User.findOne({ where: { email: profile.emails[0].value } });
       if (existingUser) {
-        req.flash('errors', { msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
-        done(null);
-        // done(null, { error: true, msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+        // req.flash('errors', { msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+        // done(null);
+        done(null, { profile: profile, msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
       } else {
         const user = await User.findById(req.user.id);
         const updateUser = {
@@ -82,8 +82,8 @@ passport.use(new LinkedInStrategy({
         } else {
           await UserAuth.create(authObj);
         }
-        req.flash('info', { msg: 'LinkedIn account has been linked.' });
-        done(null, savedUser);
+        // req.flash('info', { msg: 'LinkedIn account has been linked.' });
+        done(null, { profile: profile, user: savedUser, msg: 'LinkedIn account has been linked.' });
       }
     } catch (err) {
       return done(err);
@@ -92,15 +92,15 @@ passport.use(new LinkedInStrategy({
     try {
       const existingUser = await UserAuth.findOne({ where: { profile_id: profile.id } });
       if (existingUser) {
-        req.flash('errors', { msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
-        done(null);
-        // done(null, { error: false, msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+        // req.flash('errors', { msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+        // done(null);
+        done(null, { profile: profile, msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
       } else {
         const existingEmailUser = await User.findOne({ where: { email: profile.emails[0].value } });
         if (existingEmailUser) {
-          req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with LinkedIn manually from Account Settings.' });
-          return done(null);
-          // return done(null, { error: true, msg: 'There is already an account using this email address. Sign in to that account and link it with LinkedIn manually from Account Settings.' });
+          // req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with LinkedIn manually from Account Settings.' });
+          // return done(null);
+          return done(null, { profile: profile, msg: 'There is already an account using this email address. Sign in to that account and link it with LinkedIn manually from Account Settings.' });
         } else {
           const savedUser = await User.create({
             email: profile.emails[0].value,
@@ -119,9 +119,9 @@ passport.use(new LinkedInStrategy({
             provider: 'linkedin',
             token: accessToken
           });
-          req.flash('info', { msg: 'LinkedIn account has been linked.' });
-          done(null);
-          // done(null, { error: false, msg: 'LinkedIn account has been linked.', user: savedUser });
+          // req.flash('info', { msg: 'LinkedIn account has been linked.' });
+          // done(null);
+          done(null, { profile: profile, msg: 'LinkedIn account has been linked.', user: savedUser });
         }
       }
     } catch (err) {
