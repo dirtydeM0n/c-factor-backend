@@ -10,6 +10,7 @@ import * as swaggerUI from 'swagger-ui-express';
 import * as swaggerDocument from '../swagger.json';
 const cors = require('cors');
 const flash = require('connect-flash');
+const passport = require('passport');
 import { SwaggerAPIRouter, RootRouter, AuthRouter, UserRouter, RoleRouter } from './routes/index';
 import config = require('./config');
 
@@ -42,6 +43,8 @@ app.use(cors(/*{
   },
   credentials: true
 }*/));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(session({
   resave: true,
   saveUninitialized: true,

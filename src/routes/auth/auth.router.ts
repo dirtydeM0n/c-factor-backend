@@ -10,7 +10,7 @@ const AuthRouter = Router()
   .post('/resetPassword', AuthController.resetPassword)
   .post('/changePassword', AuthController.changePassword)
   .get('/linkedin', passportLinkedIn.authenticate('linkedin'))
-  .get('/linkedin/callback', passportLinkedIn.authenticate('linkedin', { failureRedirect: '/auth/login' }),
+  .get('/linkedin/callback', passportLinkedIn.authenticate('linkedin', { failureRedirect: '/auth/login', successRedirect: '/demo?success' }),
     function(req, res) {
       console.log('LinkedIn Successful authentication => ', req.user);
       // Successful authentication

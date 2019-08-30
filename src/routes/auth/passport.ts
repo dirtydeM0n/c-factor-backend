@@ -13,6 +13,7 @@ passport.deserializeUser(async function (obj, done) {
   console.log('serializeUser:', obj);
   try {
     const user = await User.findById(obj.id);
+    console.log('user data', user);
     done(null, user);
   } catch (err) {
     done(err, null);
@@ -56,6 +57,7 @@ passport.use(new LinkedInStrategy({
       if (existingUser) {
         req.flash('errors', { msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
         done(null);
+        // done(null, { error: true, msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
       } else {
         const user = await User.findById(req.user.id);
         const updateUser = {
@@ -92,11 +94,13 @@ passport.use(new LinkedInStrategy({
       if (existingUser) {
         req.flash('errors', { msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
         done(null);
+        // done(null, { error: false, msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
       } else {
         const existingEmailUser = await User.findOne({ where: { email: profile.emails[0].value } });
         if (existingEmailUser) {
           req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with LinkedIn manually from Account Settings.' });
           return done(null);
+          // return done(null, { error: true, msg: 'There is already an account using this email address. Sign in to that account and link it with LinkedIn manually from Account Settings.' });
         } else {
           const savedUser = await User.create({
             email: profile.emails[0].value,
@@ -116,7 +120,8 @@ passport.use(new LinkedInStrategy({
             token: accessToken
           });
           req.flash('info', { msg: 'LinkedIn account has been linked.' });
-          done(null, savedUser);
+          done(null);
+          // done(null, { error: false, msg: 'LinkedIn account has been linked.', user: savedUser });
         }
       }
     } catch (err) {
