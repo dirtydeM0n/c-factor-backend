@@ -4,6 +4,7 @@ import * as util from 'util';
 import { Database } from '../../db';
 import { createJWToken } from '../middleware/jwt';
 import config = require('../../config');
+import { Role } from '../role/role.model';
 
 const User = Database.define('user', {
     id: {
@@ -12,26 +13,8 @@ const User = Database.define('user', {
         defaultValue: Sequelize.UUIDV1,
         primaryKey: true
     },
-    firstname: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    lastname: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
     username: {
         allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    avatar: {
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    phone: {
         type: Sequelize.STRING,
         defaultValue: ''
     },
@@ -49,43 +32,10 @@ const User = Database.define('user', {
         }
     },
     password: {
-        allowNull: false,
         type: Sequelize.STRING,
         validate: {
-            notEmpty: true,
+            // notEmpty: true,
             len: [6, 100]
-        }
-    },
-    country: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    address: {
-        allowNull: false,
-        type: Sequelize.TEXT,
-        defaultValue: ''
-    },
-    dob: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: ''
-    },
-    bio: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    role: {
-        allowNull: false,
-        type: Sequelize.ENUM,
-        values: ['admin', 'candidate', 'client'],
-        defaultValue: 'candidate',
-        validate: {
-            isIn: {
-                args: [['admin', 'candidate', 'client']],
-                msg: 'Invalid status.'
-            }
         }
     },
     status: {
@@ -132,7 +82,7 @@ const User = Database.define('user', {
     });
 
 User.beforeSave((user, options) => {
-    if (user.changed('password')) {
+    if (user.changed('password') && user.password) {
         user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
     }
 });
@@ -142,21 +92,78 @@ User.prototype.generateToken = function generateToken() {
     return createJWToken({ email: this.email, id: this.id });
 };
 
-User.prototype.authenticate = function authenticate(candidatePassword: string) {
-    if (bcrypt.compareSync(candidatePassword, this.password)) {
+User.prototype.authenticate = function authenticate(applicantPassword: string) {
+    if (bcrypt.compareSync(applicantPassword, this.password)) {
         return this;
     } else {
         return false;
     }
 };
-
-User.prototype.comparePassword = function (candidatePassword: string) {
+/*
+User.prototype.comparePassword = function (applicantPassword: string) {
     const qCompare = (util as any).promisify(bcrypt.compare);
-    return qCompare(candidatePassword, this.password);
+    return qCompare(applicantPassword, this.password);
 };
+*/
 
+const UserProfile = Database.define('profile', {
+    /*email: {
+        allowNull: false,
+        type: Sequelize.STRING
+    },*/
+    firstname: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    lastname: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    avatar: {
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    phone: {
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    country: {
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    address: {
+        type: Sequelize.TEXT,
+        defaultValue: ''
+    },
+    dob: {
+        type: Sequelize.STRING
+    },
+    bio: {
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    /*
+    role: {
+        type: Sequelize.ENUM,
+        values: ['admin', 'applicant', 'client'],
+        defaultValue: 'applicant',
+        validate: {
+            isIn: {
+                args: [['admin', 'applicant', 'client']],
+                msg: 'Invalid status.'
+            }
+        }
+    }*/
+}, {
+        /*indexes: [{ unique: true, fields: ['email'] }],*/
+        timestamps: true,
+        freezeTableName: true,
+        tableName: 'users_profile'
+    });
 
-const UserAuth = Database.define('userAuth', {
+const UserAuth = Database.define('auth', {
     id: {
         allowNull: false,
         type: Sequelize.UUID,
@@ -164,38 +171,36 @@ const UserAuth = Database.define('userAuth', {
         primaryKey: true
     },
     profile_id: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
+        type: Sequelize.STRING
     },
-    source: {
+    provider: {
         allowNull: false,
         type: Sequelize.ENUM,
-        values: ['custom', 'linkedin'],
-        defaultValue: 'custom',
+        values: ['linkedin'],
+        defaultValue: 'linkedin',
         validate: {
             isIn: {
-                args: [['custom', 'linkedin']],
+                args: [['linkedin']],
                 msg: 'Invalid status.'
             }
         }
     },
     token: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    token_secret: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
+        type: Sequelize.TEXT
     }
 }, {
-        indexes: [{ unique: true, fields: ['auth_id'] }],
+        indexes: [{ unique: true, fields: ['profile_id'] }],
         timestamps: true,
         freezeTableName: true,
         tableName: 'users_auth'
     });
 
+User.belongsTo(Role);
+UserProfile.belongsTo(User);
+User.hasMany(UserAuth);
 
-export { User, UserAuth };
+User.sync();
+UserProfile.sync();
+UserAuth.sync();
+
+export { User, UserProfile, UserAuth };

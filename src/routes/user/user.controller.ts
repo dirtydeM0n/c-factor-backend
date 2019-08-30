@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { default as UserService } from './user.service';
+import { UserProfile } from './user.model';
 
 class UserController {
   async getAll(req: Request, resp: Response) {
@@ -28,7 +29,8 @@ class UserController {
 
   async post(req: Request, resp: Response) {
     try {
-      const user = await UserService.save({ ...req.body });
+      const user = await UserService.create({ ...req.body });
+      // await UserProfile.create({ ...req.body, userId: user.id });
       resp.status(200).send(user);
     } catch (error) {
       resp.send({

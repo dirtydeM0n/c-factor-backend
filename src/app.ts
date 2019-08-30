@@ -9,6 +9,7 @@ import * as expressJwt from 'express-jwt';
 import * as swaggerUI from 'swagger-ui-express';
 import * as swaggerDocument from '../swagger.json';
 const cors = require('cors');
+const flash = require('connect-flash');
 import { SwaggerAPIRouter, RootRouter, AuthRouter, UserRouter, RoleRouter } from './routes/index';
 import config = require('./config');
 
@@ -17,8 +18,14 @@ const app = express();
 
 // Express configuration
 app.set('port', config.PORT);
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/public'));
+
 app.use(compression());
 app.use(logger('dev'));
+app.use(flash());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());

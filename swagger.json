@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "Typescript Node Rest-API Starter",
-    "description": "Typescript Node Rest-API Starter",
+    "title": "C-Factor Backend REST API",
+    "description": "C-Factor Backend REST API",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"

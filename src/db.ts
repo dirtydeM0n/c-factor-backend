@@ -12,6 +12,7 @@ if (config.DATABASE_URL) {
     host: config.db.host,
     port: config.db.port,
     dialect: 'postgres', /* one of 'mysql' | 'mariadb' | 'postgres' | 'mssql' */
+    forceSchema: true,
     pool: {
       min: 0,
       max: config.db.max || 5,
@@ -19,6 +20,14 @@ if (config.DATABASE_URL) {
       idle: config.db.idleTimeoutMillis || 10000
     }
   });
+
+  if (config.NODE_ENV === 'development') {
+    instance.sync({ alter: true }).then(() => {
+      console.log('All data has been reset');
+    }, (err) => {
+      console.log('An error occurred while creating the table:', err);
+    });
+  }
 }
 
 export const Database = instance;

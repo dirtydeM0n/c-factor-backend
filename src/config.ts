@@ -28,6 +28,13 @@ const config = {
         SMTP_PASSWORD: process.env.SMTP_PASSWORD || '',
         SMTP_LOGGER: process.env.SMTP_LOGGER || true,
         SMTP_TIMEOUT: process.env.SMTP_TIMEOUT || 5000
+    },
+    auth: {
+        linkedin: {
+            clientID: process.env.LINKEDIN_CLIENT_ID || '',
+            clientSecret: process.env.LINKEDIN_CLIENT_SECRET || '',
+            callbackURL: process.env.LINKEDIN_CALLBACK_URL || ''
+        }
     }
 };
 

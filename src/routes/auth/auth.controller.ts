@@ -6,6 +6,7 @@ import { IUser } from '../user/user';
 import { default as UserService } from '../user/user.service';
 import { sendMail } from '../services/mail.service';
 import config = require('../../config');
+import { UserProfile } from '../user/user.model';
 
 class AuthController {
 
@@ -56,10 +57,10 @@ class AuthController {
     req.assert('password', 'Password cannot be blank').notEmpty();
     req.assert('firstname', 'First name must be specified').notEmpty();
     req.assert('lastname', 'Last name must be specified').notEmpty();
-    req.assert('country', 'Country must be specified').notEmpty();
-    req.assert('address', 'Address must be specified').notEmpty();
-    req.assert('phone', 'Phone must be specified').notEmpty();
-    req.assert('dob', 'DOB must be specified').notEmpty();
+    // req.assert('country', 'Country must be specified').notEmpty();
+    // req.assert('address', 'Address must be specified').notEmpty();
+    // req.assert('phone', 'Phone must be specified').notEmpty();
+    // req.assert('dob', 'DOB must be specified').notEmpty();
 
     req.assert('email', 'Email is not valid').isEmail();
     req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
@@ -102,12 +103,13 @@ class AuthController {
           If you did not request this, please ignore this email\n`
       };
       await sendMail(mailOptions);
-      const savedUser: IUser = await UserService.save(user);
+      const savedUser: IUser = await UserService.create(user);
+      // await UserProfile.create({ ...req.body, userId: savedUser.id });
       res.status(200).send({ msg: 'An activation email has been sent to your email. Please check!' });
-    } catch (error) {
-      console.log(error);
+    } catch (exp) {
+      console.log(exp.error);
       res.status(400).send({
-        msg: 'Unable to send email',
+        msg: exp.error,
         status: 400
       });
     }
@@ -136,6 +138,9 @@ class AuthController {
       }, config.JWT_SECRET, { expiresIn: '1d' });
       // return res.status(200).send({ token: token });
       res.redirect(config.FRONTEND_URI + '/enter/' + token);*/
+      res.status(200).send({
+        msg: 'Account activated, please login to continue!'
+      });
     } catch (error) {
       console.log(error);
       res.status(400).send({
@@ -183,12 +188,12 @@ class AuthController {
           If you did not request this, please ignore this email\n`
       };
       await sendMail(mailOptions);
-      const savedUser: IUser = await UserService.save(user);
+      const savedUser: IUser = await UserService.create(user);
       res.status(200).send(savedUser);
-    } catch (error) {
-      console.log(error);
+    } catch (exp) {
+      console.log(exp.error);
       res.status(400).send({
-        msg: 'Unable to send email',
+        msg: exp.error,
         status: 400
       });
     }

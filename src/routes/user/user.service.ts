@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt-nodejs';
+import * as bcrypt from 'bcrypt';
 import * as util from 'util';
 import { User } from './user.model';
 import { IUser } from './user';
@@ -34,11 +34,11 @@ class UserService {
   }
 
   /**
-   * @description Saves the user in the storage
+   * @description Creates the user in the storage
    * @param {User} user
    * @returns {Promise<IUser>}
    */
-  async save(user: IUser): Promise<IUser> {
+  async create(user: IUser): Promise<IUser> {
     const new_user = await User.create({ ...user });
     return new_user;
   }
@@ -109,7 +109,7 @@ class UserService {
    * @param storedPassword
    * @returns {boolean}
    */
-  comparePassword(candidatePassword: string, storedPassword): boolean {
+  comparePassword(candidatePassword: string, storedPassword: string): boolean {
     const qCompare = (util as any).promisify(bcrypt.compare);
     return qCompare(candidatePassword, storedPassword);
   }
