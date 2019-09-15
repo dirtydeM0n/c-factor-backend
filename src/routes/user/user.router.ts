@@ -8,6 +8,7 @@ const UserRouter = Router()
   .post('/', UserController.post)
   .put('/:id', UserController.put)
   .delete('/:id', UserController.delete)
+  // user avatar routes
   .post('/:id/avatar', UserController.createAvatar)
   .put('/:id/avatar', UserController.editAvatar)
   .get('/:id/avatar', UserController.getAvatar)

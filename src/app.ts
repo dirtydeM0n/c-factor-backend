@@ -22,7 +22,8 @@ import {
   DepartmentRouter,
   CompanyRouter,
   ClientRouter,
-  CampaignRouter
+  CampaignRouter,
+  CampaignInviteRouter
 } from './routes/index';
 
 // Create Express server
@@ -95,7 +96,7 @@ app.use('/departments', DepartmentRouter);
 app.use('/companies', CompanyRouter);
 app.use('/clients', ClientRouter);
 app.use('/campaigns', CampaignRouter);
-
+app.use('/campaignInvites', CampaignInviteRouter);
 /**
  * Add swagger endpoints
  */
