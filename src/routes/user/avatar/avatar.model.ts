@@ -1,7 +1,7 @@
 
 const Sequelize = require('sequelize');
-import { Database } from '../../db';
-import { User } from './../user/user.model';
+import { Database } from '../../../db';
+import { User } from './../user.model';
 
 const Avatar = Database.define('avatar', {
     id: {
