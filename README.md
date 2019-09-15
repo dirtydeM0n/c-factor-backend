@@ -6,12 +6,13 @@ This repository can be used as a convenient starting point for building
 # Features
  - Basic `JWT` authentication and account activation using `SMTP`
  - Repository pattern used to enable separation of concerns
- - `MongoDB` - default repository implementation, should be easy to replace
+ - `PostgreSQL` - default repository implementation, should be easy to replace
  
 # Pre-reqs
+- copy and create `.env` file from `.env.example` template.
 - Install [Node.js](https://nodejs.org/en/)
-- Install [MongoDB](https://docs.mongodb.com/manual/installation/)
-- Configure your SMTP service and enter your SMTP settings inside `.env.example`
+- Install [PostgreSQL](https://www.postgresql.org/)
+- Configure your SMTP service and enter your SMTP settings inside `.env` file
 
 # Getting started
 - Clone the repository
@@ -23,21 +24,28 @@ git clone --depth=1 https://github.com/maljukan/typescript-node-rest-starter.git
 cd <project_name>
 npm install
 ```
-- Configure your mongoDB server
+- Configure your PostgreSQL server
 ```
-# create the db directory
-sudo mkdir -p /data/db
-# give the db correct read/write permissions
-sudo chmod 777 /data/db
+# Create new User Role
+> createuser --interactive
+# Create new Database
+> createdb <database name>
+# change ownership of the created db to your new role
+> psql
+> ALTER DATABASE <database name> OWNER TO <role name>;
+
+# optionally, add password to newly created user (since default there'll be no password set)
+> ALTER USER <username> WITH PASSWORD '<new password>';
+
 ```
-- Start your mongoDB server (you'll probably want another command prompt)
+- Start your postgreSQL server (you'll probably want another command prompt)
 ```
-mongod
+> postgres -D /usr/local/var/postgres
 ```
 - Build and run the project
 ```
-npm run build
-npm start
+> npm run build
+> npm start
 ```
 
 # Swagger
@@ -70,9 +78,7 @@ curl -i -H "Accept: application/json" -H "Content-Type: application/json" -H "Au
 ```
 
 # Import mock users
-```
-mongoimport --db cryptobounce-db --collection users --file dump/users.json --jsonArray
-```
+TBA
 
 # Tests
 * Before running tests be sure to create a real `.env` file in root using the fields found in `.env.example`
