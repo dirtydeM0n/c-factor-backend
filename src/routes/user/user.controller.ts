@@ -1,13 +1,12 @@
 import { Request, Response } from 'express';
-import { default as UserService } from './user.service';
-import { UserProfile } from './user.model';
-import { Avatar } from './../avatar/avatar.model';
+import { UserProfile, UserAuth, User } from './user.model';
+import { Avatar } from './avatar/avatar.model';
 
 class UserController {
   async getAll(req: Request, resp: Response) {
     try {
-      const users = await UserService.findAll();
-      resp.status(200).send(users);
+      const data = await User.findAll();
+      resp.status(200).send(data);
     } catch (error) {
       resp.send({
         msg: 'Not found',
@@ -18,8 +17,8 @@ class UserController {
 
   async getById(req: Request, resp: Response) {
     try {
-      const user = await UserService.findOne({ id: req.params.id });
-      resp.status(200).send(user);
+      const data = await User.findOne({ id: req.params.id });
+      resp.status(200).send(data);
     } catch (error) {
       resp.send({
         msg: 'Not found',
@@ -30,8 +29,16 @@ class UserController {
 
   async post(req: Request, resp: Response) {
     try {
-      const user = await UserService.create({ ...req.body });
-      // await UserProfile.create({ ...req.body, userId: user.id });
+      const user = await User.create({ ...req.body });
+      if (req.body.profile) {
+        await UserProfile.create({ ...req.body.profile, userId: user.id });
+      }
+      if (req.body.auth) {
+        await UserAuth.create({ ...req.body.auth, userId: user.id });
+      }
+      if (req.body.avatar) {
+        await Avatar.create({ ...req.body.avatar, userId: user.id });
+      }
       resp.status(200).send(user);
     } catch (error) {
       resp.send({
@@ -43,7 +50,16 @@ class UserController {
 
   async put(req: Request, resp: Response) {
     try {
-      const user = await UserService.findOneAndUpdate({ id: req.params.id }, { ...req.body });
+      const user = await User.findOneAndUpdate({ id: req.params.id }, { ...req.body });
+      if (req.body.profile) {
+        await UserProfile.findOneAndUpdate({ userId: user.id }, { ...req.body.profile });
+      }
+      if (req.body.auth) {
+        await UserAuth.findOneAndUpdate({ userId: user.id }, { ...req.body.auth });
+      }
+      if (req.body.avatar) {
+        await Avatar.findOneAndUpdate({ userId: user.id }, { ...req.body.avatar });
+      }
       resp.status(200).send(user);
     } catch (error) {
       resp.send({
@@ -55,8 +71,8 @@ class UserController {
 
   async delete(req: Request, resp: Response) {
     try {
-      const user = await UserService.deleteById(req.params.id);
-      resp.status(200).send(user);
+      const data = await User.destroy({ where: { id: req.params.id } });
+      resp.status(200).send(data);
     } catch (error) {
       resp.send({
         msg: 'Not found',
@@ -67,8 +83,20 @@ class UserController {
 
   async activateAccount(req: Request, resp: Response) {
     try {
-      const user = await UserService.findOneAndUpdate({ id: req.params.id }, { status: 'accepted' });
-      resp.status(200).send(user);
+      const data = await User.findOneAndUpdate({ id: req.params.id }, { status: 'accepted' });
+      resp.status(200).send(data);
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+
+  async deactivateAccount(req: Request, resp: Response) {
+    try {
+      const data = await User.findOneAndUpdate({ id: req.params.id }, { status: 'deactivated' });
+      resp.status(200).send(data);
     } catch (error) {
       resp.send({
         msg: 'Not found',

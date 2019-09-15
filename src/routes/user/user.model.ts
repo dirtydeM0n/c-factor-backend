@@ -41,11 +41,11 @@ const User = Database.define('user', {
     status: {
         allowNull: false,
         type: Sequelize.ENUM,
-        values: ['pending', 'accepted'],
+        values: ['pending', 'accepted', 'deactivated'],
         defaultValue: 'pending',
         validate: {
             isIn: {
-                args: [['pending', 'accepted']],
+                args: [['pending', 'accepted', 'deactivated']],
                 msg: 'Invalid status.'
             }
         }
@@ -75,11 +75,11 @@ const User = Database.define('user', {
         }
     }
 }, {
-        indexes: [{ unique: true, fields: ['email'] }],
-        timestamps: true,
-        freezeTableName: true,
-        tableName: 'users'
-    });
+    indexes: [{ unique: true, fields: ['email'] }],
+    timestamps: true,
+    freezeTableName: true,
+    tableName: 'users'
+});
 
 User.beforeSave((user, options) => {
     if (user.changed('password') && user.password) {
@@ -121,10 +121,10 @@ const UserProfile = Database.define('profile', {
         type: Sequelize.STRING,
         defaultValue: ''
     },
-    avatar: {
+    /*avatar: {
         type: Sequelize.STRING,
         defaultValue: ''
-    },
+    },*/
     phone: {
         type: Sequelize.STRING,
         defaultValue: ''
@@ -169,11 +169,11 @@ const UserProfile = Database.define('profile', {
         }
     }*/
 }, {
-        /*indexes: [{ unique: true, fields: ['email'] }],*/
-        timestamps: true,
-        freezeTableName: true,
-        tableName: 'users_profile'
-    });
+    /*indexes: [{ unique: true, fields: ['email'] }],*/
+    timestamps: true,
+    freezeTableName: true,
+    tableName: 'users_profile'
+});
 
 const UserAuth = Database.define('auth', {
     id: {
@@ -201,11 +201,11 @@ const UserAuth = Database.define('auth', {
         type: Sequelize.TEXT
     }
 }, {
-        indexes: [{ unique: true, fields: ['profile_id'] }],
-        timestamps: true,
-        freezeTableName: true,
-        tableName: 'users_auth'
-    });
+    indexes: [{ unique: true, fields: ['profile_id'] }],
+    timestamps: true,
+    freezeTableName: true,
+    tableName: 'users_auth'
+});
 
 User.belongsTo(Role);
 UserProfile.belongsTo(User);
