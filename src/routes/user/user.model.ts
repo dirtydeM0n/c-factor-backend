@@ -129,6 +129,18 @@ const UserProfile = Database.define('profile', {
         type: Sequelize.STRING,
         defaultValue: ''
     },
+    education: {
+        type: Sequelize.STRING
+    },
+    specialization: {
+        type: Sequelize.STRING
+    },
+    city: {
+        type: Sequelize.STRING
+    },
+    region: {
+        type: Sequelize.STRING
+    },
     country: {
         type: Sequelize.STRING,
         defaultValue: ''

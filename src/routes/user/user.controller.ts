@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { default as UserService } from './user.service';
 import { UserProfile } from './user.model';
+import { Avatar } from './../avatar/avatar.model';
 
 class UserController {
   async getAll(req: Request, resp: Response) {
@@ -68,6 +69,54 @@ class UserController {
     try {
       const user = await UserService.findOneAndUpdate({ id: req.params.id }, { status: 'accepted' });
       resp.status(200).send(user);
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+
+  async createAvatar(req: Request, resp: Response) {
+    try {
+      const data = await Avatar.create({ ...req.body, userId: req.params.id });
+      resp.status(200).send(data);
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+
+  async editAvatar(req: Request, resp: Response) {
+    try {
+      const data = await Avatar.update({ ...req.body }, { where: { userId: req.params.id } });
+      resp.status(200).send(data);
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+
+  async getAvatar(req: Request, resp: Response) {
+    try {
+      const data = await Avatar.findOne({ where: { userId: req.params.id } });
+      resp.status(200).send(data);
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+
+  async deleteAvatar(req: Request, resp: Response) {
+    try {
+      const data = await Avatar.destroy({ where: { userId: req.params.id } });
+      resp.status(200).send(data);
     } catch (error) {
       resp.send({
         msg: 'Not found',

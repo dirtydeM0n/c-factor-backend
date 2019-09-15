@@ -7,6 +7,10 @@ const UserRouter = Router()
   .get('/activateAccount/:id', UserController.activateAccount)
   .post('/', UserController.post)
   .put('/:id', UserController.put)
-  .delete('/:id', UserController.delete);
+  .delete('/:id', UserController.delete)
+  .post('/:id/avatar', UserController.createAvatar)
+  .put('/:id/avatar', UserController.editAvatar)
+  .get('/:id/avatar', UserController.getAvatar)
+  .delete('/:id/avatar', UserController.deleteAvatar);
 
 export { UserRouter };

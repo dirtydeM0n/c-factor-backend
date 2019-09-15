@@ -11,8 +11,19 @@ import * as swaggerDocument from '../swagger.json';
 const cors = require('cors');
 const flash = require('connect-flash');
 const passport = require('passport');
-import { SwaggerAPIRouter, RootRouter, AuthRouter, UserRouter, RoleRouter } from './routes/index';
 import config = require('./config');
+import {
+  SwaggerAPIRouter,
+  RootRouter,
+  AuthRouter,
+  UserRouter,
+  RoleRouter,
+  AvatarRouter,
+  DepartmentRouter,
+  CompanyRouter,
+  ClientRouter,
+  CampaignRouter
+} from './routes/index';
 
 // Create Express server
 const app = express();
@@ -78,7 +89,12 @@ app.use(function (err, req, res, next) {
 app.use('/', RootRouter);
 app.use('/auth', AuthRouter);
 app.use('/users', UserRouter);
+app.use('/avatars', AvatarRouter);
 app.use('/roles', RoleRouter);
+app.use('/departments', DepartmentRouter);
+app.use('/companies', CompanyRouter);
+app.use('/clients', ClientRouter);
+app.use('/campaigns', CampaignRouter);
 
 /**
  * Add swagger endpoints
