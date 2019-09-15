@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 import { Database } from '../../db';
+import { Client } from '../client/client.model';
 
 const Campaign = Database.define('campaign', {
     id: {
@@ -9,31 +10,64 @@ const Campaign = Database.define('campaign', {
         primaryKey: true
     },
     name: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
+        type: Sequelize.STRING
     },
-    bio: {
-        allowNull: false,
-        type: Sequelize.TEXT,
-        defaultValue: ''
+    title: {
+        type: Sequelize.TEXT
     },
-    website: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
+    description: {
+        type: Sequelize.TEXT
     },
-    industry_type: {
+    image_url: {
+        type: Sequelize.STRING
+    },
+    state: {
         allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
-    }
+        type: Sequelize.ENUM,
+        values: ['completed', 'active', 'in_progress'],
+        defaultValue: 'active',
+        validate: {
+            isIn: {
+                args: [['completed', 'active', 'in_progress']],
+                msg: 'Invalid status.'
+            }
+        }
+    },
+    start_date: {
+        type: Sequelize.DATE,
+        validate: {
+            isDate: true
+        }
+    },
+    end_date: {
+        type: Sequelize.DATE,
+        validate: {
+            isDate: true
+        }
+    },
+    active: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+        defaultValue: 1 // 0 => inactive, 1 => active
+    },
+    allow_direct_applications: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+        defaultValue: 0 // 0 => No, 1 => Yes
+    },
+    allow_invites_only: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+        defaultValue: 1 // 0 => No, 1 => Yes
+    },
 }, {
     indexes: [{ unique: true, fields: ['name'] }],
     timestamps: true,
     freezeTableName: true,
     tableName: 'campaigns'
 });
+
+Campaign.belongsTo(Client);
 
 Campaign.sync();
 

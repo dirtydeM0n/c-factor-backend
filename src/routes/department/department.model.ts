@@ -12,21 +12,6 @@ const Department = Database.define('department', {
         allowNull: false,
         type: Sequelize.STRING,
         defaultValue: ''
-    },
-    bio: {
-        allowNull: false,
-        type: Sequelize.TEXT,
-        defaultValue: ''
-    },
-    website: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    industry_type: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
     }
 }, {
     indexes: [{ unique: true, fields: ['name'] }],

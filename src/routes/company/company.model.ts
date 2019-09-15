@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize');
 import { Database } from '../../db';
-import { Department } from '../department/department.model';
 
 const Company = Database.define('company', {
     id: {
@@ -14,11 +13,6 @@ const Company = Database.define('company', {
         type: Sequelize.STRING,
         defaultValue: ''
     },
-    bio: {
-        allowNull: false,
-        type: Sequelize.TEXT,
-        defaultValue: ''
-    },
     website: {
         allowNull: false,
         type: Sequelize.STRING,
@@ -28,6 +22,11 @@ const Company = Database.define('company', {
         allowNull: false,
         type: Sequelize.STRING,
         defaultValue: ''
+    },
+    bio: {
+        allowNull: false,
+        type: Sequelize.TEXT,
+        defaultValue: ''
     }
 }, {
     indexes: [{ unique: true, fields: ['name'] }],
@@ -35,8 +34,6 @@ const Company = Database.define('company', {
     freezeTableName: true,
     tableName: 'companies'
 });
-
-Company.hasMany(Department);
 
 Company.sync();
 

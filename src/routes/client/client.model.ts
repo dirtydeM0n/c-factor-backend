@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 import { Database } from '../../db';
 import { Company } from '../company/company.model';
+import { Department } from '../department/department.model';
 
 const Client = Database.define('client', {
     id: {
@@ -10,24 +11,19 @@ const Client = Database.define('client', {
         primaryKey: true
     },
     name: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
+        type: Sequelize.STRING
+    },
+    email: {
+        type: Sequelize.STRING
+    },
+    phone: {
+        type: Sequelize.STRING
+    },
+    avatar: {
+        type: Sequelize.STRING
     },
     bio: {
-        allowNull: false,
-        type: Sequelize.TEXT,
-        defaultValue: ''
-    },
-    website: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    industry_type: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
+        type: Sequelize.TEXT
     }
 }, {
     indexes: [{ unique: true, fields: ['name'] }],
@@ -37,6 +33,7 @@ const Client = Database.define('client', {
 });
 
 Client.belongsTo(Company);
+Client.belongsTo(Department);
 
 Client.sync();
 
