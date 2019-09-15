@@ -59,6 +59,7 @@
     "passport-linkedin-oauth2": "^2.0.0",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
+    "ramda": "^0.26.1",
     "request": "^2.88.0",
     "sequelize": "^5.15.1",
     "swagger-ui-express": "^3.0.10"
