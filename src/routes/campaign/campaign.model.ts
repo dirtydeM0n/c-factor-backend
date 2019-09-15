@@ -48,17 +48,17 @@ const Campaign = Database.define('campaign', {
     active: {
         allowNull: false,
         type: Sequelize.BOOLEAN,
-        defaultValue: 1 // 0 => inactive, 1 => active
+        defaultValue: false // false => inactive, true => active
     },
     allow_direct_applications: {
         allowNull: false,
         type: Sequelize.BOOLEAN,
-        defaultValue: 0 // 0 => No, 1 => Yes
+        defaultValue: false // false => No, true => Yes
     },
     allow_invites_only: {
         allowNull: false,
         type: Sequelize.BOOLEAN,
-        defaultValue: 1 // 0 => No, 1 => Yes
+        defaultValue: false // false => No, true => Yes
     },
 }, {
     indexes: [{ unique: true, fields: ['name'] }],
