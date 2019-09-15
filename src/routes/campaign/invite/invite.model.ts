@@ -19,7 +19,7 @@ const CampaignInvite = Database.define('campaign_invite', {
         type: Sequelize.TEXT
     }
 }, {
-    indexes: [{ unique: true, fields: ['name'] }],
+    indexes: [{ unique: true, fields: ['token'] }],
     timestamps: true,
     freezeTableName: true,
     tableName: 'campaign_invites'
