@@ -201,7 +201,7 @@ const UserAuth = Database.define('auth', {
         type: Sequelize.TEXT
     }
 }, {
-    indexes: [{ unique: true, fields: ['profile_id'] }],
+    indexes: [{ unique: true, fields: ['token'] }],
     timestamps: true,
     freezeTableName: true,
     tableName: 'users_auth'

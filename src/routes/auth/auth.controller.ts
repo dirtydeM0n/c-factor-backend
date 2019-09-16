@@ -218,6 +218,22 @@ class AuthController {
     }
   }
 
+  async logout(req: Request, res: Response) {
+    try {
+      req.session.destroy(function (err) {
+        // cannot access session here
+        req.session = null;
+        res.redirect('/');
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(400).send({
+        msg: error,
+        status: 400
+      });
+    }
+  }
+
 }
 
 export default new AuthController();
