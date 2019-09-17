@@ -1,0 +1,72 @@
+
+BASE REQUEST URL: http://localhost:3000/auth
+--------------------------------------------------------------------------------------------
+METHOD     |   ROUTE                     | REQUEST URL
+--------------------------------------------------------------------------------------------
+POST       |  /auth/register             | http://localhost:3000/auth/register
+GET        |  /auth/activate/:token      | http://localhost:3000/auth/activate/:token
+POST       |  /auth/login                | http://localhost:3000/auth/login
+POST       |  /auth/forgotPassword       | http://localhost:3000/auth/forgotPassword
+POST       |  /auth/resetPassword        | http://localhost:3000/auth/resetPassword
+GET        |  /auth/linkedin             | http://localhost:3000/auth/linkedin
+GET        |  /auth/linkedin/callback    | http://localhost:3000/auth/linkedin/callback
+GET        |  /auth/logout               | http://localhost:3000/auth/logout
+--------------------------------------------------------------------------------------------
+
+1. POST  /auth/register
+
+** Sample Request Payload:
+
+
+** Sample Response:
+
+2. GET  /auth/activate/:token
+
+** Sample Request Payload:
+
+
+** Sample Response:
+
+3. POST  /auth/login
+
+** Sample Request Payload:
+
+
+** Sample Response:
+
+
+4. POST  /auth/changePassword
+
+** Sample Request Payload:
+
+
+** Sample Response:
+
+5. POST  /auth/resetPassword
+
+** Sample Request Payload:
+
+
+** Sample Response:
+
+6. GET  /auth/linkedin
+
+** Sample Request Payload:
+
+
+** Sample Response:
+
+1. GET  /auth/linkedin/callback
+
+** Sample Request Payload:
+
+
+** Sample Response:
+
+1. GET  /auth/logout
+
+** Sample Request Payload:
+
+
+** Sample Response:
+

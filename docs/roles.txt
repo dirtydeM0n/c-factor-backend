@@ -1,0 +1,19 @@
+
+BASE REQUEST URL: http://localhost:3000/roles
+--------------------------------------------------------------------------------------------
+METHOD     |   ROUTE                     | REQUEST URL
+--------------------------------------------------------------------------------------------
+GET        |  /roles                     | http://localhost:3000/roles
+GET        |  /roles/:id                 | http://localhost:3000/roles/:id
+POST       |  /roles/:id                 | http://localhost:3000/roles/:id
+PUT        |  /roles/:id                 | http://localhost:3000/roles/:id
+DELETE     |  /roles/:id                 | http://localhost:3000/roles/:id
+
+--------------------------------------------------------------------------------------------
+
+1. GET  /roles
+
+** Sample Request Payload:
+
+
+** Sample Response:

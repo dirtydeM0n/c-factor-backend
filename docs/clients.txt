@@ -1,0 +1,19 @@
+
+BASE REQUEST URL: http://localhost:3000/clients
+--------------------------------------------------------------------------------------------
+METHOD     |   ROUTE                       | REQUEST URL
+--------------------------------------------------------------------------------------------
+GET        |  /clients                     | http://localhost:3000/clients
+GET        |  /clients/:id                 | http://localhost:3000/clients/:id
+POST       |  /clients/:id                 | http://localhost:3000/clients/:id
+PUT        |  /clients/:id                 | http://localhost:3000/clients/:id
+DELETE     |  /clients/:id                 | http://localhost:3000/clients/:id
+
+--------------------------------------------------------------------------------------------
+
+1. GET  /clients
+
+** Sample Request Payload:
+
+
+** Sample Response:

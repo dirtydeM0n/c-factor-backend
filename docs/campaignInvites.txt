@@ -1,0 +1,19 @@
+
+BASE REQUEST URL: http://localhost:3000/campaignInvites
+--------------------------------------------------------------------------------------------
+METHOD     |   ROUTE                               | REQUEST URL
+--------------------------------------------------------------------------------------------
+GET        |  /campaignInvites                     | http://localhost:3000/campaignInvites
+GET        |  /campaignInvites/:id                 | http://localhost:3000/campaignInvites/:id
+POST       |  /campaignInvites/:id                 | http://localhost:3000/campaignInvites/:id
+PUT        |  /campaignInvites/:id                 | http://localhost:3000/campaignInvites/:id
+DELETE     |  /campaignInvites/:id                 | http://localhost:3000/campaignInvites/:id
+
+--------------------------------------------------------------------------------------------
+
+1. GET  /campaignInvites
+
+** Sample Request Payload:
+
+
+** Sample Response:

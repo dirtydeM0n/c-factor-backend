@@ -1,0 +1,19 @@
+
+BASE REQUEST URL: http://localhost:3000/companies
+--------------------------------------------------------------------------------------------
+METHOD     |   ROUTE                     | REQUEST URL
+--------------------------------------------------------------------------------------------
+GET        |  /companies                     | http://localhost:3000/companies
+GET        |  /companies/:id                 | http://localhost:3000/companies/:id
+POST       |  /companies/:id                 | http://localhost:3000/companies/:id
+PUT        |  /companies/:id                 | http://localhost:3000/companies/:id
+DELETE     |  /companies/:id                 | http://localhost:3000/companies/:id
+
+--------------------------------------------------------------------------------------------
+
+1. GET  /companies
+
+** Sample Request Payload:
+
+
+** Sample Response:

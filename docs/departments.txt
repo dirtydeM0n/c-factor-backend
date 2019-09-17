@@ -1,0 +1,19 @@
+
+BASE REQUEST URL: http://localhost:3000/departments
+--------------------------------------------------------------------------------------------
+METHOD     |   ROUTE                     | REQUEST URL
+--------------------------------------------------------------------------------------------
+GET        |  /departments                     | http://localhost:3000/departments
+GET        |  /departments/:id                 | http://localhost:3000/departments/:id
+POST       |  /departments/:id                 | http://localhost:3000/departments/:id
+PUT        |  /departments/:id                 | http://localhost:3000/departments/:id
+DELETE     |  /departments/:id                 | http://localhost:3000/departments/:id
+
+--------------------------------------------------------------------------------------------
+
+1. GET  /departments
+
+** Sample Request Payload:
+
+
+** Sample Response:

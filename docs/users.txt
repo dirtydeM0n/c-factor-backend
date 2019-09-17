@@ -1,0 +1,83 @@
+
+BASE REQUEST URL: http://localhost:3000/users
+--------------------------------------------------------------------------------------------
+METHOD     |   ROUTE                            | REQUEST URL
+--------------------------------------------------------------------------------------------
+GET        |  /users                            | http://localhost:3000/users
+GET        |  /users/:id                        | http://localhost:3000/users/:id
+POST       |  /users                            | http://localhost:3000/users
+PUT        |  /users/:id                        | http://localhost:3000/users/:id
+DELETE     |  /users/:id                        | http://localhost:3000/users/:id
+GET        |  /users/activateAccount/:id        | http://localhost:3000/users/activateAccount/:id
+GET        |  /users/deactivateAccount/:id      | http://localhost:3000/users/deactivateAccount/:id
+
+GET        |  /users/:id/avatar                 | http://localhost:3000/users/:id/avatar
+POST       |  /users/:id/avatar                 | http://localhost:3000/users/:id/avatar
+PUT        |  /users/:id/avatar                 | http://localhost:3000/users/:id/avatar
+DELETE     |  /users/:id/avatar                 | http://localhost:3000/users/:id/avatar
+--------------------------------------------------------------------------------------------
+
+1. POST  /users
+
+** Sample Request Payload:
+
+
+** Sample Response:
+
+2. GET  /users/:id
+
+** Sample Request Payload:
+
+
+** Sample Response:
+
+3. POST  /users
+
+** Sample Request Payload:
+
+
+** Sample Response:
+
+
+4. GET  /users/activateAccount/:id
+
+** Sample Request Payload:
+
+
+** Sample Response:
+
+5. GET  /users/deactivateAccount/:id
+
+** Sample Request Payload:
+
+
+** Sample Response:
+
+6. GET  /users/:id/avatar
+
+** Sample Request Payload:
+
+
+** Sample Response:
+
+7. POST  /users/:id/avatar
+
+** Sample Request Payload:
+
+
+** Sample Response:
+
+8. PUT  /users/:id/avatar
+
+** Sample Request Payload:
+
+
+** Sample Response:
+
+9. DELETE  /users/:id/avatar
+
+** Sample Request Payload:
+
+
+** Sample Response:
+
