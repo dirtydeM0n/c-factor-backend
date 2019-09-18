@@ -19,6 +19,34 @@
     {
       "name": "Users",
       "description": "API for users in the system"
+    },
+    {
+      "name": "Clients",
+      "description": "API for clients in the system"
+    },
+    {
+      "name": "Companies",
+      "description": "API for companies in the system"
+    },
+    {
+      "name": "Departments",
+      "description": "API for departments in the system"
+    },
+    {
+      "name": "Roles",
+      "description": "API for roles in the system"
+    },
+    {
+      "name": "Avatars",
+      "description": "API for avatars in the system"
+    },
+    {
+      "name": "Campaigns",
+      "description": "API for campaigns in the system"
+    },
+    {
+      "name": "CampaignInvites",
+      "description": "API for campaign invites in the system"
     }
   ],
   "securityDefinitions": {
@@ -185,13 +213,36 @@
     }
   },
   "definitions": {
+    "Users": {
+      "type": "array",
+      "$ref": "#/definitions/User"
+    },
+    "Clients": {
+      "type": "array",
+      "$ref": "#/definitions/Client"
+    },
+    "Avatars": {
+      "type": "array",
+      "$ref": "#/definitions/Avatar"
+    },
+    "Roles": {
+      "type": "array",
+      "$ref": "#/definitions/Role"
+    },
+    "Companies": {
+      "type": "array",
+      "$ref": "#/definitions/Company"
+    },
+    "Departments": {
+      "type": "array",
+      "$ref": "#/definitions/Department"
+    },
     "User": {
       "required": [
         "email",
-        "password",
-        "firstname",
-        "lastname",
-        "role",
+        "password"
+      ],
+      "optional": [
         "username"
       ],
       "properties": {
@@ -202,23 +253,160 @@
         "password": {
           "type": "string"
         },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "UserProfile": {
+      "required": [
+        "firstname"
+      ],
+      "optional": [
+        "lastname",
+        "phone",
+        "dob",
+        "education",
+        "specialization",
+        "city",
+        "region",
+        "country",
+        "address",
+        "bio"
+      ],
+      "properties": {
         "lastname": {
           "type": "string"
         },
         "firstname": {
           "type": "string"
         },
-        "role": {
+        "phone": {
           "type": "string"
         },
-        "username": {
+        "dob": {
+          "type": "string"
+        },
+        "education": {
+          "type": "string"
+        },
+        "specialization": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "bio": {
           "type": "string"
         }
       }
     },
-    "Users": {
-      "type": "array",
-      "$ref": "#/definitions/User"
+    "Avatar": {
+      "required": [
+        "gender",
+        "color"
+      ],
+      "properties": {
+        "gender": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        }
+      }
+    },
+    "Role": {
+      "required": [
+        "name",
+        "value"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "value": {
+          "type": "string",
+          "uniqueItems": true
+        }
+      }
+    },
+    "Client": {
+      "required": [
+        "userId",
+        "email",
+        "name",
+        "phone",
+        "avatar",
+        "bio"
+      ],
+      "properties": {
+        "userId": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "email": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "bio": {
+          "type": "string"
+        }
+      }
+    },
+    "Department": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "uniqueItems": true
+        }
+      }
+    },
+    "Company": {
+      "required": [
+        "name",
+        "website",
+        "industry_type",
+        "bio"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "website": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "industry_type": {
+          "type": "string"
+        },
+        "bio": {
+          "type": "string",
+          "uniqueItems": true
+        }
+      }
     },
     "UnAuthorized": {
       "properties": {
