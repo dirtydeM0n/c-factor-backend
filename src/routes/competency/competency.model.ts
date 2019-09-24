@@ -1,25 +1,36 @@
 const Sequelize = require('sequelize');
 import { Database } from '../../db';
-import { Client } from '../client/client.model';
+import { Campaign } from '../campaign/campaign.model';
 
-const Campaign = Database.define('campaign', {
+const Competency = Database.define('competency', {
     id: {
         allowNull: false,
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV1,
         primaryKey: true
     },
-    name: {
-        type: Sequelize.STRING
+    type: {
+        type: Sequelize.ENUM,
+        values: ['SJT', 'Aptitude Test', 'Mini Game'],
+        defaultValue: 'SJT',
+        validate: {
+            isIn: {
+                args: [['SJT', 'Aptitude Test', 'Mini Game']],
+                msg: 'Invalid competency type.'
+            }
+        }
     },
     title: {
-        type: Sequelize.TEXT
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
     },
     description: {
         type: Sequelize.TEXT
     },
-    image_url: {
-        type: Sequelize.STRING
+    timer: {
+        type: Sequelize.NUMERIC,
+        defaultValue: 0
     },
     state: {
         allowNull: false,
@@ -33,6 +44,12 @@ const Campaign = Database.define('campaign', {
             }
         }
     },
+    active: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+        defaultValue: false // false => inactive, true => active
+    },
+    /*
     start_date: {
         type: Sequelize.DATE,
         validate: {
@@ -44,31 +61,17 @@ const Campaign = Database.define('campaign', {
         validate: {
             isDate: true
         }
-    },
-    active: {
-        allowNull: false,
-        type: Sequelize.BOOLEAN,
-        defaultValue: false // false => inactive, true => active
-    },
-    allow_direct_applications: {
-        allowNull: false,
-        type: Sequelize.BOOLEAN,
-        defaultValue: false // false => No, true => Yes
-    },
-    allow_invites_only: {
-        allowNull: false,
-        type: Sequelize.BOOLEAN,
-        defaultValue: false // false => No, true => Yes
-    },
+    }
+    */
 }, {
-    indexes: [{ unique: true, fields: ['name'] }],
+    indexes: [{ unique: true, fields: ['title'] }],
     timestamps: true,
     freezeTableName: true,
-    tableName: 'campaigns'
+    tableName: 'competencies'
 });
 
-Campaign.belongsTo(Client);
+Competency.belongsTo(Campaign);
 
-Campaign.sync();
+Competency.sync();
 
-export { Campaign };
+export { Competency };
