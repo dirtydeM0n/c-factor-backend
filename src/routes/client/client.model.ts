@@ -3,6 +3,7 @@ import { Database } from '../../db';
 import { Company } from '../company/company.model';
 import { Department } from '../department/department.model';
 import { User } from '../user/user.model';
+import { Campaign } from '../campaign/campaign.model';
 
 const Client = Database.define('client', {
     id: {
@@ -36,6 +37,9 @@ const Client = Database.define('client', {
 Client.belongsTo(User);
 Client.belongsTo(Company);
 Client.belongsTo(Department);
+
+// Client.belongsToMany(Campaign , {through: 'client_campaign', foreignKey: 'clientId'});
+// Campaign.belongsToMany(Client , {through: 'client_campaign', foreignKey: 'campaignId'});
 
 Client.sync();
 

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Client } from './client.model';
+import { User } from '../user/user.model';
 
 class ClientController {
   async getAll(req: Request, resp: Response) {
@@ -28,7 +29,8 @@ class ClientController {
 
   async post(req: Request, resp: Response) {
     try {
-      const data = await Client.create({ ...req.body });
+      const user = await User.create({ ...req.body });
+      const data = await Client.create({ ...req.body, userId: user.id });
       resp.status(200).send(data);
     } catch (error) {
       resp.send({

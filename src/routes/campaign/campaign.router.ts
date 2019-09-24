@@ -11,10 +11,10 @@ const CampaignRouter = Router()
   .post('/:id/deactivate', CampaignController.deactivate)
   .put('/:id/changeState', CampaignController.changeState)
   // campaign invites routes
+  .get('/:id/invites', CampaignController.getAllInvites)
+  .get('/:id/invite', CampaignController.getInvite)
   .post('/:id/invite', CampaignController.createInvite)
   .put('/:id/invite', CampaignController.editInvite)
-  .get('/:id/invite', CampaignController.getInvite)
-  .get('/:id/invites', CampaignController.getAllInvites)
   .delete('/:id/invite', CampaignController.deleteInvite);
 
 export { CampaignRouter };
