@@ -24,7 +24,10 @@ import {
   ClientRouter,
   CampaignRouter,
   CampaignInviteRouter,
-  CompetencyRouter
+  CompetencyRouter,
+  MinigameRouter,
+  AptitudeTestRouter,
+  AptitudeTestDataRouter
 } from './routes/index';
 
 // Create Express server
@@ -99,6 +102,9 @@ app.use('/clients', ClientRouter);
 app.use('/campaigns', CampaignRouter);
 app.use('/campaignInvites', CampaignInviteRouter);
 app.use('/competencies', CompetencyRouter);
+app.use('/minigames', MinigameRouter);
+app.use('/aptitudeTests', AptitudeTestRouter);
+app.use('/aptitudeTestsData', AptitudeTestDataRouter);
 /**
  * Add swagger endpoints
  */

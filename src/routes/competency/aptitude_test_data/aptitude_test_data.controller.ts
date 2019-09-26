@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import { Competency } from './competency.model';
+import { AptitudeTestData } from './aptitude_test_data.model';
 
-class CompetencyController {
+class AptitudeTestDataController {
   async getAll(req: Request, resp: Response) {
     try {
-      const data = await Competency.findAll({});
+      const data = await AptitudeTestData.findAll({});
       resp.status(200).send(data);
     } catch (error) {
       resp.send({
@@ -16,7 +16,7 @@ class CompetencyController {
 
   async getById(req: Request, resp: Response) {
     try {
-      const data = await Competency.findOne({ where: { id: req.params.id } });
+      const data = await AptitudeTestData.findOne({ where: { id: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
       resp.send({
@@ -28,7 +28,7 @@ class CompetencyController {
 
   async post(req: Request, resp: Response) {
     try {
-      const data = await Competency.create({ ...req.body });
+      const data = await AptitudeTestData.create({ ...req.body });
       resp.status(200).send(data);
     } catch (error) {
       resp.send({
@@ -40,7 +40,7 @@ class CompetencyController {
 
   async put(req: Request, resp: Response) {
     try {
-      const data = await Competency.update({ ...req.body }, { where: { id: req.params.id } });
+      const data = await AptitudeTestData.update({ ...req.body }, { where: { id: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
       resp.send({
@@ -52,19 +52,7 @@ class CompetencyController {
 
   async delete(req: Request, resp: Response) {
     try {
-      const data = await Competency.destroy({ where: { id: req.params.id } });
-      resp.status(200).send(data);
-    } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
-    }
-  }
-
-  async changeState(req: Request, resp: Response) {
-    try {
-      const data = await Competency.findOneAndUpdate({ id: req.params.id }, { state: req.body.state });
+      const data = await AptitudeTestData.destroy({ where: { id: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
       resp.send({
@@ -75,4 +63,4 @@ class CompetencyController {
   }
 }
 
-export default new CompetencyController();
+export default new AptitudeTestDataController();

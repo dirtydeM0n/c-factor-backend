@@ -29,17 +29,17 @@ const Competency = Database.define('competency', {
         type: Sequelize.TEXT
     },
     timer: {
-        type: Sequelize.NUMERIC,
+        type: Sequelize.INTEGER,
         defaultValue: 0
     },
     state: {
         allowNull: false,
         type: Sequelize.ENUM,
-        values: ['completed', 'active', 'in_progress'],
-        defaultValue: 'active',
+        values: ['completed', 'open', 'in_progress'],
+        defaultValue: 'open',
         validate: {
             isIn: {
-                args: [['completed', 'active', 'in_progress']],
+                args: [['completed', 'open', 'in_progress']],
                 msg: 'Invalid state.'
             }
         }
@@ -47,7 +47,7 @@ const Competency = Database.define('competency', {
     active: {
         allowNull: false,
         type: Sequelize.BOOLEAN,
-        defaultValue: false // false => inactive, true => active
+        defaultValue: true // false => inactive, true => active
     },
     /*
     start_date: {

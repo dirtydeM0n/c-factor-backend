@@ -107,9 +107,9 @@ class CampaignController {
     }
   }
 
-  async createInvite(req: Request, resp: Response) {
+  async changeState(req: Request, resp: Response) {
     try {
-      const data = await CampaignInvite.create({ ...req.body, campaignId: req.params.id });
+      const data = await Campaign.findOneAndUpdate({ id: req.params.id }, { state: req.body.state });
       resp.status(200).send(data);
     } catch (error) {
       resp.send({
@@ -119,9 +119,9 @@ class CampaignController {
     }
   }
 
-  async changeState(req: Request, resp: Response) {
+  async createInvite(req: Request, resp: Response) {
     try {
-      const data = await Campaign.findOneAndUpdate({ id: req.params.id }, { state: req.body.state });
+      const data = await CampaignInvite.create({ ...req.body, campaignId: req.params.id });
       resp.status(200).send(data);
     } catch (error) {
       resp.send({
