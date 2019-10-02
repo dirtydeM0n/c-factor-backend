@@ -23,6 +23,9 @@ const Minigame = Database.define('minigame', {
     score: { // e.g., minigame score
         type: Sequelize.INTEGER
     },
+    additionalScore: { // e.g., additional minigame score
+        type: Sequelize.TEXT
+    },
     state: {
         allowNull: false,
         type: Sequelize.ENUM,

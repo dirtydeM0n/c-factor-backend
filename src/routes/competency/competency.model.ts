@@ -29,8 +29,7 @@ const Competency = Database.define('competency', {
         type: Sequelize.TEXT
     },
     timer: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
+        type: Sequelize.INTEGER
     },
     state: {
         allowNull: false,
@@ -48,21 +47,7 @@ const Competency = Database.define('competency', {
         allowNull: false,
         type: Sequelize.BOOLEAN,
         defaultValue: true // false => inactive, true => active
-    },
-    /*
-    start_date: {
-        type: Sequelize.DATE,
-        validate: {
-            isDate: true
-        }
-    },
-    end_date: {
-        type: Sequelize.DATE,
-        validate: {
-            isDate: true
-        }
     }
-    */
 }, {
     indexes: [{ unique: true, fields: ['title'] }],
     timestamps: true,

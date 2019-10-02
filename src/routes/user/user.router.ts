@@ -13,7 +13,9 @@ const UserRouter = Router()
   .post('/:id/avatar', UserController.createAvatar)
   .put('/:id/avatar', UserController.editAvatar)
   .get('/:id/avatar', UserController.getAvatar)
-  .delete('/:id/avatar', UserController.deleteAvatar);
+  .delete('/:id/avatar', UserController.deleteAvatar)
+  // User Campaign
+  .post('/:userId/selectCampaign', UserController.selectCampaign);
 
 export { UserRouter };
 export { AvatarRouter } from './avatar/avatar.router';

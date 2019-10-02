@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { UserProfile, UserAuth, User } from './user.model';
 import { Avatar } from './avatar/avatar.model';
+import { UserCampaign } from '../user_campaign/user_campaign.model';
 
 class UserController {
   async getAll(req: Request, resp: Response) {
@@ -144,6 +145,21 @@ class UserController {
   async deleteAvatar(req: Request, resp: Response) {
     try {
       const data = await Avatar.destroy({ where: { userId: req.params.id } });
+      resp.status(200).send(data);
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+
+  async selectCampaign(req: Request, resp: Response) {
+    try {
+      let data = await UserCampaign.findOne({ where: { campaignId: req.body.campaignId, userId: req.params.userId } });
+      if (!data) {
+        data = await UserCampaign.create({ ...req.body, campaignId: req.body.campaignId, userId: req.params.userId });
+      }
       resp.status(200).send(data);
     } catch (error) {
       resp.send({
