@@ -9,7 +9,7 @@
   "author": "Narain Sagar",
   "license": "MIT",
   "scripts": {
-    "postinstall": "npm i -g typescript nodemon tslint concurrently jest",
+    "postinstall": "npm i -g typescript nodemon tslint concurrently jest npm-run-all",
     "tsc": "tsc",
     "jest": "jest",
     "nodemon": "nodemon",
