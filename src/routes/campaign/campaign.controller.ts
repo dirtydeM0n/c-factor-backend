@@ -32,12 +32,12 @@ class CampaignController {
       const start_date = new Date(req.body.start_date),
         end_date = new Date(req.body.end_date),
         today_date = new Date();
-      if (start_date < end_date && end_date < today_date) {
+      if (start_date < end_date && end_date > today_date) {
         const data = await Campaign.create({ ...req.body });
         resp.status(200).send(data);
       } else {
         resp.send({
-          msg: 'Params `start_date` should less than `end_date` and `end_date` should be before today date.',
+          msg: 'Params `start_date` should less than `end_date` and `end_date` should be after today date.',
           status: 201
         });
       }
@@ -54,12 +54,12 @@ class CampaignController {
       const start_date = new Date(req.body.start_date),
         end_date = new Date(req.body.end_date),
         today_date = new Date();
-      if (start_date < end_date && end_date < today_date) {
+      if (start_date < end_date && end_date > today_date) {
         const data = await Campaign.update({ ...req.body }, { where: { id: req.params.id } });
         resp.status(200).send(data);
       } else {
         resp.send({
-          msg: 'Params `start_date` should less than `end_date` and `end_date` should be before today date.',
+          msg: 'Params `start_date` should less than `end_date` and `end_date` should be after today date.',
           status: 201
         });
       }

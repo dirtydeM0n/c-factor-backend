@@ -11,11 +11,11 @@ const Competency = Database.define('competency', {
     },
     type: {
         type: Sequelize.ENUM,
-        values: ['SJT', 'Aptitude Test', 'Mini Game'],
+        values: ['SJT', 'Aptitude Test', 'Mini Game', 'Registration'],
         defaultValue: 'SJT',
         validate: {
             isIn: {
-                args: [['SJT', 'Aptitude Test', 'Mini Game']],
+                args: [['SJT', 'Aptitude Test', 'Mini Game', 'Registration']],
                 msg: 'Invalid competency type.'
             }
         }

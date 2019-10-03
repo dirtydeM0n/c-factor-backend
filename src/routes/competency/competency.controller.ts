@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
 import { Competency } from './competency.model';
+import { Minigame } from './minigame/minigame.model';
+import { AptitudeTest } from './aptitude_test/aptitude_test.model';
+import { AptitudeTestData } from './aptitude_test_data/aptitude_test_data.model';
 
 class CompetencyController {
   async getAll(req: Request, resp: Response) {
@@ -29,6 +32,12 @@ class CompetencyController {
   async post(req: Request, resp: Response) {
     try {
       const data = await Competency.create({ ...req.body });
+      if (req.body.type === 'Mini Game') {
+        const minigame = await Minigame.create({ ...req.body, competencyId: data.id });
+      } else {
+        const aptitude_test = await AptitudeTest.create({ ...req.body, competencyId: data.id });
+        const aptitude_test_data = await AptitudeTestData.create({ ...req.body, aptitudeTestId: aptitude_test.id });
+      }
       resp.status(200).send(data);
     } catch (error) {
       resp.send({
