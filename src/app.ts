@@ -25,9 +25,7 @@ import {
   CampaignRouter,
   CampaignInviteRouter,
   CompetencyRouter,
-  MinigameRouter,
-  AptitudeTestRouter,
-  AptitudeTestDataRouter
+  CompetencyDataRouter,
 } from './routes/index';
 
 // Create Express server
@@ -68,6 +66,7 @@ app.use(session({
 }));
 // app.use(lusca.xframe('SAMEORIGIN'));
 // app.use(lusca.xssProtection(true));
+
 app.use(expressJwt({
   secret: config.JWT_SECRET,
   credentialsRequired: false,
@@ -102,9 +101,7 @@ app.use('/clients', ClientRouter);
 app.use('/campaigns', CampaignRouter);
 app.use('/campaignInvites', CampaignInviteRouter);
 app.use('/competencies', CompetencyRouter);
-app.use('/minigames', MinigameRouter);
-app.use('/aptitudeTests', AptitudeTestRouter);
-app.use('/aptitudeTestsData', AptitudeTestDataRouter);
+app.use('/competencyData', CompetencyDataRouter);
 /**
  * Add swagger endpoints
  */

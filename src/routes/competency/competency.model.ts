@@ -31,6 +31,24 @@ const Competency = Database.define('competency', {
     timer: {
         type: Sequelize.INTEGER
     },
+    componentId: {
+        type: Sequelize.STRING
+    },
+    nextComponentId: {
+        type: Sequelize.STRING
+    },
+    icon: {
+        type: Sequelize.TEXT
+    },
+    url: { // e.g., minigame url
+        type: Sequelize.STRING
+    },
+    data: { // e.g., data json
+        type: Sequelize.JSON
+    },
+    dataURL: { // e.g., data url
+        type: Sequelize.STRING
+    },
     state: {
         allowNull: false,
         type: Sequelize.ENUM,

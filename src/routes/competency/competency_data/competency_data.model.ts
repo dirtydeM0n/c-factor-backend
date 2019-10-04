@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
 import { Database } from '../../../db';
-import { AptitudeTest } from '../aptitude_test/aptitude_test.model';
+import { Competency } from '../competency.model';
 
-const AptitudeTestData = Database.define('aptitude_test_data', {
+const CompetencyData = Database.define('competency_data', {
     id: {
         allowNull: false,
         type: Sequelize.UUID,
@@ -34,11 +34,11 @@ const AptitudeTestData = Database.define('aptitude_test_data', {
     indexes: [{ unique: true, fields: ['title'] }],
     timestamps: true,
     freezeTableName: true,
-    tableName: 'aptitude_test_data'
+    tableName: 'competency_data'
 });
 
-AptitudeTestData.belongsTo(AptitudeTest);
+CompetencyData.belongsTo(Competency);
 
-AptitudeTestData.sync();
+CompetencyData.sync();
 
-export { AptitudeTestData };
+export { CompetencyData };

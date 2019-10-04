@@ -11,4 +11,4 @@ export { DepartmentRouter } from './department/department.router';
 export { CompanyRouter } from './company/company.router';
 export { ClientRouter } from './client/client.router';
 export { CampaignRouter, CampaignInviteRouter } from './campaign/campaign.router';
-export { CompetencyRouter, MinigameRouter, AptitudeTestRouter, AptitudeTestDataRouter } from './competency/competency.router';
+export { CompetencyRouter, CompetencyDataRouter } from './competency/competency.router';

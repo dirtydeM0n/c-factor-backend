@@ -9,6 +9,9 @@ const Campaign = Database.define('campaign', {
         defaultValue: Sequelize.UUIDV1,
         primaryKey: true
     },
+    startupComponentId: {
+        type: Sequelize.STRING
+    },
     name: {
         type: Sequelize.STRING
     },
@@ -34,16 +37,10 @@ const Campaign = Database.define('campaign', {
         }
     },
     start_date: {
-        type: Sequelize.DATE,
-        validate: {
-            isDate: true
-        }
+        type: Sequelize.STRING
     },
     end_date: {
-        type: Sequelize.DATE,
-        validate: {
-            isDate: true
-        }
+        type: Sequelize.STRING
     },
     active: {
         allowNull: false,

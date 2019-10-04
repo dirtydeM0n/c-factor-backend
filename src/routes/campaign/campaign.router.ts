@@ -16,5 +16,6 @@ const CampaignRouter = Router()
   .post('/:id/invite', CampaignController.createInvite)
   .put('/:id/invite', CampaignController.editInvite)
   .delete('/:id/invite', CampaignController.deleteInvite);
+
 export { CampaignRouter };
 export { CampaignInviteRouter } from './invite/invite.router';

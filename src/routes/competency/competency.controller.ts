@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
 import { Competency } from './competency.model';
-import { Minigame } from './minigame/minigame.model';
-import { AptitudeTest } from './aptitude_test/aptitude_test.model';
-import { AptitudeTestData } from './aptitude_test_data/aptitude_test_data.model';
+import { CompetencyData } from './competency_data/competency_data.model';
+import * as config from '../../config';
 
 class CompetencyController {
   async getAll(req: Request, resp: Response) {
@@ -31,14 +30,13 @@ class CompetencyController {
 
   async post(req: Request, resp: Response) {
     try {
-      const data = await Competency.create({ ...req.body });
-      if (req.body.type === 'Mini Game') {
-        const minigame = await Minigame.create({ ...req.body, competencyId: data.id });
-      } else {
-        const aptitude_test = await AptitudeTest.create({ ...req.body, competencyId: data.id });
-        const aptitude_test_data = await AptitudeTestData.create({ ...req.body, aptitudeTestId: aptitude_test.id });
+      let competency = await Competency.create({ ...req.body });
+      if (req.body.data) {
+        const testData = await CompetencyData.create({ ...req.body, ...req.body.data, competencyId: competency.id });
+        const dataURL = testData.id;
+        competency = await Competency.update({ dataURL: dataURL }, { where: { id: competency.id } });
       }
-      resp.status(200).send(data);
+      resp.status(200).send(competency);
     } catch (error) {
       resp.send({
         msg: 'Not found',
@@ -49,8 +47,11 @@ class CompetencyController {
 
   async put(req: Request, resp: Response) {
     try {
-      const data = await Competency.update({ ...req.body }, { where: { id: req.params.id } });
-      resp.status(200).send(data);
+      const competency = await Competency.update({ ...req.body }, { where: { id: req.params.id } });
+      if (req.body.data) {
+        const testData = await CompetencyData.update({ ...req.body, ...req.body.data }, { where: { id: competency.id } });
+      }
+      resp.status(200).send(competency);
     } catch (error) {
       resp.send({
         msg: 'Not found',
@@ -61,8 +62,9 @@ class CompetencyController {
 
   async delete(req: Request, resp: Response) {
     try {
-      const data = await Competency.destroy({ where: { id: req.params.id } });
-      resp.status(200).send(data);
+      const competency = await Competency.destroy({ where: { id: req.params.id } });
+      await CompetencyData.destroy({ where: { competencyId: req.params.id } });
+      resp.status(200).send(competency);
     } catch (error) {
       resp.send({
         msg: 'Not found',
@@ -73,8 +75,8 @@ class CompetencyController {
 
   async changeState(req: Request, resp: Response) {
     try {
-      const data = await Competency.findOneAndUpdate({ id: req.params.id }, { state: req.body.state });
-      resp.status(200).send(data);
+      const competency = await Competency.findOneAndUpdate({ id: req.params.id }, { state: req.body.state });
+      resp.status(200).send(competency);
     } catch (error) {
       resp.send({
         msg: 'Not found',

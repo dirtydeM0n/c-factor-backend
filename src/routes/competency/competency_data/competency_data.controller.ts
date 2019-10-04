@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import { AptitudeTestData } from './aptitude_test_data.model';
+import { CompetencyData } from './competency_data.model';
 
-class AptitudeTestDataController {
+class CompetencyDataController {
   async getAll(req: Request, resp: Response) {
     try {
-      const data = await AptitudeTestData.findAll({});
+      const data = await CompetencyData.findAll({});
       resp.status(200).send(data);
     } catch (error) {
       resp.send({
@@ -16,7 +16,7 @@ class AptitudeTestDataController {
 
   async getById(req: Request, resp: Response) {
     try {
-      const data = await AptitudeTestData.findOne({ where: { id: req.params.id } });
+      const data = await CompetencyData.findOne({ where: { id: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
       resp.send({
@@ -28,7 +28,7 @@ class AptitudeTestDataController {
 
   async post(req: Request, resp: Response) {
     try {
-      const data = await AptitudeTestData.create({ ...req.body });
+      const data = await CompetencyData.create({ ...req.body });
       resp.status(200).send(data);
     } catch (error) {
       resp.send({
@@ -40,7 +40,7 @@ class AptitudeTestDataController {
 
   async put(req: Request, resp: Response) {
     try {
-      const data = await AptitudeTestData.update({ ...req.body }, { where: { id: req.params.id } });
+      const data = await CompetencyData.update({ ...req.body }, { where: { id: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
       resp.send({
@@ -52,7 +52,7 @@ class AptitudeTestDataController {
 
   async delete(req: Request, resp: Response) {
     try {
-      const data = await AptitudeTestData.destroy({ where: { id: req.params.id } });
+      const data = await CompetencyData.destroy({ where: { id: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
       resp.send({
@@ -63,4 +63,4 @@ class AptitudeTestDataController {
   }
 }
 
-export default new AptitudeTestDataController();
+export default new CompetencyDataController();
