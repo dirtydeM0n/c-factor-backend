@@ -31,7 +31,7 @@ const CompetencyData = Database.define('competency_data', {
         type: Sequelize.JSON
     }
 }, {
-    indexes: [{ unique: true, fields: ['title'] }],
+    /*indexes: [{ unique: true, fields: ['title'] }],*/
     timestamps: true,
     freezeTableName: true,
     tableName: 'competency_data'

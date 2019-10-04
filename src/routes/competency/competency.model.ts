@@ -11,11 +11,11 @@ const Competency = Database.define('competency', {
     },
     type: {
         type: Sequelize.ENUM,
-        values: ['SJT', 'Aptitude Test', 'Mini Game', 'Registration'],
+        values: ['SJT', 'Aptitude', 'Minigame', 'Registration'],
         defaultValue: 'SJT',
         validate: {
             isIn: {
-                args: [['SJT', 'Aptitude Test', 'Mini Game', 'Registration']],
+                args: [['SJT', 'Aptitude', 'Minigame', 'Registration']],
                 msg: 'Invalid competency type.'
             }
         }
@@ -67,7 +67,7 @@ const Competency = Database.define('competency', {
         defaultValue: true // false => inactive, true => active
     }
 }, {
-    indexes: [{ unique: true, fields: ['title'] }],
+    /*indexes: [{ unique: true, fields: ['title'] }],*/
     timestamps: true,
     freezeTableName: true,
     tableName: 'competencies'
