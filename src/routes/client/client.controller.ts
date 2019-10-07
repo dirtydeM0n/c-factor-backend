@@ -29,9 +29,19 @@ class ClientController {
 
   async post(req: Request, resp: Response) {
     try {
-      const user = await User.create({ ...req.body });
-      const data = await Client.create({ ...req.body, userId: user.id });
-      resp.status(200).send(data);
+      let user = await User.findOne({ where: { email: req.body.email } });
+      if (!user) { // if user not already exist
+        user = await User.create({ ...req.body });
+      } else { // user already exist
+        return resp.status(404).send({ msg: 'User already exist with same email'});
+      }
+      let client = await Client.findOne({ where: { email: req.body.email } });
+      if (!client) { // if client not already exist
+        client = await Client.create({ ...req.body, userId: user.id });
+      } else { // client already exist
+        return resp.status(404).send({ msg: 'Client already exist with same email'});
+      }
+      resp.status(200).send({...client, user: user});
     } catch (error) {
       resp.send({
         msg: 'Not found',
