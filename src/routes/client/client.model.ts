@@ -38,9 +38,6 @@ Client.belongsTo(User);
 Client.belongsTo(Company);
 Client.belongsTo(Department);
 
-// Client.belongsToMany(Campaign , {through: 'client_campaign', foreignKey: 'clientId'});
-// Campaign.belongsToMany(Client , {through: 'client_campaign', foreignKey: 'campaignId'});
-
 Client.sync();
 
 export { Client };

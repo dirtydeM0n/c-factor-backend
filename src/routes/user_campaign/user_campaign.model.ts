@@ -16,8 +16,11 @@ const UserCampaign = Database.define('user_campaign', {
     tableName: 'user_campaigns'
 });
 
-UserCampaign.belongsTo(User);
-UserCampaign.belongsTo(Campaign);
+// UserCampaign.belongsTo(User);
+// UserCampaign.belongsTo(Campaign);
+
+User.belongsToMany(Campaign, { through: UserCampaign });
+Campaign.belongsToMany(User, { through: UserCampaign });
 
 UserCampaign.sync();
 

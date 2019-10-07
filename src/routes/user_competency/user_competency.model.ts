@@ -16,8 +16,12 @@ const UserCompetency = Database.define('user_competency', {
     tableName: 'user_competencies'
 });
 
-UserCompetency.belongsTo(User);
-UserCompetency.belongsTo(Competency);
+// UserCompetency.belongsTo(User);
+// UserCompetency.belongsTo(Competency);
+
+User.belongsToMany(Competency, { through: UserCompetency });
+Competency.belongsToMany(User, { through: UserCompetency });
+
 
 UserCompetency.sync();
 
