@@ -7,7 +7,13 @@ const CompetencyRouter = Router()
   .post('/', CompetencyController.post)
   .put('/:id', CompetencyController.put)
   .delete('/:id', CompetencyController.delete)
-  .put('/:id/changeState', CompetencyController.changeState);
+  .put('/:id/changeState', CompetencyController.changeState)
+  // Competency Data
+  .get('/:id/data', CompetencyController.getCompetencyData)
+  .post('/:id/data', CompetencyController.createCompetencyData)
+  .get('/:id/data/:competencyDataId', CompetencyController.getCompetencyDataById)
+  .put('/:id/data/:competencyDataId', CompetencyController.editCompetencyData)
+  .delete('/:id/data/:competencyDataId', CompetencyController.deleteCompetencyData);
 
 export { CompetencyRouter };
 export { CompetencyDataRouter } from './competency_data/competency_data.router';

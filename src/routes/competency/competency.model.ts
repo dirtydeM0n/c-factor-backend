@@ -43,10 +43,7 @@ const Competency = Database.define('competency', {
     url: { // e.g., minigame url
         type: Sequelize.STRING
     },
-    data: { // e.g., data json
-        type: Sequelize.JSON
-    },
-    dataURL: { // e.g., data url
+    dataURL: { // e.g., json data url
         type: Sequelize.STRING
     },
     state: {

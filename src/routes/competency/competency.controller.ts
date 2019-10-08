@@ -32,8 +32,8 @@ class CompetencyController {
     try {
       let competency = await Competency.create({ ...req.body });
       if (req.body.data) {
-        const testData = await CompetencyData.create({ ...req.body, ...req.body.data, competencyId: competency.id });
-        const dataURL = testData.id;
+        const competencyData = await CompetencyData.create({ ...req.body, ...req.body.data, competencyId: competency.id });
+        const dataURL = req.originalUrl + `competencies/{competency.id}/data/{competencyData.id}`;
         competency = await Competency.update({ dataURL: dataURL }, { where: { id: competency.id } });
       }
       resp.status(200).send(competency);
@@ -47,9 +47,11 @@ class CompetencyController {
 
   async put(req: Request, resp: Response) {
     try {
-      const competency = await Competency.update({ ...req.body }, { where: { id: req.params.id } });
+      let competency = await Competency.update({ ...req.body }, { where: { id: req.params.id } });
       if (req.body.data) {
-        const testData = await CompetencyData.update({ ...req.body, ...req.body.data }, { where: { id: competency.id } });
+        const competencyData = await CompetencyData.update({ ...req.body, ...req.body.data }, { where: { competencyId: competency.id } });
+        const dataURL = req.originalUrl + `competencies/{competency.id}/data/{competencyData.id}`;
+        competency = await Competency.update({ dataURL: dataURL }, { where: { id: competency.id } });
       }
       resp.status(200).send(competency);
     } catch (error) {
@@ -84,6 +86,67 @@ class CompetencyController {
       });
     }
   }
+
+  async getCompetencyData(req: Request, resp: Response) {
+    try {
+      const data = await CompetencyData.find({ where: { competencyId: req.params.id } });
+      resp.status(200).send(data);
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+
+  async getCompetencyDataById(req: Request, resp: Response) {
+    try {
+      const data = await CompetencyData.findOne({ where: { id: req.params.competencyDataId, competencyId: req.params.id } });
+      resp.status(200).send(data);
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+
+  async createCompetencyData(req: Request, resp: Response) {
+    try {
+      const data = await CompetencyData.create({ ...req.body, competencyId: req.params.id });
+      resp.status(200).send(data);
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+
+  async editCompetencyData(req: Request, resp: Response) {
+    try {
+      const data = await CompetencyData.update({ ...req.body }, { where: { id: req.params.competencyDataId, competencyId: req.params.id } });
+      resp.status(200).send(data);
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+
+  async deleteCompetencyData(req: Request, resp: Response) {
+    try {
+      const data = await CompetencyData.destroy({ where: { id: req.params.competencyDataId, competencyId: req.params.id } });
+      resp.status(200).send(data);
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+
 }
 
 export default new CompetencyController();
