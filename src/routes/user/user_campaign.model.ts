@@ -1,23 +1,26 @@
 const Sequelize = require('sequelize');
 import { Database } from '../../db';
 import { Campaign } from '../campaign/campaign.model';
-import { User } from '../user/user.model';
+import { User } from './user.model';
 
 const UserCampaign = Database.define('user_campaign', {
-    id: {
+    state: {
         allowNull: false,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV1,
-        primaryKey: true
+        type: Sequelize.ENUM,
+        values: ['completed', 'active', 'in_progress'],
+        defaultValue: 'active',
+        validate: {
+            isIn: {
+                args: [['completed', 'active', 'in_progress']],
+                msg: 'Invalid state.'
+            }
+        }
     }
 }, {
     timestamps: true,
     freezeTableName: true,
     tableName: 'user_campaigns'
 });
-
-// UserCampaign.belongsTo(User);
-// UserCampaign.belongsTo(Campaign);
 
 User.belongsToMany(Campaign, { through: UserCampaign });
 Campaign.belongsToMany(User, { through: UserCampaign });

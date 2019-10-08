@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { UserProfile, UserAuth, User } from './user.model';
 import { Avatar } from './avatar/avatar.model';
-import { UserCampaign } from '../user_campaign/user_campaign.model';
 
 class UserController {
   async getAll(req: Request, resp: Response) {
@@ -154,13 +153,166 @@ class UserController {
     }
   }
 
+  /*
+  async createCampaign(req: Request, resp: Response) { // client
+    try {
+      const campaign = await Campaign.create({ ...req.body, userId: req.params.id });
+      resp.status(200).send(campaign);
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+  */
+
+  async getCampaigns(req: Request, resp: Response) {
+    try {
+      const user = await User.findOne({ id: req.params.id });
+      const campaigns = user.getCampaigns();
+      console.log('user campaigns:', campaigns);
+      resp.status(200).send({ ...user, campaigns: campaigns });
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+
   async selectCampaign(req: Request, resp: Response) {
     try {
-      let data = await UserCampaign.findOne({ where: { campaignId: req.body.campaignId, userId: req.params.userId } });
-      if (!data) {
-        data = await UserCampaign.create({ ...req.body, campaignId: req.body.campaignId, userId: req.params.userId });
+      const user = await User.findOne({ id: req.params.id });
+      user.addCampaign(req.params.campaignId, { through: { state: req.body.state || 'active' } });
+      const campaigns = user.getCampaigns();
+      console.log('user campaigns:', campaigns);
+      resp.status(200).send({ ...user, campaigns: campaigns });
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+
+  async getCampaignById(req: Request, resp: Response) {
+    try {
+      const user = await User.findOne({ id: req.params.id });
+      const campaign = user.getCampaign(req.params.campaignId);
+      console.log('get user campaign by Id:', campaign);
+      resp.status(200).send(campaign);
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+
+  async editCampaign(req: Request, resp: Response) {
+    try {
+      const user = await User.findOne({ id: req.params.id });
+      let opts = {};
+      if (req.body.state) {
+        opts = { state: req.body.state };
       }
-      resp.status(200).send(data);
+      user.setCampaign(req.params.campaignId, { through: opts });
+      const campaign = user.getCampaign();
+      console.log('edit user campaign:', campaign);
+      resp.status(200).send(campaign);
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+
+  async deleteCampaign(req: Request, resp: Response) {
+    try {
+      const user = await User.findOne({ id: req.params.id });
+      user.removeCampaign(req.params.campaignId);
+      const campaign = user.getCampaign();
+      console.log('delete user campaign:', campaign);
+      resp.status(200).send(campaign);
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+
+  async getCompetencies(req: Request, resp: Response) {
+    try {
+      const user = await User.findOne({ id: req.params.id });
+      const competencies = user.getCompetencies();
+      console.log('user competencies:', competencies);
+      resp.status(200).send({ ...user, competencies: competencies });
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+
+  async selectCompetency(req: Request, resp: Response) {
+    try {
+      const user = await User.findOne({ id: req.params.id });
+      user.addCompetency(req.params.competencyId, { through: { state: req.body.state || 'active' } });
+      const competencies = user.getCompetencies();
+      console.log('user competencies:', competencies);
+      resp.status(200).send({ ...user, competencies: competencies });
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+
+  async getCompetencyById(req: Request, resp: Response) {
+    try {
+      const user = await User.findOne({ id: req.params.id });
+      const competency = user.getCompetency(req.params.competencyId);
+      console.log('get user competency by Id:', competency);
+      resp.status(200).send(competency);
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+
+  async editCompetency(req: Request, resp: Response) {
+    try {
+      const user = await User.findOne({ id: req.params.id });
+      let opts = {};
+      if (req.body.state) {
+        opts = { state: req.body.state };
+      }
+      user.setCompetency(req.params.competencyId, { through: opts });
+      const competency = user.getCompetency();
+      console.log('edit user competency:', competency);
+      resp.status(200).send(competency);
+    } catch (error) {
+      resp.send({
+        msg: 'Not found',
+        status: 404
+      });
+    }
+  }
+
+  async deleteCompetency(req: Request, resp: Response) {
+    try {
+      const user = await User.findOne({ id: req.params.id });
+      user.removeCompetency(req.params.competencyId);
+      const competency = user.getCompetency();
+      console.log('delete user competency:', competency);
+      resp.status(200).send(competency);
     } catch (error) {
       resp.send({
         msg: 'Not found',
