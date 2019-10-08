@@ -2,14 +2,14 @@ import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import config = require('../../config');
 
-export const generate = (text = null, size = 10) => new Promise((resolve, reject) => {
+export const generate = (text: string, size = 10) => new Promise((resolve, reject) => {
   bcrypt.hash(text, size, (err, hash) => {
     if (err) return reject(err);
     return resolve(hash);
   });
 });
 
-export const compare = (text, hash) => new Promise((resolve, reject) => {
+export const compare = (text: string, hash: string) => new Promise((resolve, reject) => {
   bcrypt.compare(text, hash, (err, result) => {
     if (err) return reject(err);
     return resolve(result);
