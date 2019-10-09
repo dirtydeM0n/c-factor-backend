@@ -4,6 +4,12 @@ import { User } from './user.model';
 import { Competency } from '../competency/competency.model';
 
 const UserCompetency = Database.define('user_competency', {
+    activeComponentId: {
+        type: Sequelize.STRING
+    },
+    status: {
+        type: Sequelize.INTEGER
+    },
     state: {
         allowNull: false,
         type: Sequelize.ENUM,
@@ -15,6 +21,9 @@ const UserCompetency = Database.define('user_competency', {
                 msg: 'Invalid state.'
             }
         }
+    },
+    data: { // e.g., progress data json
+        type: Sequelize.JSON
     }
 }, {
     timestamps: true,

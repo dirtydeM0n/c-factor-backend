@@ -11,11 +11,11 @@ const Competency = Database.define('competency', {
     },
     type: {
         type: Sequelize.ENUM,
-        values: ['SJT', 'Aptitude', 'Minigame', 'Registration'],
+        values: ['SJT', 'Aptitude', 'Minigame', 'Login', 'Registration'],
         defaultValue: 'SJT',
         validate: {
             isIn: {
-                args: [['SJT', 'Aptitude', 'Minigame', 'Registration']],
+                args: [['SJT', 'Aptitude', 'Minigame', 'Login', 'Registration']],
                 msg: 'Invalid competency type.'
             }
         }
@@ -42,6 +42,9 @@ const Competency = Database.define('competency', {
     },
     url: { // e.g., minigame url
         type: Sequelize.STRING
+    },
+    data: { // e.g., data json
+        type: Sequelize.JSON
     },
     dataURL: { // e.g., json data url
         type: Sequelize.STRING
@@ -70,7 +73,8 @@ const Competency = Database.define('competency', {
     tableName: 'competencies'
 });
 
-Competency.belongsTo(Campaign);
+// Competency.belongsTo(Campaign);
+Campaign.hasMany(Competency);
 
 Competency.sync();
 
