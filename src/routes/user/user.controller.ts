@@ -8,10 +8,7 @@ class UserController {
       const data = await User.findAll();
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -20,10 +17,7 @@ class UserController {
       const data = await User.findOne({ id: req.params.id });
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -41,10 +35,7 @@ class UserController {
       }
       resp.status(200).send(user);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -62,10 +53,7 @@ class UserController {
       }
       resp.status(200).send(user);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -74,10 +62,7 @@ class UserController {
       const data = await User.destroy({ where: { id: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -86,10 +71,7 @@ class UserController {
       const data = await User.findOneAndUpdate({ id: req.params.id }, { status: 'accepted' });
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -98,10 +80,7 @@ class UserController {
       const data = await User.findOneAndUpdate({ id: req.params.id }, { status: 'deactivated' });
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -110,10 +89,7 @@ class UserController {
       const data = await Avatar.create({ ...req.body, userId: req.params.id });
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -122,10 +98,7 @@ class UserController {
       const data = await Avatar.update({ ...req.body }, { where: { userId: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -134,10 +107,7 @@ class UserController {
       const data = await Avatar.findOne({ where: { userId: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -146,10 +116,7 @@ class UserController {
       const data = await Avatar.destroy({ where: { userId: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -159,10 +126,7 @@ class UserController {
       const campaign = await Campaign.create({ ...req.body, userId: req.params.id });
       resp.status(200).send(campaign);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
   */
@@ -174,10 +138,7 @@ class UserController {
       console.log('user campaigns:', campaigns);
       resp.status(200).send({ ...user, campaigns: campaigns });
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -189,10 +150,7 @@ class UserController {
       console.log('user campaigns:', campaigns);
       resp.status(200).send({ ...user, campaigns: campaigns });
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -203,10 +161,7 @@ class UserController {
       console.log('get user campaign by Id:', campaign);
       resp.status(200).send(campaign);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -222,10 +177,7 @@ class UserController {
       console.log('edit user campaign:', campaign);
       resp.status(200).send(campaign);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -237,10 +189,7 @@ class UserController {
       console.log('delete user campaign:', campaign);
       resp.status(200).send(campaign);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -251,10 +200,7 @@ class UserController {
       console.log('user competencies:', competencies);
       resp.status(200).send({ ...user, competencies: competencies });
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -266,10 +212,7 @@ class UserController {
       console.log('user competencies:', competencies);
       resp.status(200).send({ ...user, competencies: competencies });
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -280,10 +223,7 @@ class UserController {
       console.log('get user competency by Id:', competency);
       resp.status(200).send(competency);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -299,10 +239,7 @@ class UserController {
       console.log('edit user competency:', competency);
       resp.status(200).send(competency);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -314,10 +251,7 @@ class UserController {
       console.log('delete user competency:', competency);
       resp.status(200).send(competency);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 }

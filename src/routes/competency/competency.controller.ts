@@ -9,10 +9,7 @@ class CompetencyController {
       const data = await Competency.findAll({});
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -21,10 +18,7 @@ class CompetencyController {
       const data = await Competency.findOne({ where: { id: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -38,10 +32,7 @@ class CompetencyController {
       }
       resp.status(200).send(competency);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -55,10 +46,7 @@ class CompetencyController {
       }
       resp.status(200).send(competency);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -68,10 +56,7 @@ class CompetencyController {
       await CompetencyData.destroy({ where: { competencyId: req.params.id } });
       resp.status(200).send(competency);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -80,10 +65,7 @@ class CompetencyController {
       const competency = await Competency.findOneAndUpdate({ id: req.params.id }, { state: req.body.state });
       resp.status(200).send(competency);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -92,10 +74,7 @@ class CompetencyController {
       const data = await CompetencyData.find({ where: { competencyId: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -104,10 +83,7 @@ class CompetencyController {
       const data = await CompetencyData.findOne({ where: { id: req.params.competencyDataId, competencyId: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -116,10 +92,7 @@ class CompetencyController {
       const data = await CompetencyData.create({ ...req.body, competencyId: req.params.id });
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -128,10 +101,7 @@ class CompetencyController {
       const data = await CompetencyData.update({ ...req.body }, { where: { id: req.params.competencyDataId, competencyId: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -140,10 +110,7 @@ class CompetencyController {
       const data = await CompetencyData.destroy({ where: { id: req.params.competencyDataId, competencyId: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 

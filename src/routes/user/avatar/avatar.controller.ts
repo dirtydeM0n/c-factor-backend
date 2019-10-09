@@ -7,10 +7,7 @@ class AvatarController {
       const data = await Avatar.findAll({});
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -19,10 +16,7 @@ class AvatarController {
       const data = await Avatar.findOne({ where: { id: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -31,10 +25,7 @@ class AvatarController {
       const data = await Avatar.create({ ...req.body });
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -43,10 +34,7 @@ class AvatarController {
       const data = await Avatar.update({ ...req.body }, { where: { id: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 
@@ -55,10 +43,7 @@ class AvatarController {
       const data = await Avatar.destroy({ where: { id: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
-      resp.send({
-        msg: 'Not found',
-        status: 404
-      });
+      resp.status(404).send({ msg: 'Not found' });
     }
   }
 }

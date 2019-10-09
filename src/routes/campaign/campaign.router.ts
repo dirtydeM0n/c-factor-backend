@@ -4,6 +4,7 @@ import CampaignController from './campaign.controller';
 const CampaignRouter = Router()
   .get('/', CampaignController.getAll)
   .get('/:id', CampaignController.getById)
+  .get('/:id/formatted', CampaignController.getByIdFormatted)
   .post('/', CampaignController.post)
   .put('/:id', CampaignController.put)
   .delete('/:id', CampaignController.delete)
