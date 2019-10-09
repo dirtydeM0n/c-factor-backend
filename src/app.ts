@@ -27,6 +27,7 @@ import {
   CompetencyRouter,
   CompetencyDataRouter,
 } from './routes/index';
+import { ValidateToken } from './routes/middleware/validate_token';
 
 // Create Express server
 const app = express();
@@ -92,16 +93,16 @@ app.use(function (err, req, res, next) {
 
 app.use('/', RootRouter);
 app.use('/auth', AuthRouter);
-app.use('/users', UserRouter);
-app.use('/avatars', AvatarRouter);
-app.use('/roles', RoleRouter);
-app.use('/departments', DepartmentRouter);
-app.use('/companies', CompanyRouter);
-app.use('/clients', ClientRouter);
-app.use('/campaigns', CampaignRouter);
-app.use('/campaignInvites', CampaignInviteRouter);
-app.use('/competencies', CompetencyRouter);
-app.use('/competencyData', CompetencyDataRouter);
+app.use('/users', ValidateToken, UserRouter);
+app.use('/avatars', ValidateToken, AvatarRouter);
+app.use('/roles', ValidateToken, RoleRouter);
+app.use('/departments', ValidateToken, DepartmentRouter);
+app.use('/companies', ValidateToken, CompanyRouter);
+app.use('/clients', ValidateToken, ClientRouter);
+app.use('/campaigns', ValidateToken, CampaignRouter);
+app.use('/campaignInvites', ValidateToken, CampaignInviteRouter);
+app.use('/competencies', ValidateToken, CompetencyRouter);
+app.use('/competencyData', ValidateToken, CompetencyDataRouter);
 /**
  * Add swagger endpoints
  */
