@@ -3,17 +3,17 @@ import { Request, Response } from 'express';
 
 class RootController {
 
-  get(req: Request, res: Response) {
-    return res.status(200).send({ msg: 'Latest API is available' });
+  get(req: Request, resp: Response) {
+    return resp.status(200).send({ msg: 'Latest API is available' });
   }
 
-  logout(req: Request, res: Response) {
+  logout(req: Request, resp: Response) {
     // req.logout();
-    res.redirect('/');
+    resp.redirect('/');
   }
 
-  demo(req: Request, res: Response) {
-    res.render('home', {
+  demo(req: Request, resp: Response) {
+    resp.render('home', {
       title: 'Home',
       user: req.user
     });

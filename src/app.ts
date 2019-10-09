@@ -82,9 +82,9 @@ app.use(expressJwt({
   .unless({ path: [/\/api-docs\//g, { url: '/', method: 'OPTIONS' }, /\/auth\//g] })
 );
 
-app.use(function (err, req, res, next) {
+app.use(function (err, req, resp, next) {
   if (err.name === 'UnauthorizedError') {
-    res.status(401).send({
+    resp.status(401).send({
       msg: 'Invalid or no token supplied',
       code: 401
     });

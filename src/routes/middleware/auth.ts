@@ -4,22 +4,21 @@ import { Request, Response, NextFunction } from 'express';
 /**
  * Login Required middleware.
  */
-export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
+export const isAuthenticated = (req: Request, resp: Response, next: NextFunction) => {
     if (req.user) { // req.isAuthenticated()
         return next();
     }
-    res.redirect('/login');
+    resp.redirect('/login');
 };
 
 /**
  * Authorization Required middleware.
  */
-export const isAuthorized = (req: Request, res: Response, next: NextFunction) => {
+export const isAuthorized = (req: Request, resp: Response, next: NextFunction) => {
     const provider = req.path.split('/').slice(-1)[0];
-
     if (_.find(req.user.tokens, { kind: provider })) {
         next();
     } else {
-        res.redirect(`/auth/${provider}`);
+        resp.redirect(`/auth/${provider}`);
     }
 };

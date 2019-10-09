@@ -12,11 +12,11 @@ const AuthRouter = Router()
   .get('/logout', AuthController.logout)
   .get('/linkedin', passportLinkedIn.authenticate('linkedin'))
   .get('/linkedin/callback', passportLinkedIn.authenticate('linkedin', { failureRedirect: '/auth/login', successRedirect: '/demo?success' }),
-    function (req, res) {
+    function (req, resp) {
       console.log('LinkedIn Successful authentication => ', req.user);
       // Successful authentication
-      // res.json(req.user);
-      res.redirect(req.session.returnTo || '/');
+      // resp.json(req.user);
+      resp.redirect(req.session.returnTo || '/');
     });
 
 export { AuthRouter };

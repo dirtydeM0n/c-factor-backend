@@ -40,20 +40,14 @@ class AuthController {
         }, config.JWT_SECRET, { expiresIn: '1d' });
         return resp.status(200).send({ token: token });
       } else {
-        return resp.status(401).send({
-          msg: 'Unauthorized',
-          status: 401
-        });
+        return resp.status(401).send({ msg: 'Unauthorized' });
       }
     } catch (error) {
-      return resp.status(400).send({
-        msg: error,
-        code: 400
-      });
+      return resp.status(400).send({ msg: error });
     }
   }
 
-  async register(req: Request, res: Response, next: NextFunction) {
+  async register(req: Request, resp: Response, next: NextFunction) {
     req.assert('password', 'Password cannot be blank').notEmpty();
     req.assert('firstname', 'First name must be specified').notEmpty();
     req.assert('lastname', 'Last name must be specified').notEmpty();
@@ -70,10 +64,7 @@ class AuthController {
 
     const errors = req.validationErrors();
     if (errors) {
-      return res.status(401).send({
-        msg: errors,
-        status: 401
-      });
+      return resp.status(401).send({ msg: errors });
     }
 
     const user: IUser = { ...req.body };
@@ -82,10 +73,7 @@ class AuthController {
       const existingUser = await UserService.findByEmail(user.email);
       console.log('existingUser:', existingUser);
       if (existingUser) {
-        return res.status(409).send({
-          msg: 'User already exists',
-          status: 409
-        });
+        return resp.status(409).send({ msg: 'User already exists' });
       }
       // Generate activation token
       const qRandomBytes = (util as any).promisify(crypto.randomBytes);
@@ -105,30 +93,27 @@ class AuthController {
       await sendMail(mailOptions);
       const savedUser: IUser = await UserService.create(user);
       // await UserProfile.create({ ...req.body, userId: savedUser.id });
-      res.status(200).send({ msg: 'An activation email has been sent to your email. Please check!' });
+      resp.status(200).send({ msg: 'An activation email has been sent to your email. Please check!' });
     } catch (exp) {
       console.log(exp.error);
-      res.status(400).send({
-        msg: exp.error,
-        status: 400
+      resp.status(400).send({
+        msg: exp.error
       });
     }
   }
 
-  async activate(req: Request, res: Response) {
+  async activate(req: Request, resp: Response) {
     try {
       const user: IUser = await UserService.findOneAndUpdate({ activationToken: req.params.activationToken, status: 'pending' }, { status: 'accepted' });
       if (!user) {
-        return res.status(400).send({
-          msg: 'Activation token invalid, please register again',
-          status: 400
+        return resp.status(400).send({
+          msg: 'Activation token invalid, please register again'
         });
       }
       console.log('user:', user);
       if (user.status == 'accepted') {
-        return res.status(400).send({
-          msg: 'Already activated, please login to continue!',
-          status: 400
+        return resp.status(400).send({
+          msg: 'Already activated, please login to continue!'
         });
       }
       /*const token = jwt.sign({
@@ -136,29 +121,27 @@ class AuthController {
         role: user.role,
         username: user.username
       }, config.JWT_SECRET, { expiresIn: '1d' });
-      // return res.status(200).send({ token: token });
-      res.redirect(config.FRONTEND_URI + '/enter/' + token);*/
-      res.status(200).send({
+      // return resp.status(200).send({ token: token });
+      resp.redirect(config.FRONTEND_URI + '/enter/' + token);*/
+      resp.status(200).send({
         msg: 'Account activated, please login to continue!'
       });
     } catch (error) {
       console.log(error);
-      res.status(400).send({
-        msg: 'Activation token expired, please register again',
-        status: 400
+      resp.status(400).send({
+        msg: 'Activation token expired, please register again'
       });
     }
   }
 
-  async resetPassword(req: Request, res: Response, next: NextFunction) {
+  async resetPassword(req: Request, resp: Response, next: NextFunction) {
     req.assert('email', 'Email is not valid').isEmail();
     req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
 
     const errors = req.validationErrors();
     if (errors) {
-      return res.status(401).send({
-        msg: errors,
-        status: 401
+      return resp.status(401).send({
+        msg: errors
       });
     }
 
@@ -167,9 +150,8 @@ class AuthController {
       // Check if user exists
       const existingUser = await UserService.findByEmail(user.email);
       if (!existingUser) {
-        return res.status(409).send({
-          msg: 'User does not exist',
-          status: 409
+        return resp.status(409).send({
+          msg: 'User does not exist'
         });
       }
       // Generate reset activation token
@@ -189,17 +171,14 @@ class AuthController {
       };
       await sendMail(mailOptions);
       const savedUser: IUser = await UserService.create(user);
-      res.status(200).send(savedUser);
+      resp.status(200).send(savedUser);
     } catch (exp) {
       console.log(exp.error);
-      res.status(400).send({
-        msg: exp.error,
-        status: 400
-      });
+      resp.status(400).send({ msg: exp.error });
     }
   }
 
-  async changePassword(req: Request, res: Response) {
+  async changePassword(req: Request, resp: Response) {
     try {
       const user = await UserService.findOne({ resetToken: req.params.resetToken });
       const token = jwt.sign({
@@ -208,28 +187,26 @@ class AuthController {
         username: user.username
       }, config.JWT_SECRET, { expiresIn: '1h' });
       await UserService.findOneAndUpdate({ resetToken: req.params.resetToken }, { resetToken: token });
-      return res.status(200).send({ token: token });
+      return resp.status(200).send({ token: token });
     } catch (error) {
       console.log(error);
-      res.status(400).send({
-        msg: 'Activation token expired, please register again',
-        status: 400
+      resp.status(400).send({
+        msg: 'Activation token expired, please register again'
       });
     }
   }
 
-  async logout(req: Request, res: Response) {
+  async logout(req: Request, resp: Response) {
     try {
       req.session.destroy(function (err) {
         // cannot access session here
         req.session = null;
-        res.redirect('/');
+        resp.redirect('/');
       });
     } catch (error) {
       console.log(error);
-      res.status(400).send({
-        msg: error,
-        status: 400
+      resp.status(400).send({
+        msg: error
       });
     }
   }

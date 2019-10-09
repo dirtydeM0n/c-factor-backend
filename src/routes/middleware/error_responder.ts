@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 
 const UNKNOWN_ERROR_CODE = 500;
 
-export async function errorResponder(req: Request, res: Response, next: NextFunction) {
+export async function errorResponder(req: Request, resp: Response, next: NextFunction) {
   try {
     await next();
   } catch (err) {
@@ -17,11 +17,11 @@ export async function errorResponder(req: Request, res: Response, next: NextFunc
     } else {
       result = err.message || '';
     }
-    console.error(`${res.status} response: ${res}`);
+    console.error(`${resp.status} response: ${resp}`);
     if (statusCode === UNKNOWN_ERROR_CODE) {
       console.error(`${err.stack}`);
     }
 
-    res.status(statusCode).send(result);
+    resp.status(statusCode).send(result);
   }
 }
