@@ -3,10 +3,10 @@ import * as jwt from 'jsonwebtoken';
 import * as util from 'util';
 import * as crypto from 'crypto';
 import { IUser } from '../user/user';
-import { default as UserService } from '../user/user.service';
 import { sendMail } from '../services/mail.service';
 import config = require('../../config');
-import { UserProfile } from '../user/user.model';
+import { UserProfile, User } from '../user/user.model';
+import { compare } from '../services/crypto.service';
 
 class AuthController {
 
@@ -24,14 +24,18 @@ class AuthController {
     }
 
     try {
-      const user: IUser = await UserService.findByEmail(req.body.email);
+      const user: IUser = await User.findOne({
+        where: {
+          email: req.body.email,
+        }
+      });
       if (!user) {
         return resp.status(404).send({
           msg: 'User not found',
           code: 404
         });
       }
-      const isSamePass = await UserService.comparePassword(req.body.password, user.password);
+      const isSamePass = await compare(req.body.password, user.password);
       if (isSamePass) {
         const token = jwt.sign({
           email: user.email,
@@ -70,7 +74,11 @@ class AuthController {
     const user: IUser = { ...req.body };
     try {
       // Check if user already exists
-      const existingUser = await UserService.findByEmail(user.email);
+      const existingUser = await User.findOne({
+        where: {
+          email: user.email,
+        }
+      });
       console.log('existingUser:', existingUser);
       if (existingUser) {
         return resp.status(409).send({ msg: 'User already exists' });
@@ -91,7 +99,7 @@ class AuthController {
           If you did not request this, please ignore this email\n`
       };
       await sendMail(mailOptions);
-      const savedUser: IUser = await UserService.create(user);
+      const savedUser: IUser =  await User.create({ ...user });
       // await UserProfile.create({ ...req.body, userId: savedUser.id });
       resp.status(200).send({ msg: 'An activation email has been sent to your email. Please check!' });
     } catch (exp) {
@@ -104,7 +112,7 @@ class AuthController {
 
   async activate(req: Request, resp: Response) {
     try {
-      const user: IUser = await UserService.findOneAndUpdate({ activationToken: req.params.activationToken, status: 'pending' }, { status: 'accepted' });
+      const user: IUser = await User.update({ activationToken: req.params.activationToken, status: 'pending' }, { where: { status: 'accepted' } });
       if (!user) {
         return resp.status(400).send({
           msg: 'Activation token invalid, please register again'
@@ -148,7 +156,11 @@ class AuthController {
     const user: IUser = { ...req.body };
     try {
       // Check if user exists
-      const existingUser = await UserService.findByEmail(user.email);
+      const existingUser = await User.findOne({
+        where: {
+          email: user.email,
+        }
+      });
       if (!existingUser) {
         return resp.status(409).send({
           msg: 'User does not exist'
@@ -170,7 +182,7 @@ class AuthController {
           If you did not request this, please ignore this email\n`
       };
       await sendMail(mailOptions);
-      const savedUser: IUser = await UserService.create(user);
+      const savedUser: IUser =  await User.create({ ...user });
       resp.status(200).send(savedUser);
     } catch (exp) {
       console.log(exp.error);
@@ -180,13 +192,13 @@ class AuthController {
 
   async changePassword(req: Request, resp: Response) {
     try {
-      const user = await UserService.findOne({ resetToken: req.params.resetToken });
+      const user = await User.findOne({ where: { resetToken: req.params.resetToken } });
       const token = jwt.sign({
         email: user.email,
         role: user.role,
         username: user.username
       }, config.JWT_SECRET, { expiresIn: '1h' });
-      await UserService.findOneAndUpdate({ resetToken: req.params.resetToken }, { resetToken: token });
+      await User.update({ resetToken: req.params.resetToken }, { where: { resetToken: token } });
       return resp.status(200).send({ token: token });
     } catch (error) {
       console.log(error);
