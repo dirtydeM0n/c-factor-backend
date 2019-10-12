@@ -10,8 +10,7 @@ const Competency = Database.define('competency', {
         primaryKey: true
     },
     type: {
-        type: Sequelize.ENUM,
-        values: ['SJT', 'Aptitude', 'Minigame', 'Login', 'Registration'],
+        type: Sequelize.ENUM('SJT', 'Aptitude', 'Minigame', 'Login', 'Registration'),
         defaultValue: 'SJT',
         validate: {
             isIn: {
@@ -51,8 +50,7 @@ const Competency = Database.define('competency', {
     },
     state: {
         allowNull: false,
-        type: Sequelize.ENUM,
-        values: ['completed', 'open', 'in_progress'],
+        type: Sequelize.ENUM('completed', 'open', 'in_progress'),
         defaultValue: 'open',
         validate: {
             isIn: {

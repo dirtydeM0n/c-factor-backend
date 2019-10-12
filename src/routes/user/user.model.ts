@@ -40,8 +40,7 @@ const User = Database.define('user', {
     },
     status: {
         allowNull: false,
-        type: Sequelize.ENUM,
-        values: ['pending', 'accepted', 'deactivated'],
+        type: Sequelize.ENUM('pending', 'accepted', 'deactivated'),
         defaultValue: 'pending',
         validate: {
             isIn: {
@@ -158,8 +157,7 @@ const UserProfile = Database.define('profile', {
     },
     /*
     role: {
-        type: Sequelize.ENUM,
-        values: ['admin', 'applicant', 'client'],
+        type: Sequelize.ENUM('admin', 'applicant', 'client'),
         defaultValue: 'applicant',
         validate: {
             isIn: {
@@ -187,8 +185,7 @@ const UserAuth = Database.define('auth', {
     },
     provider: {
         allowNull: false,
-        type: Sequelize.ENUM,
-        values: ['linkedin'],
+        type: Sequelize.ENUM('linkedin'),
         defaultValue: 'linkedin',
         validate: {
             isIn: {

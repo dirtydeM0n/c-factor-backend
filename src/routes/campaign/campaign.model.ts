@@ -26,8 +26,7 @@ const Campaign = Database.define('campaign', {
     },
     state: {
         allowNull: false,
-        type: Sequelize.ENUM,
-        values: ['completed', 'active', 'in_progress'],
+        type: Sequelize.ENUM('completed', 'active', 'in_progress'),
         defaultValue: 'active',
         validate: {
             isIn: {
