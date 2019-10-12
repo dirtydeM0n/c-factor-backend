@@ -10,7 +10,7 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "npm i -g typescript nodemon tslint concurrently jest npm-run-all",
-    "copy-assets": "sh copy-assets",
+    "copy-assets": "sh copy-assets.sh",
     "dev": "nodemon --watch src -e ts,ejs --exec npm run start",
     "start": "npm-run-all build serve",
     "build:clean": "rm -rf dist",
