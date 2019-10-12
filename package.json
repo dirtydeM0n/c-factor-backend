@@ -9,7 +9,7 @@
   "author": "Narain Sagar",
   "license": "MIT",
   "scripts": {
-    "postinstall": "npm i -g typescript nodemon tslint concurrently jest ts-node npm-run-all",
+    "postinstall:heroku": "npm i -g typescript nodemon tslint concurrently jest ts-node npm-run-all",
     "copy-assets": "ts-node tools/copy-assets",
     "dev": "nodemon --watch src -e ts,ejs --exec npm run start",
     "start": "npm-run-all build serve",
