@@ -12,8 +12,8 @@ class RootController {
     resp.redirect('/');
   }
 
-  demo(req: Request, resp: Response) {
-    resp.render('home', {
+  linkedinDemo(req: Request, resp: Response) {
+    resp.render('index', {
       title: 'Home',
       user: req.user
     });

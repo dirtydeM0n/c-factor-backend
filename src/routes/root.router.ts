@@ -4,6 +4,6 @@ import RootController from './root.controller';
 const RootRouter = Router()
   .get('/', RootController.get)
   .get('/logout', RootController.logout)
-  .get('/demo', RootController.demo);
+  .get('/demo', RootController.linkedinDemo);
 
 export { RootRouter };
