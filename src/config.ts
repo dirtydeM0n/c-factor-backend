@@ -1,8 +1,14 @@
 import * as dotenv from 'dotenv';
+const fs = require('fs');
+
 // DO NOT COMMIT YOUR .env FILE
 
-// Load environment variables from .env file, where API keys and passwords are configured
-dotenv.config({ path: '.env' || '.env.example' });
+if (fs.existsSync('.env')) {
+    // Load environment variables from .env file, where API keys and passwords are configured
+    dotenv.config({ path: '.env' || '.env.example' });
+} else {
+    console.log('.env file does not exist!');
+}
 
 const config = {
     serviceName: process.env.SERVICENAME || 'node typescript postgres app',
