@@ -9,8 +9,8 @@
   "author": "Narain Sagar",
   "license": "MIT",
   "scripts": {
-    "postinstall": "npm i -g typescript nodemon tslint concurrently jest ts-node npm-run-all",
-    "copy-assets": "ts-node tools/copy-assets",
+    "postinstall": "npm i -g typescript nodemon tslint concurrently jest npm-run-all",
+    "copy-assets": "sh copy-assets.sh",
     "dev": "nodemon --watch src -e ts,ejs --exec npm run start",
     "start": "npm-run-all build serve",
     "build:clean": "rm -rf dist",
@@ -82,7 +82,6 @@
     "@types/pg": "^7.11.2",
     "@types/request": "^2.48.1",
     "@types/sequelize": "^4.28.5",
-    "@types/shelljs": "^0.7.9",
     "@types/supertest": "^2.0.7",
     "chai": "^4.2.0",
     "concurrently": "^3.6.1",
@@ -91,10 +90,8 @@
     "npm-run-all": "^4.1.5",
     "pre-commit": "^1.2.2",
     "rimraf": "^3.0.0",
-    "shelljs": "^0.7.8",
     "supertest": "^3.3.0",
     "ts-jest": "^24.1.0",
-    "ts-node": "^4.0.2",
     "tslint": "^5.11.0",
     "typescript": "^3.5.3"
   }
