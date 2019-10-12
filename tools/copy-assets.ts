@@ -7,4 +7,4 @@ shell.cp( '-R', '.env', 'dist/' );
 shell.cp( '-R', 'views/', 'dist/' );
 
 // Copy all the assets
-shell.cp( '-R', 'images/', 'dist/' );
+shell.cp( '-R', 'public/', 'dist/' );

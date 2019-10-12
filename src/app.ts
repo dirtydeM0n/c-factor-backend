@@ -85,8 +85,7 @@ app.use(expressJwt({
 app.use(function (err, req, resp, next) {
   if (err.name === 'UnauthorizedError') {
     resp.status(401).send({
-      msg: 'Invalid or no token supplied',
-      code: 401
+      msg: 'Invalid or no token supplied'
     });
   }
 });
