@@ -9,14 +9,10 @@ const Role = Database.define('role', {
         primaryKey: true
     },
     name: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
+        type: Sequelize.STRING
     },
     value: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
+        type: Sequelize.STRING
     }
 }, {
     indexes: [{ unique: true, fields: ['name'] }],

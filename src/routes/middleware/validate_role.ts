@@ -2,27 +2,31 @@
  * Created by Narain Sagar on 15/09/2019.
  */
 
-export const validateRoles = (allowedRole: string) => async (ctx, next) => {
-    const role = ctx.request.session.role.title;
+import { Request, Response, NextFunction } from 'express';
+
+export const validateRole = (allowedRole: string) => async (req: Request, resp: Response, next: NextFunction) => {
+    const role = req.session.role.value;
     if (role === allowedRole) {
         await next();
-    } else ctx.throw(401, 'Unauthorized request');
-};
-
-export const validateRolesNotToBe = (notAllowedRoles = []) => async (ctx, next) => {
-    const role = ctx.request.session.role.title;
-    if (notAllowedRoles.indexOf(role) === -1) {
-        await next();
     } else {
-        ctx.throw(401, 'Unauthorized request');
+        resp.status(401).send({ msg: 'Unauthorized role' });
     }
 };
 
-export const validateMultipleRoles = (allowedRoles = []) => async (ctx, next) => {
-    const role = ctx.request.session.role.title;
+export const validateRoles = (allowedRoles = []) => async (req: Request, resp: Response, next: NextFunction) => {
+    const role = req.session.role.value;
     if (allowedRoles.indexOf(role) !== -1) {
         await next();
     } else {
-        ctx.throw(401, 'Unauthorized request');
+        resp.status(401).send({ msg: 'Unauthorized role' });
+    }
+};
+
+export const validateRolesNotToBe = (notAllowedRoles = []) => async (req: Request, resp: Response, next: NextFunction) => {
+    const role = req.session.role.value;
+    if (notAllowedRoles.indexOf(role) === -1) {
+        await next();
+    } else {
+        resp.status(401).send({ msg: 'Unauthorized role' });
     }
 };

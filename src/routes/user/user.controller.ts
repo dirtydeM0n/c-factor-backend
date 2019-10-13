@@ -25,10 +25,10 @@ class UserController {
     try {
       const user = await User.create({ ...req.body });
       if (req.body.profile) {
-        await UserProfile.create({ ...req.body.profile, userId: user.id });
+        await UserProfile.create({ ...req.body, ...req.body.profile, userId: user.id });
       }
       if (req.body.auth) {
-        await UserAuth.create({ ...req.body.auth, userId: user.id });
+        await UserAuth.create({ ...req.body, ...req.body.auth, userId: user.id });
       }
       if (req.body.avatar) {
         await Avatar.create({ ...req.body.avatar, userId: user.id });

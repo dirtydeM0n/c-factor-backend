@@ -7,6 +7,7 @@ import { sendMail } from '../services/mail.service';
 import config = require('../../config');
 import { UserProfile, User } from '../user/user.model';
 import { compare } from '../services/crypto.service';
+import { Role } from '../role/role.model';
 
 class AuthController {
 
@@ -17,23 +18,15 @@ class AuthController {
 
     const errors = req.validationErrors();
     if (errors) {
-      return resp.status(401).send({
-        msg: errors,
-        code: 406
-      });
+      return resp.status(401).send({ msg: errors });
     }
 
     try {
       const user: IUser = await User.findOne({
-        where: {
-          email: req.body.email,
-        }
+        where: { email: req.body.email }
       });
       if (!user) {
-        return resp.status(404).send({
-          msg: 'User not found',
-          code: 404
-        });
+        return resp.status(404).send({ msg: 'User not found' });
       }
       const isSamePass = await compare(req.body.password, user.password);
       if (isSamePass) {
@@ -99,8 +92,9 @@ class AuthController {
           If you did not request this, please ignore this email\n`
       };
       await sendMail(mailOptions);
-      const savedUser: IUser =  await User.create({ ...user });
-      // await UserProfile.create({ ...req.body, userId: savedUser.id });
+      const role = await Role.findOne({ where: { value: 'applicant' } });
+      const savedUser: IUser = await User.create({ ...user, roleId: role ? role.id : null });
+      const userProfile = await UserProfile.create({ ...req.body, ...req.body.profile, userId: savedUser.id });
       resp.status(200).send({ msg: 'An activation email has been sent to your email. Please check!' });
     } catch (exp) {
       console.log(exp.error);
@@ -182,7 +176,7 @@ class AuthController {
           If you did not request this, please ignore this email\n`
       };
       await sendMail(mailOptions);
-      const savedUser: IUser =  await User.create({ ...user });
+      const savedUser: IUser = await User.create({ ...user });
       resp.status(200).send(savedUser);
     } catch (exp) {
       console.log(exp.error);
