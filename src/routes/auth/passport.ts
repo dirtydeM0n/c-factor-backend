@@ -1,6 +1,7 @@
 const passport = require('passport');
 const { Strategy: LinkedInStrategy } = require('passport-linkedin-oauth2');
 import { User, UserAuth, UserProfile } from '../user/user.model';
+import { Role } from '../role/role.model';
 const config = require('../../config');
 
 // serialize user into the session
@@ -102,9 +103,10 @@ passport.use(new LinkedInStrategy({
           // return done(null);
           return done(null, { profile: profile, msg: 'There is already an account using this email address. Sign in to that account and link it with LinkedIn manually from Account Settings.' });
         } else {
+          const role = await Role.findOne({ where: { value: 'applicant' } });
           const savedUser = await User.create({
             email: profile.emails[0].value,
-            roleId: 'f5ec4590-cabe-11e9-9ed6-83ec78200e60', // applicant
+            roleId: role.id, // applicant
             status: 'accepted'
           });
           await UserProfile.create({
