@@ -1,12 +1,12 @@
 import * as request from 'supertest';
 import * as app from '../src/app';
-import { default as UserService } from '../src/routes/user/user.service';
 import { IUser } from '../src/routes/user/user';
+import { User } from '../src/routes/user/user.model';
 
 let JWT: String;
 
-afterAll((done) => {
-  UserService.deleteByUsername('testerchester')
+afterAll(async (done) => {
+  await User.destroy({ where: { email: 'tester@chester.com' } })
     .then(done);
 });
 
@@ -69,23 +69,23 @@ describe('/auth', () => {
   describe('POST /login', () => {
     const route: string = '/auth/login';
 
-    it ('should return 401, missing password', (done) => {
-      request(app).post(route).send({email: 'some@email.com'})
+    it('should return 401, missing password', (done) => {
+      request(app).post(route).send({ email: 'some@email.com' })
         .expect(401, done);
     });
 
     it('should return 401, missing email', (done) => {
-      request(app).post(route).send({password: 'somepassword'})
+      request(app).post(route).send({ password: 'somepassword' })
         .expect(401, done);
     });
 
     it('should return 404', (done) => {
-      request(app).post(route).send({email: 'none@nowhere.com', password: 'PASSWORD'})
+      request(app).post(route).send({ email: 'none@nowhere.com', password: 'PASSWORD' })
         .expect(404, done);
     });
 
     it('should return 200', (done) => {
-      request(app).post('/auth/login').send({email: 'tester@chester.com', password: 'PASSWORD'})
+      request(app).post('/auth/login').send({ email: 'tester@chester.com', password: 'PASSWORD' })
         .expect(200, done);
     });
   });

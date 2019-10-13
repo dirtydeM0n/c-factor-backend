@@ -68,9 +68,7 @@ class AuthController {
     try {
       // Check if user already exists
       const existingUser = await User.findOne({
-        where: {
-          email: user.email,
-        }
+        where: { email: user.email }
       });
       console.log('existingUser:', existingUser);
       if (existingUser) {
@@ -93,7 +91,7 @@ class AuthController {
       };
       await sendMail(mailOptions);
       const role = await Role.findOne({ where: { value: 'applicant' } });
-      const savedUser: IUser = await User.create({ ...user, roleId: role ? role.id : null });
+      const savedUser: IUser = await User.create({ ...user, userType: 'applicant', roleId: role ? role.id : null });
       const userProfile = await UserProfile.create({ ...req.body, ...req.body.profile, userId: savedUser.id });
       resp.status(200).send({ msg: 'An activation email has been sent to your email. Please check!' });
     } catch (exp) {
@@ -106,10 +104,10 @@ class AuthController {
 
   async activate(req: Request, resp: Response) {
     try {
-      const user: IUser = await User.update({ activationToken: req.params.activationToken, status: 'pending' }, { where: { status: 'accepted' } });
+      const user: IUser = await User.update({ status: 'accepted', activationToken: null }, { where: { activationToken: req.params.activationToken, status: 'pending' } });
       if (!user) {
         return resp.status(400).send({
-          msg: 'Activation token invalid, please register again'
+          msg: 'Activation token invalid, please register again!'
         });
       }
       console.log('user:', user);
@@ -131,7 +129,7 @@ class AuthController {
     } catch (error) {
       console.log(error);
       resp.status(400).send({
-        msg: 'Activation token expired, please register again'
+        msg: 'Activation token expired, please register again!'
       });
     }
   }
@@ -151,9 +149,7 @@ class AuthController {
     try {
       // Check if user exists
       const existingUser = await User.findOne({
-        where: {
-          email: user.email,
-        }
+        where: { email: user.email }
       });
       if (!existingUser) {
         return resp.status(409).send({
@@ -163,21 +159,26 @@ class AuthController {
       // Generate reset activation token
       const qRandomBytes = (util as any).promisify(crypto.randomBytes);
       const cryptedValue = await qRandomBytes(16);
-      user.resetToken = cryptedValue.toString('hex');
-      user.resetTokenExpireAt = new Date(Date.now() + (60 * 60 * 1000)); // 1 hour
+      const resetToken = cryptedValue.toString('hex');
+      const resetTokenSentAt = new Date(Date.now());
+      const resetTokenExpireAt = new Date(Date.now() + (60 * 60 * 1000)); // 1 hour
       // Send activation email
       const mailOptions = {
         to: user.email,
         from: config.mail.SMTP_USER,
         subject: 'Account password reset',
-        text: `You are receiving this email because you (or someone else) have requested reset password of your account.\n\n
+        text: `You are receiving this email because you (or someone else) have requested password reset of your account.\n\n
           Please click on the following link, or paste this into your browser to complete the process:\n\n
-          http://${req.headers.host}/auth/resetPassword/${user.activationToken}\n\n
+          http://${req.headers.host}/auth/resetPassword/${resetToken}\n\n
           If you did not request this, please ignore this email\n`
       };
       await sendMail(mailOptions);
-      const savedUser: IUser = await User.create({ ...user });
-      resp.status(200).send(savedUser);
+      const updatedUser: IUser = await User.update({
+        resetToken: resetToken,
+        resetTokenExpireAt: resetTokenExpireAt,
+        resetTokenSentAt: resetTokenSentAt
+      }, { where: { id: existingUser.id } });
+      resp.status(200).send(updatedUser);
     } catch (exp) {
       console.log(exp.error);
       resp.status(400).send({ msg: exp.error });
@@ -186,18 +187,23 @@ class AuthController {
 
   async changePassword(req: Request, resp: Response) {
     try {
+      req.assert('password', 'Password cannot be blank').notEmpty();
+      const errors = req.validationErrors();
+      if (errors) {
+        return resp.status(401).send({ msg: errors });
+      }
       const user = await User.findOne({ where: { resetToken: req.params.resetToken } });
-      const token = jwt.sign({
-        email: user.email,
-        role: user.role,
-        username: user.username
-      }, config.JWT_SECRET, { expiresIn: '1h' });
-      await User.update({ resetToken: req.params.resetToken }, { where: { resetToken: token } });
-      return resp.status(200).send({ token: token });
+      if (!user) {
+        return resp.status(400).send({
+          msg: 'User not found.'
+        });
+      }
+      const updatedUser = await User.update({ ...req.body, resetToken: null }, { where: { resetToken: req.params.resetToken } });
+      return resp.status(200).send(updatedUser);
     } catch (error) {
       console.log(error);
       resp.status(400).send({
-        msg: 'Activation token expired, please register again'
+        msg: 'Activation token expired, please try reset again!'
       });
     }
   }

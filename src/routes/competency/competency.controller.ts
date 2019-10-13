@@ -62,7 +62,7 @@ class CompetencyController {
 
   async changeState(req: Request, resp: Response) {
     try {
-      const competency = await Competency.findOneAndUpdate({ id: req.params.id }, { state: req.body.state });
+      const competency = await Competency.update({ state: req.body.state }, { where: { id: req.params.id } });
       resp.status(200).send(competency);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });

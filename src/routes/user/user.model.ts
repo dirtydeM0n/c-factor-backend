@@ -38,6 +38,16 @@ const User = Database.define('user', {
             len: [6, 100]
         }
     },
+    userType: {
+        type: Sequelize.ENUM('admin', 'client', 'applicant', 'guest'),
+        defaultValue: 'applicant',
+        validate: {
+            isIn: {
+                args: [['admin', 'client', 'applicant', 'guest']],
+                msg: 'Invalid status.'
+            }
+        }
+    },
     status: {
         allowNull: false,
         type: Sequelize.ENUM('pending', 'accepted', 'deactivated'),
@@ -154,18 +164,7 @@ const UserProfile = Database.define('profile', {
     bio: {
         type: Sequelize.STRING,
         defaultValue: ''
-    },
-    /*
-    role: {
-        type: Sequelize.ENUM('admin', 'applicant', 'client'),
-        defaultValue: 'applicant',
-        validate: {
-            isIn: {
-                args: [['admin', 'applicant', 'client']],
-                msg: 'Invalid status.'
-            }
-        }
-    }*/
+    }
 }, {
     /*indexes: [{ unique: true, fields: ['email'] }],*/
     timestamps: true,

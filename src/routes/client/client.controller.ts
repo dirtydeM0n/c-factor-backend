@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { Client } from './client.model';
 import { User } from '../user/user.model';
+import { Role } from '../role/role.model';
 
 class ClientController {
   async getAll(req: Request, resp: Response) {
@@ -25,7 +26,8 @@ class ClientController {
     try {
       let user = await User.findOne({ where: { email: req.body.email } });
       if (!user) { // if user not already exist
-        user = await User.create({ ...req.body });
+        const role = await Role.findOne({ where: { value: 'client' } });
+        user = await User.create({ ...req.body, userType: 'client', roleId: role ? role.id : null });
       } else { // user already exist
         return resp.status(404).send({ msg: 'User already exist with same email'});
       }

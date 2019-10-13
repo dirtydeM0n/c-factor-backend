@@ -106,6 +106,7 @@ passport.use(new LinkedInStrategy({
           const role = await Role.findOne({ where: { value: 'applicant' } });
           const savedUser = await User.create({
             email: profile.emails[0].value,
+            userType: 'applicant',
             roleId: role ? role.id : null, // applicant
             status: 'accepted'
           });

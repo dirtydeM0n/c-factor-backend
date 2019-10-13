@@ -41,15 +41,15 @@ class UserController {
 
   async put(req: Request, resp: Response) {
     try {
-      const user = await User.findOneAndUpdate({ id: req.params.id }, { ...req.body });
+      const user = await User.update({ ...req.body }, { where: { id: req.params.id } });
       if (req.body.profile) {
-        await UserProfile.findOneAndUpdate({ userId: user.id }, { ...req.body.profile });
+        await UserProfile.update({ ...req.body.profile }, { where: { userId: user.id } });
       }
       if (req.body.auth) {
-        await UserAuth.findOneAndUpdate({ userId: user.id }, { ...req.body.auth });
+        await UserAuth.update({ ...req.body.auth }, { where: { userId: user.id } });
       }
       if (req.body.avatar) {
-        await Avatar.findOneAndUpdate({ userId: user.id }, { ...req.body.avatar });
+        await Avatar.update({ ...req.body.avatar }, { where: { userId: user.id } });
       }
       resp.status(200).send(user);
     } catch (error) {
@@ -68,7 +68,7 @@ class UserController {
 
   async activateAccount(req: Request, resp: Response) {
     try {
-      const data = await User.findOneAndUpdate({ id: req.params.id }, { status: 'accepted' });
+      const data = await User.update({ status: 'accepted' }, { where: { id: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
@@ -77,7 +77,7 @@ class UserController {
 
   async deactivateAccount(req: Request, resp: Response) {
     try {
-      const data = await User.findOneAndUpdate({ id: req.params.id }, { status: 'deactivated' });
+      const data = await User.update({ status: 'deactivated' }, { where: { id: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });

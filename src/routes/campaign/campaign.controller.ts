@@ -86,7 +86,7 @@ class CampaignController {
 
   async activate(req: Request, resp: Response) {
     try {
-      const data = await Campaign.findOneAndUpdate({ id: req.params.id }, { active: 1 });
+      const data = await Campaign.update({ active: 1 }, { where: { id: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
@@ -95,7 +95,7 @@ class CampaignController {
 
   async deactivate(req: Request, resp: Response) {
     try {
-      const data = await Campaign.findOneAndUpdate({ id: req.params.id }, { active: 0 });
+      const data = await Campaign.update({ active: 0 }, { where: { id: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
@@ -104,7 +104,7 @@ class CampaignController {
 
   async changeState(req: Request, resp: Response) {
     try {
-      const data = await Campaign.findOneAndUpdate({ id: req.params.id }, { state: req.body.state });
+      const data = await Campaign.update({ state: req.body.state }, { where: { id: req.params.id } });
       resp.status(200).send(data);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
