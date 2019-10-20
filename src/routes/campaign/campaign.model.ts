@@ -44,7 +44,7 @@ const Campaign = Database.define('campaign', {
     active: {
         allowNull: false,
         type: Sequelize.BOOLEAN,
-        defaultValue: false // false => inactive, true => active
+        defaultValue: true // false => inactive, true => active
     },
     allow_direct_applications: {
         allowNull: false,

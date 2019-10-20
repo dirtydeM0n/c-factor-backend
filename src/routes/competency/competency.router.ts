@@ -3,6 +3,7 @@ import CompetencyController from './competency.controller';
 
 const CompetencyRouter = Router()
   .get('/', CompetencyController.getAll)
+  .get('/:campaignId/all', CompetencyController.getAll)
   .get('/:id', CompetencyController.getById)
   .post('/', CompetencyController.post)
   .put('/:id', CompetencyController.put)

@@ -1,12 +1,15 @@
 import { Request, Response } from 'express';
 import { Competency } from './competency.model';
 import { CompetencyData } from './competency_data/competency_data.model';
-import * as config from '../../config';
 
 class CompetencyController {
   async getAll(req: Request, resp: Response) {
     try {
-      const data = await Competency.findAll({});
+      let find = {};
+      if (req.params.campaignId) {
+        find = { where: { campaignId: req.params.campaignId } };
+      }
+      const data = await Competency.findAll(find);
       resp.status(200).send(data);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
@@ -24,11 +27,11 @@ class CompetencyController {
 
   async post(req: Request, resp: Response) {
     try {
-      let competency = await Competency.create({ ...req.body });
+      const competency = await Competency.create({ ...req.body });
       if (req.body.data) {
         const competencyData = await CompetencyData.create({ ...req.body, ...req.body.data, competencyId: competency.id });
-        const dataURL = req.originalUrl + `competencies/{competency.id}/data/{competencyData.id}`;
-        competency = await Competency.update({ dataURL: dataURL }, { where: { id: competency.id } });
+        const dataURL = req.originalUrl + `/${competency.id}/data/${competencyData.id}`;
+        competency.update({ dataURL: dataURL }, { where: { id: competency.id } });
       }
       resp.status(200).send(competency);
     } catch (error) {
@@ -38,11 +41,11 @@ class CompetencyController {
 
   async put(req: Request, resp: Response) {
     try {
-      let competency = await Competency.update({ ...req.body }, { where: { id: req.params.id } });
+      const competency = await Competency.update({ ...req.body }, { where: { id: req.params.id } });
       if (req.body.data) {
         const competencyData = await CompetencyData.update({ ...req.body, ...req.body.data }, { where: { competencyId: competency.id } });
-        const dataURL = req.originalUrl + `competencies/{competency.id}/data/{competencyData.id}`;
-        competency = await Competency.update({ dataURL: dataURL }, { where: { id: competency.id } });
+        // const dataURL = req.originalUrl + `/${competency.id}/data/${competencyData.id}`;
+        // competency.update({ dataURL: dataURL }, { where: { id: competency.id } });
       }
       resp.status(200).send(competency);
     } catch (error) {

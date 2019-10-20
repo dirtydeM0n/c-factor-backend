@@ -2,8 +2,7 @@ import { Request, Response } from 'express';
 import { Campaign } from './campaign.model';
 import { CampaignInvite } from './invite/invite.model';
 import { Competency } from '../competency/competency.model';
-import { UserCompetency } from '../user/user_competency.model';
-import { User } from '../user/user.model';
+import { Client } from '../client/client.model';
 
 class CampaignController {
   async getAll(req: Request, resp: Response) {
@@ -27,13 +26,10 @@ class CampaignController {
   async getByIdFormatted(req: Request, resp: Response) {
     try {
       const campaign = await Campaign.findOne({
-        where: { id: req.params.id },
-        include: [
-          { model: Competency, as: 'components' }
-        ]
+        where: { id: req.params.id }
       });
-      // const user = await User.findOne({ where: { id: req.body.userId } });
-      resp.status(200).send(campaign);
+      const components = await Competency.findAll({ where: { campaignId: req.params.id } });
+      resp.status(200).send({ ...campaign, components: components });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
