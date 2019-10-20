@@ -26,8 +26,8 @@ class ClientController {
     try {
       let user = await User.findOne({ where: { email: req.body.email } });
       if (!user) { // if user not already exist
-        const role = await Role.findOne({ where: { value: 'client' } });
-        user = await User.create({ ...req.body, userType: 'client', roleId: role ? role.id : null });
+        const role = await Role.findOne({ where: { value: user.userType || 'client' } });
+        user = await User.create({ ...req.body, userType: user.userType || 'client', roleId: role ? role.id : null });
       } else { // user already exist
         return resp.status(404).send({ msg: 'User already exist with same email'});
       }

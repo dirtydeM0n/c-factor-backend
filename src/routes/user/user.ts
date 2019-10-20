@@ -4,6 +4,7 @@ export interface IUser {
   email: string;
   username?: string;
   password?: string;
+  userType?: string;
   role?: string;
   status?: string;
   resetToken?: string;
