@@ -1,0 +1,139 @@
+
+BASE REQUEST URL: http://localhost:3000/competencies
+--------------------------------------------------------------------------------------------
+METHOD     |   ROUTE                         | REQUEST URL
+--------------------------------------------------------------------------------------------
+GET        |  /competencies                     | http://localhost:3000/competencies
+GET        |  /competencies/:campaignId/all     | http://localhost:3000/competencies/:campaignId/all
+GET        |  /competencies/:id                 | http://localhost:3000/competencies/:id
+POST       |  /competencies/:id                 | http://localhost:3000/competencies/:id
+PUT        |  /competencies/:id                 | http://localhost:3000/competencies/:id
+DELETE     |  /competencies/:id                 | http://localhost:3000/competencies/:id
+PUT        |  /competencies/:id/changeState     | http://localhost:3000/competencies/:id/changeState
+
+GET        |  /competencies/:id/data          | http://localhost:3000/competencies/:id/data
+POST       |  /competencies/:id/data          | http://localhost:3000/competencies/:id/data
+PUT        |  /competencies/:id/data          | http://localhost:3000/competencies/:id/data
+DELETE     |  /competencies/:id/data          | http://localhost:3000/competencies/:id/data
+--------------------------------------------------------------------------------------------
+
+1. POST /competencies
+
+Request Payload:
+```
+campaignId:55ceb8f0-f35d-11e9-932d-0334653fb91c
+type:Registration
+title:Register Component4
+description:This is Register component
+timer:15
+componentId:2
+nextComponentId:-1
+data:{"component": "Register"}
+```
+
+Response:
+```
+{
+    "id": "2b51e640-f37d-11e9-ab75-1fda0fcb371c",
+    "state": "open",
+    "active": true,
+    "campaignId": "55ceb8f0-f35d-11e9-932d-0334653fb91c",
+    "type": "Registration",
+    "title": "Register Component4",
+    "description": "This is Register component",
+    "timer": 15,
+    "componentId": "2",
+    "nextComponentId": "-1",
+    "data": "{\"component\": \"Register\"}",
+    "updatedAt": "2019-10-20T21:04:13.516Z",
+    "createdAt": "2019-10-20T21:04:13.478Z",
+    "icon": null,
+    "url": null,
+    "dataURL": "/competencies/2b51e640-f37d-11e9-ab75-1fda0fcb371c/data/2b573d70-f37d-11e9-ab75-1fda0fcb371c"
+}
+```
+
+2. GET  /competencies
+
+** Request Payload:
+```
+Authorization Bearer <Token>
+```
+** Response:
+
+```
+[
+    {
+        "id": "1f356660-f374-11e9-a4c7-8501bf4890d4",
+        "type": "Login",
+        "title": "Login Component",
+        "description": "This is login component",
+        "timer": 15,
+        "componentId": "1",
+        "nextComponentId": "2",
+        "icon": null,
+        "url": null,
+        "data": {
+            "component": "Login"
+        },
+        "dataURL": "/competencies/1f356660-f374-11e9-a4c7-8501bf4890d4/data/1f3cb960-f374-11e9-a4c7-8501bf4890d4",
+        "state": "open",
+        "active": true,
+        "createdAt": "2019-10-20T19:59:27.688Z",
+        "updatedAt": "2019-10-20T19:59:27.751Z",
+        "campaignId": "55ceb8f0-f35d-11e9-932d-0334653fb91c"
+    }
+]
+```
+
+3. GET  /competencies/:id
+
+Response:
+
+```
+{
+    "id": "ca32bac0-f37b-11e9-9332-8b752132e558",
+    "type": "Registration",
+    "title": "Register Component",
+    "description": "This is Register component",
+    "timer": 15,
+    "componentId": "2",
+    "nextComponentId": "-1",
+    "icon": null,
+    "url": null,
+    "data": "{\"component\": \"Register\"}",
+    "dataURL": "/competencies/ca32bac0-f37b-11e9-9332-8b752132e558/data/ca392360-f37b-11e9-9332-8b752132e558",
+    "state": "open",
+    "active": true,
+    "createdAt": "2019-10-20T20:54:21.036Z",
+    "updatedAt": "2019-10-20T20:54:21.083Z",
+    "campaignId": "55ceb8f0-f35d-11e9-932d-0334653fb91c"
+}
+```
+
+4. GET  /competencies/:campaignId/all
+
+Response:
+
+```
+[
+    {
+        "id": "ca32bac0-f37b-11e9-9332-8b752132e558",
+        "type": "Registration",
+        "title": "Register Component",
+        "description": "This is Register component",
+        "timer": 15,
+        "componentId": "2",
+        "nextComponentId": "-1",
+        "icon": null,
+        "url": null,
+        "data": "{\"component\": \"Register\"}",
+        "dataURL": "/competencies/ca32bac0-f37b-11e9-9332-8b752132e558/data/ca392360-f37b-11e9-9332-8b752132e558",
+        "state": "open",
+        "active": true,
+        "createdAt": "2019-10-20T20:54:21.036Z",
+        "updatedAt": "2019-10-20T20:54:21.083Z",
+        "campaignId": "55ceb8f0-f35d-11e9-932d-0334653fb91c"
+    }
+]
+```

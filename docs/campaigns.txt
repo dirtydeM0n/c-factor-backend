@@ -19,9 +19,223 @@ PUT        |  /campaigns/:id/invite          | http://localhost:3000/campaigns/:
 DELETE     |  /campaigns/:id/invite          | http://localhost:3000/campaigns/:id/invite
 --------------------------------------------------------------------------------------------
 
-1. GET  /campaigns
+1. POST /campaigns
 
-** Sample Request Payload:
+Request Payload:
+```
+startupComponentId:1
+name:testing123
+title:Testing 123!!
+description:This is a test campaign!
+start_date:2019-10-21
+end_date:2019-11-21
+```
 
+Response:
+```
+{
+    "id": "ba1e7d60-f37e-11e9-840e-d3da449f0abd",
+    "state": "active",
+    "allow_direct_applications": false,
+    "allow_invites_only": false,
+    "startupComponentId": "1",
+    "name": "testing123",
+    "title": "Testing 123!!",
+    "description": "This is a test campaign!",
+    "start_date": "2019-10-21",
+    "end_date": "2019-11-21",
+    "active": true,
+    "updatedAt": "2019-10-20T21:15:22.551Z",
+    "createdAt": "2019-10-20T21:15:22.551Z",
+    "image_url": null,
+    "clientId": null
+}
+```
 
-** Sample Response:
+2. GET  /campaigns
+
+** Request Payload:
+```
+Authorization Bearer <Token>
+```
+** Response:
+
+```
+[
+    {
+        "id": "55ceb8f0-f35d-11e9-932d-0334653fb91c",
+        "startupComponentId": "1",
+        "name": "hello world",
+        "title": "Hello World!!",
+        "description": "This is a test campaign!",
+        "image_url": null,
+        "state": "active",
+        "start_date": "2019-10-21",
+        "end_date": "2019-11-21",
+        "active": true,
+        "allow_direct_applications": false,
+        "allow_invites_only": false,
+        "createdAt": "2019-10-20T17:16:20.863Z",
+        "updatedAt": "2019-10-20T17:16:20.863Z",
+        "clientId": null
+    },
+    {
+        "id": "8fd80d80-f35d-11e9-932d-0334653fb91c",
+        "startupComponentId": "2",
+        "name": "hello world2",
+        "title": "Hello World 2!!",
+        "description": "This is a test campaign!",
+        "image_url": null,
+        "state": "active",
+        "start_date": "2019-10-21",
+        "end_date": "2019-11-21",
+        "active": false,
+        "allow_direct_applications": false,
+        "allow_invites_only": false,
+        "createdAt": "2019-10-20T17:17:58.232Z",
+        "updatedAt": "2019-10-20T17:17:58.232Z",
+        "clientId": null
+    }
+]
+```
+
+3. GET  /campaigns/:id
+
+Response:
+
+```
+{
+    "id": "55ceb8f0-f35d-11e9-932d-0334653fb91c",
+    "startupComponentId": "1",
+    "name": "hello world",
+    "title": "Hello World!!",
+    "description": "This is a test campaign!",
+    "image_url": null,
+    "state": "active",
+    "start_date": "2019-10-21",
+    "end_date": "2019-11-21",
+    "active": true,
+    "allow_direct_applications": false,
+    "allow_invites_only": false,
+    "createdAt": "2019-10-20T17:16:20.863Z",
+    "updatedAt": "2019-10-20T17:16:20.863Z",
+    "clientId": null
+}
+```
+
+4. GET  /campaigns/:id/formatted
+
+Response:
+```
+{
+    "id": "55ceb8f0-f35d-11e9-932d-0334653fb91c",
+    "startupComponentId": "1",
+    "name": "hello world",
+    "title": "Hello World!!",
+    "description": "This is a test campaign!",
+    "image_url": null,
+    "state": "active",
+    "start_date": "2019-10-21",
+    "end_date": "2019-11-21",
+    "active": true,
+    "allow_direct_applications": false,
+    "allow_invites_only": false,
+    "createdAt": "2019-10-20T17:16:20.863Z",
+    "updatedAt": "2019-10-20T17:16:20.863Z",
+    "clientId": null,
+    "components": [
+        {
+            "id": "1f356660-f374-11e9-a4c7-8501bf4890d4",
+            "type": "Login",
+            "title": "Login Component",
+            "description": "This is login component",
+            "timer": 15,
+            "componentId": "1",
+            "nextComponentId": "2",
+            "icon": null,
+            "url": null,
+            "data": {
+                "component": "Login"
+            },
+            "dataURL": "/competencies/1f356660-f374-11e9-a4c7-8501bf4890d4/data/1f3cb960-f374-11e9-a4c7-8501bf4890d4",
+            "state": "open",
+            "active": true,
+            "createdAt": "2019-10-20T19:59:27.688Z",
+            "updatedAt": "2019-10-20T19:59:27.751Z",
+            "campaignId": "55ceb8f0-f35d-11e9-932d-0334653fb91c"
+        },
+        {
+            "id": "ca32bac0-f37b-11e9-9332-8b752132e558",
+            "type": "Registration",
+            "title": "Register Component",
+            "description": "This is Register component",
+            "timer": 15,
+            "componentId": "2",
+            "nextComponentId": "-1",
+            "icon": null,
+            "url": null,
+            "data": "{\"component\": \"Register\"}",
+            "dataURL": "/competencies/ca32bac0-f37b-11e9-9332-8b752132e558/data/ca392360-f37b-11e9-9332-8b752132e558",
+            "state": "open",
+            "active": true,
+            "createdAt": "2019-10-20T20:54:21.036Z",
+            "updatedAt": "2019-10-20T20:54:21.083Z",
+            "campaignId": "55ceb8f0-f35d-11e9-932d-0334653fb91c"
+        },
+        {
+            "id": "1524d360-f37c-11e9-b53e-1db16907a4e8",
+            "type": "Registration",
+            "title": "Register Component2",
+            "description": "This is Register component2",
+            "timer": 15,
+            "componentId": "2",
+            "nextComponentId": "-1",
+            "icon": null,
+            "url": null,
+            "data": "{\"component\": \"Register2\"}",
+            "dataURL": "/competencies/1524d360-f37c-11e9-b53e-1db16907a4e8/data/15287ce0-f37c-11e9-b53e-1db16907a4e8",
+            "state": "open",
+            "active": true,
+            "createdAt": "2019-10-20T20:56:26.776Z",
+            "updatedAt": "2019-10-20T20:56:26.803Z",
+            "campaignId": "55ceb8f0-f35d-11e9-932d-0334653fb91c"
+        },
+        {
+            "id": "470a4360-f37c-11e9-a00d-09b806284ba3",
+            "type": "Registration",
+            "title": "Register Component3",
+            "description": "This is Register component",
+            "timer": 15,
+            "componentId": "2",
+            "nextComponentId": "-1",
+            "icon": null,
+            "url": null,
+            "data": "{\"component\": \"Register\"}",
+            "dataURL": "/competencies/470a4360-f37c-11e9-a00d-09b806284ba3/data/47169f70-f37c-11e9-a00d-09b806284ba3",
+            "state": "open",
+            "active": true,
+            "createdAt": "2019-10-20T20:57:50.487Z",
+            "updatedAt": "2019-10-20T20:57:50.573Z",
+            "campaignId": "55ceb8f0-f35d-11e9-932d-0334653fb91c"
+        },
+        {
+            "id": "2b51e640-f37d-11e9-ab75-1fda0fcb371c",
+            "type": "Registration",
+            "title": "Register Component4",
+            "description": "This is Register component",
+            "timer": 15,
+            "componentId": "2",
+            "nextComponentId": "-1",
+            "icon": null,
+            "url": null,
+            "data": "{\"component\": \"Register\"}",
+            "dataURL": "/competencies/2b51e640-f37d-11e9-ab75-1fda0fcb371c/data/2b573d70-f37d-11e9-ab75-1fda0fcb371c",
+            "state": "open",
+            "active": true,
+            "createdAt": "2019-10-20T21:04:13.478Z",
+            "updatedAt": "2019-10-20T21:04:13.516Z",
+            "campaignId": "55ceb8f0-f35d-11e9-932d-0334653fb91c"
+        }
+    ]
+}
+```
