@@ -13,7 +13,7 @@ DELETE     |  /companies/:id                 | http://localhost:3000/companies/:
 
 1. GET  /companies
 
-** Sample Request Payload:
+** Request Payload:
 
 
-** Sample Response:
+** Response:

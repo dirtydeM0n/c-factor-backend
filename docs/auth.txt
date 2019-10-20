@@ -15,58 +15,84 @@ GET        |  /auth/logout               | http://localhost:3000/auth/logout
 
 1. POST  /auth/register
 
-** Sample Request Payload:
+** Request Payload:
+```
+email:test1@client.com
+password:123456
+firstname:Test
+lastname:Client
+country:Pakistan
+address:Karachi, Pakistan
+phone:03123841914
+dob:25-12-1992
+userType:client
+```
 
-
-** Sample Response:
+** Response:
+```
+{
+    "msg": "An activation email has been sent to your email. Please check!"
+}
+```
 
 2. GET  /auth/activate/:token
 
-** Sample Request Payload:
+** Request Payload:
+```
+{
+    "msg": "Account activated, please login to continue!"
+}
+```
 
-
-** Sample Response:
+** Response:
 
 3. POST  /auth/login
 
-** Sample Request Payload:
+** Request Payload:
+```
+email:test1@test.com
+password:123456
+```
 
-
-** Sample Response:
-
+** Response:
+```
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGNsaWVudC5jb20iLCJ1c2VybmFtZSI6IiIsImlhdCI6MTU3MTU5MDkxMywiZXhwIjoxNTcxNjc3MzEzfQ.ho5QOKUVom0FdzOuZOUfAnjWezLw-mg-rsa53ybpYX0"
+}
+```
 
 4. POST  /auth/changePassword
 
-** Sample Request Payload:
+** Request Payload:
 
 
-** Sample Response:
+** Response:
 
 5. POST  /auth/resetPassword
 
-** Sample Request Payload:
+** Request Payload:
 
 
-** Sample Response:
+** Response:
 
 6. GET  /auth/linkedin
 
-** Sample Request Payload:
+** Request Payload:
 
 
-** Sample Response:
+** Response:
 
 1. GET  /auth/linkedin/callback
 
-** Sample Request Payload:
+** Request Payload:
 
 
-** Sample Response:
+** Response:
 
 1. GET  /auth/logout
 
-** Sample Request Payload:
+** Request Payload:
 
 
-** Sample Response:
+** Response:
 

@@ -13,7 +13,7 @@ DELETE     |  /avatars/:id                 | http://localhost:3000/avatars/:id
 
 1. GET  /avatars
 
-** Sample Request Payload:
+** Request Payload:
 
 
-** Sample Response:
+** Response:

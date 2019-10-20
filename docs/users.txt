@@ -19,65 +19,65 @@ DELETE     |  /users/:id/avatar                 | http://localhost:3000/users/:i
 
 1. POST  /users
 
-** Sample Request Payload:
+** Request Payload:
 
 
-** Sample Response:
+** Response:
 
 2. GET  /users/:id
 
-** Sample Request Payload:
+** Request Payload:
 
 
-** Sample Response:
+** Response:
 
 3. POST  /users
 
-** Sample Request Payload:
+** Request Payload:
 
 
-** Sample Response:
+** Response:
 
 
 4. GET  /users/activateAccount/:id
 
-** Sample Request Payload:
+** Request Payload:
 
 
-** Sample Response:
+** Response:
 
 5. GET  /users/deactivateAccount/:id
 
-** Sample Request Payload:
+** Request Payload:
 
 
-** Sample Response:
+** Response:
 
 6. GET  /users/:id/avatar
 
-** Sample Request Payload:
+** Request Payload:
 
 
-** Sample Response:
+** Response:
 
 7. POST  /users/:id/avatar
 
-** Sample Request Payload:
+** Request Payload:
 
 
-** Sample Response:
+** Response:
 
 8. PUT  /users/:id/avatar
 
-** Sample Request Payload:
+** Request Payload:
 
 
-** Sample Response:
+** Response:
 
 9. DELETE  /users/:id/avatar
 
-** Sample Request Payload:
+** Request Payload:
 
 
-** Sample Response:
+** Response:
 
