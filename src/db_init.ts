@@ -34,7 +34,7 @@ UserCampaign.sync();
 
 if (config.NODE_ENV === 'development') {
     Database.sync(/*{ alter: true }*/).then(() => {
-        console.log('All data has been reset');
+        console.log('Database sync!!');
     }, (err) => {
         console.log('An error occurred while creating the table:', err);
     });

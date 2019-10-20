@@ -5,7 +5,7 @@ let instance;
 if (config.DATABASE_URL) {
   // Option 1: Passing a connection URI
   // const sequelize = new Sequelize('postgres://user:pass@example.com:5432/dbname');
-  instance = new Sequelize(config.DATABASE_URL);
+  instance = new Sequelize(config.DATABASE_URL, { query: { raw: true } });
 } else {
   // Option 2: Passing parameters separately
   instance = new Sequelize(config.db.database, config.db.user, config.db.password, {
@@ -18,7 +18,8 @@ if (config.DATABASE_URL) {
       max: config.db.max || 5,
       acquire: 30000,
       idle: config.db.idleTimeoutMillis || 10000
-    }
+    },
+    query: { raw: true }
   });
 
   /*if (config.NODE_ENV === 'development') {
