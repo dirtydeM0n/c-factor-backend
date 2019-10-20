@@ -31,6 +31,6 @@ const Avatar = Database.define('avatar', {
 
 Avatar.belongsTo(User);
 
-Avatar.sync();
+// Avatar.sync();
 
 export { Avatar };

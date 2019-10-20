@@ -33,7 +33,6 @@ const UserCompetency = Database.define('user_competency', {
 User.belongsToMany(Competency, { through: UserCompetency });
 Competency.belongsToMany(User, { through: UserCompetency });
 
-
-UserCompetency.sync();
+// UserCompetency.sync();
 
 export { UserCompetency };

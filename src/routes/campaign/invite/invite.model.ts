@@ -27,6 +27,6 @@ const CampaignInvite = Database.define('campaign_invite', {
 
 CampaignInvite.belongsTo(Campaign);
 
-CampaignInvite.sync();
+// CampaignInvite.sync();
 
 export { CampaignInvite };

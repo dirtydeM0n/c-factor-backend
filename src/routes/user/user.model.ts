@@ -207,8 +207,8 @@ User.belongsTo(Role);
 UserProfile.belongsTo(User);
 User.hasMany(UserAuth);
 
-User.sync();
-UserProfile.sync();
-UserAuth.sync();
+// User.sync();
+// UserProfile.sync();
+// UserAuth.sync();
 
 export { User, UserProfile, UserAuth };

@@ -1,5 +1,5 @@
-import config = require('./config');
 const Sequelize = require('sequelize');
+import config = require('./config');
 
 let instance;
 if (config.DATABASE_URL) {
@@ -21,13 +21,13 @@ if (config.DATABASE_URL) {
     }
   });
 
-  if (config.NODE_ENV === 'development') {
+  /*if (config.NODE_ENV === 'development') {
     instance.sync({ alter: true }).then(() => {
       console.log('All data has been reset');
     }, (err) => {
       console.log('An error occurred while creating the table:', err);
     });
-  }
+  }*/
 }
 
 export const Database = instance;

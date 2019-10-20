@@ -39,6 +39,6 @@ const CompetencyData = Database.define('competency_data', {
 
 CompetencyData.belongsTo(Competency);
 
-CompetencyData.sync();
+// CompetencyData.sync();
 
 export { CompetencyData };

@@ -35,6 +35,6 @@ const Company = Database.define('company', {
     tableName: 'companies'
 });
 
-Company.sync();
+// Company.sync();
 
 export { Company };

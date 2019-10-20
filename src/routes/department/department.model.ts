@@ -20,6 +20,6 @@ const Department = Database.define('department', {
     tableName: 'departments'
 });
 
-Department.sync();
+// Department.sync();
 
 export { Department };

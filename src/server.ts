@@ -11,6 +11,7 @@ import config = require('./config');
 Database
     .authenticate()
     .then(() => {
+        require('./db_init');
         console.log('*************************************************');
         console.log('Connection has been established successfully.');
         console.log('*************************************************');

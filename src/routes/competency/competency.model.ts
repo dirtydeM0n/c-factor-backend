@@ -74,6 +74,6 @@ const Competency = Database.define('competency', {
 // Competency.belongsTo(Campaign);
 Campaign.hasMany(Competency);
 
-Competency.sync();
+// Competency.sync();
 
 export { Competency };

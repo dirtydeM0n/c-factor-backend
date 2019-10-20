@@ -38,6 +38,6 @@ Client.belongsTo(User);
 Client.belongsTo(Company);
 Client.belongsTo(Department);
 
-Client.sync();
+// Client.sync();
 
 export { Client };

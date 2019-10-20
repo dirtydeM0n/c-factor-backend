@@ -19,6 +19,6 @@ const ClientCompetency = Database.define('client_competency', {
 Client.belongsToMany(Competency, { through: ClientCompetency });
 Competency.belongsToMany(Client, { through: ClientCompetency });
 
-ClientCompetency.sync();
+// ClientCompetency.sync();
 
 export { ClientCompetency };

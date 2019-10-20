@@ -21,6 +21,6 @@ const Role = Database.define('role', {
     tableName: 'roles'
 });
 
-Role.sync();
+// Role.sync();
 
 export { Role };

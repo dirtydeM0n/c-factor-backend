@@ -19,6 +19,6 @@ const ClientCampaign = Database.define('client_campaign', {
 Client.belongsToMany(Campaign, { through: ClientCampaign });
 Campaign.belongsToMany(Client, { through: ClientCampaign });
 
-ClientCampaign.sync();
+// ClientCampaign.sync();
 
 export { ClientCampaign };

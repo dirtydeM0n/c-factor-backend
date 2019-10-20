@@ -24,6 +24,6 @@ const UserCampaign = Database.define('user_campaign', {
 User.belongsToMany(Campaign, { through: UserCampaign });
 Campaign.belongsToMany(User, { through: UserCampaign });
 
-UserCampaign.sync();
+// UserCampaign.sync();
 
 export { UserCampaign };

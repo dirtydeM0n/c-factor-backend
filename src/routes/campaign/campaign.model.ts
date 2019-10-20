@@ -65,6 +65,6 @@ const Campaign = Database.define('campaign', {
 
 Campaign.belongsTo(Client);
 
-Campaign.sync();
+// Campaign.sync();
 
 export { Campaign };
