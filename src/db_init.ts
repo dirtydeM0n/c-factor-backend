@@ -10,8 +10,8 @@ import { CampaignInvite } from './routes/campaign/invite/invite.model';
 import { UserCompetency } from './routes/user/user_competency.model';
 import { UserCampaign } from './routes/user/user_campaign.model';
 import { CompetencyData } from './routes/competency/competency_data/competency_data.model';
-import { ClientCompetency } from './routes/client/client_competeny.model';
-import { ClientCampaign } from './routes/client/client_campaign.model';
+// import { ClientCompetency } from './routes/client/client_competeny.model';
+// import { ClientCampaign } from './routes/client/client_campaign.model';
 import config = require('./config');
 import { Database } from './db';
 
@@ -27,8 +27,8 @@ Campaign.sync();
 CampaignInvite.sync();
 Competency.sync();
 CompetencyData.sync();
-ClientCompetency.sync();
-ClientCampaign.sync();
+// ClientCompetency.sync();
+// ClientCampaign.sync();
 UserCompetency.sync();
 UserCampaign.sync();
 

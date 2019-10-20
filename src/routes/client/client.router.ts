@@ -6,6 +6,10 @@ const ClientRouter = Router()
   .get('/:id', ClientController.getById)
   .post('/', ClientController.post)
   .put('/:id', ClientController.put)
-  .delete('/:id', ClientController.delete);
+  .delete('/:id', ClientController.delete)
+  // Client Campaigns
+  .get('/:id/campaigns', ClientController.getCampaigns)
+  .post('/:id/campaigns', ClientController.createCampaign)
+  .get('/:id/campaigns/:campaignId', ClientController.getCampaignById);
 
 export { ClientRouter };

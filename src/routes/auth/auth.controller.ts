@@ -90,8 +90,8 @@ class AuthController {
           If you did not request this, please ignore this email\n`
       };
       await sendMail(mailOptions);
-      const role = await Role.findOne({ where: { value: user.userType || 'applicant' } });
-      const savedUser: IUser = await User.create({ ...user, userType: user.userType || 'applicant', roleId: role ? role.id : null });
+      const role = await Role.findOne({ where: { value: 'applicant' } });
+      const savedUser: IUser = await User.create({ ...user, userType: 'applicant', roleId: role ? role.id : null });
       const userProfile = await UserProfile.create({ ...req.body, ...req.body.profile, userId: savedUser.id });
       resp.status(200).send({ msg: 'An activation email has been sent to your email. Please check!' });
     } catch (exp) {
