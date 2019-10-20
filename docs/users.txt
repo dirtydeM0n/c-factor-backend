@@ -17,27 +17,90 @@ PUT        |  /users/:id/avatar                 | http://localhost:3000/users/:i
 DELETE     |  /users/:id/avatar                 | http://localhost:3000/users/:id/avatar
 --------------------------------------------------------------------------------------------
 
-1. POST  /users
+1. GET  /users
 
 ** Request Payload:
 
-
 ** Response:
+```
+[
+    {
+        "id": "f0a53ab0-f359-11e9-932d-0334653fb91c",
+        "username": "",
+        "email": "test1@client.com",
+        "password": "$2b$10$gel6dwNP2sxQC9eVFcOZYuUjpoh1Q8bHHfo/F54SSsIaHifsyXZ/a",
+        "userType": "applicant",
+        "status": "accepted",
+        "resetToken": null,
+        "resetTokenSentAt": null,
+        "resetTokenExpireAt": null,
+        "activationToken": null,
+        "activationTokenExpireAt": "2019-10-20T17:51:58.847Z",
+        "createdAt": "2019-10-20T16:52:02.653Z",
+        "updatedAt": "2019-10-20T17:01:09.305Z",
+        "roleId": null
+    }
+]
+```
 
 2. GET  /users/:id
 
 ** Request Payload:
 
-
 ** Response:
+```
+{
+    "id": "f0a53ab0-f359-11e9-932d-0334653fb91c",
+    "username": "",
+    "email": "test1@client.com",
+    "password": "$2b$10$gel6dwNP2sxQC9eVFcOZYuUjpoh1Q8bHHfo/F54SSsIaHifsyXZ/a",
+    "userType": "applicant",
+    "status": "accepted",
+    "resetToken": null,
+    "resetTokenSentAt": null,
+    "resetTokenExpireAt": null,
+    "activationToken": null,
+    "activationTokenExpireAt": "2019-10-20T17:51:58.847Z",
+    "createdAt": "2019-10-20T16:52:02.653Z",
+    "updatedAt": "2019-10-20T17:01:09.305Z",
+    "roleId": null
+}
+```
 
 3. POST  /users
 
 ** Request Payload:
-
+```
+email:test1@client.com
+password:123456
+firstname:Test
+lastname:Client
+country:Pakistan
+address:Karachi, Pakistan
+phone:03123841914
+dob:25-12-1992
+userType:client
+```
 
 ** Response:
-
+```
+{
+    "id": "f0a53ab0-f359-11e9-932d-0334653fb91c",
+    "username": "",
+    "email": "test1@client.com",
+    "password": "$2b$10$gel6dwNP2sxQC9eVFcOZYuUjpoh1Q8bHHfo/F54SSsIaHifsyXZ/a",
+    "userType": "applicant",
+    "status": "accepted",
+    "resetToken": null,
+    "resetTokenSentAt": null,
+    "resetTokenExpireAt": null,
+    "activationToken": null,
+    "activationTokenExpireAt": "2019-10-20T17:51:58.847Z",
+    "createdAt": "2019-10-20T16:52:02.653Z",
+    "updatedAt": "2019-10-20T17:01:09.305Z",
+    "roleId": null
+}
+```
 
 4. GET  /users/activateAccount/:id
 
@@ -64,20 +127,17 @@ DELETE     |  /users/:id/avatar                 | http://localhost:3000/users/:i
 
 ** Request Payload:
 
-
 ** Response:
 
 8. PUT  /users/:id/avatar
 
 ** Request Payload:
 
-
 ** Response:
 
 9. DELETE  /users/:id/avatar
 
 ** Request Payload:
-
 
 ** Response:
 

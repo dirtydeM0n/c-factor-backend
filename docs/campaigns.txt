@@ -21,7 +21,7 @@ DELETE     |  /campaigns/:id/invite          | http://localhost:3000/campaigns/:
 
 1. POST /campaigns
 
-Request Payload:
+** Request Payload:
 ```
 startupComponentId:1
 name:testing123
@@ -31,7 +31,7 @@ start_date:2019-10-21
 end_date:2019-11-21
 ```
 
-Response:
+** Response:
 ```
 {
     "id": "ba1e7d60-f37e-11e9-840e-d3da449f0abd",
@@ -101,7 +101,7 @@ Authorization Bearer <Token>
 
 3. GET  /campaigns/:id
 
-Response:
+** Response:
 
 ```
 {
@@ -125,7 +125,7 @@ Response:
 
 4. GET  /campaigns/:id/formatted
 
-Response:
+** Response:
 ```
 {
     "id": "55ceb8f0-f35d-11e9-932d-0334653fb91c",

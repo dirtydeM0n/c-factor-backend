@@ -19,7 +19,7 @@ DELETE     |  /competencies/:id/data          | http://localhost:3000/competenci
 
 1. POST /competencies
 
-Request Payload:
+** Request Payload:
 ```
 campaignId:55ceb8f0-f35d-11e9-932d-0334653fb91c
 type:Registration
@@ -31,7 +31,7 @@ nextComponentId:-1
 data:{"component": "Register"}
 ```
 
-Response:
+** Response:
 ```
 {
     "id": "2b51e640-f37d-11e9-ab75-1fda0fcb371c",
@@ -88,7 +88,7 @@ Authorization Bearer <Token>
 
 3. GET  /competencies/:id
 
-Response:
+** Response:
 
 ```
 {
@@ -113,7 +113,7 @@ Response:
 
 4. GET  /competencies/:campaignId/all
 
-Response:
+** Response:
 
 ```
 [
