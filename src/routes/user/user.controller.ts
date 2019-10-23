@@ -152,7 +152,17 @@ class UserController {
       const campaigns = await Promise.all(userCampaigns.map(async (camp) => {
         const campaign = await Campaign.findOne({ where: { id: camp.campaignId } });
         const competencies = await Competency.findAll({ where: { campaignId: camp.campaignId } });
-        return { ...campaign, status: camp.status, score: camp.score, components: competencies };
+        const userCompetencies = await Promise.all(competencies.map(async (comp) => {
+          const data = await UserCompetency.findOne({
+            where: {
+              userId: req.params.userId,
+              competencyId: comp.id,
+              strikeable: false
+            }
+          });
+          return { ...comp, ...data/*status: data.status, score: data.score, activeComponentId: data.activeComponentId*/ };
+        }));
+        return { ...campaign, status: camp.status, score: camp.score, components: userCompetencies };
       }));
       resp.status(200).send(campaigns);
     } catch (error) {
@@ -172,9 +182,19 @@ class UserController {
           campaignId: req.params.campaignId
         }
       });
-      const campaign = await Campaign.findOne({ where: { id: userCampaign.campaignId } });
-      const competencies = await Competency.findAll({ where: { campaignId: userCampaign.campaignId } });
-      resp.status(200).send({ ...campaign, status: userCampaign.status, score: userCampaign.score, components: competencies });
+      const campaign = await Campaign.findOne({ where: { id: req.params.campaignId } });
+      const competencies = await Competency.findAll({ where: { campaignId: req.params.campaignId } });
+      const userCompetencies = await Promise.all(competencies.map(async (comp) => {
+        const data = await UserCompetency.findOne({
+          where: {
+            userId: req.params.userId,
+            competencyId: comp.id,
+            strikeable: false
+          }
+        });
+        return { ...comp, ...data/*status: data.status, score: data.score, activeComponentId: data.activeComponentId*/ };
+      }));
+      resp.status(200).send({ ...campaign, status: userCampaign.status, score: userCampaign.score, components: userCompetencies });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
