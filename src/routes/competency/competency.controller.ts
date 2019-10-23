@@ -30,7 +30,7 @@ class CompetencyController {
       const competency = await Competency.create({ ...req.body });
       if (req.body.data) {
         const competencyData = await CompetencyData.create({ ...req.body, data: req.body.data, competencyId: competency.id });
-        const dataURL = req.originalUrl + `/competencyData/${competencyData.id}`;
+        const dataURL = req.protocol + '://' + req.get('Host') + `/competencyData/${competencyData.id}`;
         competency.update({ dataURL: dataURL }, { where: { id: competency.id } });
       }
       resp.status(200).send(competency);
@@ -44,7 +44,7 @@ class CompetencyController {
       const competency = await Competency.update({ ...req.body }, { where: { id: req.params.id } });
       if (req.body.data) {
         const competencyData = await CompetencyData.update({ ...req.body, data: req.body.data }, { where: { competencyId: req.params.id } });
-        // const dataURL = req.originalUrl + `/competencyData/${competencyData.id}`;
+        // const dataURL = req.protocol + '://' + req.get('Host') + `/competencyData/${competencyData.id}`;
         // competency.update({ dataURL: dataURL }, { where: { id: competency.id } });
       }
       resp.status(200).send(competency);
