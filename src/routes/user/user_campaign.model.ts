@@ -4,6 +4,14 @@ import { Campaign } from '../campaign/campaign.model';
 import { User } from './user.model';
 
 const UserCampaign = Database.define('user_campaign', {
+    score: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+    },
+    strikeable: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+    },
     status: {
         allowNull: false,
         type: Sequelize.ENUM('completed', 'active', 'in_progress'),

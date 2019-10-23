@@ -16,18 +16,31 @@ const UserRouter = Router()
   .get('/:id/avatar', UserController.getAvatar)
   .delete('/:id/avatar', UserController.deleteAvatar)
   // User Campaigns
-  .get('/:id/campaigns', UserController.getCampaigns)
-  .post('/:id/campaigns/:campaignId/select', UserController.selectCampaign)
-  .post('/:id/campaigns/:campaignId', UserController.selectCampaign)
-  .get('/:id/campaigns/:campaignId', UserController.getCampaignById)
-  .put('/:id/campaigns/:campaignId', UserController.editCampaign)
-  .delete('/:id/campaigns/:campaignId', UserController.deleteCampaign)
+  // .get('/:id/campaigns', UserController.getUserCampaigns)
+  // .post('/:id/campaigns/:campaignId/select', UserController.selectCampaign)
+  // .post('/:id/campaigns/:campaignId', UserController.selectCampaign)
+  // .get('/:id/campaigns/:campaignId', UserController.getCampaignById)
+  // .put('/:id/campaigns/:campaignId', UserController.editCampaign)
+  // .delete('/:id/campaigns/:campaignId', UserController.deleteUserCampaign)
   // User Compentencies
   .get('/:id/campaigns/:campaignId/competencies', UserController.getCompetencies)
   .post('/:id/campaigns/:campaignId/competencies/:competencyId', UserController.selectCompetency)
   .get('/:id/campaigns/:campaignId/competencies/:competencyId', UserController.getCompetencyById)
   .put('/:id/campaigns/:campaignId/competencies/:competencyId', UserController.editCompetency)
-  .delete('/:id/campaigns/:campaignId/competencies/:competencyId', UserController.deleteCompetency);
+  .delete('/:id/campaigns/:campaignId/competencies/:competencyId', UserController.deleteCompetency)
+  // Campaigns
+  .get('/:userId/campaigns', UserController.getUserCampaigns)
+  .get('/:userId/:campaignId', UserController.getUserCampaignById)
+  .delete('/:userId/:campaignId', UserController.deleteUserCampaign)
+  .get('/:userId/:campaignId/score', UserController.getUserCampaignById)
+  .post('/:userId/:campaignId/score', UserController.updateUserCampaign)
+  .put('/:userId/:campaignId/score', UserController.updateUserCampaign)
+  .post('/:userId/:campaignId/status', UserController.updateUserCampaign)
+  .post('/:userId/:campaignId/assign', UserController.updateUserCampaign)
+  // Competencies
+  .post('/:userId/:campaignId/:competencyId', UserController.saveUserCompetency)
+  .put('/:userId/:campaignId/:competencyId', UserController.saveUserCompetency)
+  .post('/:userId/:campaignId/:competencyId/score', UserController.saveUserCompetency);
 
 export { UserRouter };
 export { AvatarRouter } from './avatar/avatar.router';
