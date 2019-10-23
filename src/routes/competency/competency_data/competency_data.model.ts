@@ -12,7 +12,10 @@ const CompetencyData = Database.define('competency_data', {
     title: {
         type: Sequelize.STRING
     },
-    imageBg: { // image url
+    data: { // e.g., complete json as STRING
+        type: Sequelize.TEXT
+    },
+    /*imageBg: { // image url
         type: Sequelize.STRING
     },
     imageHorizontal: { // image url
@@ -27,11 +30,10 @@ const CompetencyData = Database.define('competency_data', {
     thoughtBubble: {
         type: Sequelize.JSON
     },
-    bottomPanel: { // e.g., either of type `message` or `options`
+    interactivePanel: { // e.g., either of type `message` or `options`
         type: Sequelize.JSON
-    }
+    }*/
 }, {
-    /*indexes: [{ unique: true, fields: ['title'] }],*/
     timestamps: true,
     freezeTableName: true,
     tableName: 'competency_data'

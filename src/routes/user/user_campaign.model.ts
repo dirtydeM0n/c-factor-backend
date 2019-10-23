@@ -4,7 +4,7 @@ import { Campaign } from '../campaign/campaign.model';
 import { User } from './user.model';
 
 const UserCampaign = Database.define('user_campaign', {
-    state: {
+    status: {
         allowNull: false,
         type: Sequelize.ENUM('completed', 'active', 'in_progress'),
         defaultValue: 'active',
@@ -21,8 +21,8 @@ const UserCampaign = Database.define('user_campaign', {
     tableName: 'user_campaigns'
 });
 
-User.belongsToMany(Campaign, { through: UserCampaign });
-Campaign.belongsToMany(User, { through: UserCampaign });
+User.campaignAssociation = User.belongsToMany(Campaign, { through: UserCampaign });
+Campaign.userAssociation = Campaign.belongsToMany(User, { through: UserCampaign });
 
 // UserCampaign.sync();
 

@@ -29,8 +29,8 @@ class CompetencyController {
     try {
       const competency = await Competency.create({ ...req.body });
       if (req.body.data) {
-        const competencyData = await CompetencyData.create({ ...req.body, ...req.body.data, competencyId: competency.id });
-        const dataURL = req.originalUrl + `/${competency.id}/data/${competencyData.id}`;
+        const competencyData = await CompetencyData.create({ ...req.body, data: req.body.data, competencyId: competency.id });
+        const dataURL = req.originalUrl + `/competencyData/${competencyData.id}`;
         competency.update({ dataURL: dataURL }, { where: { id: competency.id } });
       }
       resp.status(200).send(competency);
@@ -43,8 +43,8 @@ class CompetencyController {
     try {
       const competency = await Competency.update({ ...req.body }, { where: { id: req.params.id } });
       if (req.body.data) {
-        const competencyData = await CompetencyData.update({ ...req.body, ...req.body.data }, { where: { competencyId: competency.id } });
-        // const dataURL = req.originalUrl + `/${competency.id}/data/${competencyData.id}`;
+        const competencyData = await CompetencyData.update({ ...req.body, data: req.body.data }, { where: { competencyId: req.params.id } });
+        // const dataURL = req.originalUrl + `/competencyData/${competencyData.id}`;
         // competency.update({ dataURL: dataURL }, { where: { id: competency.id } });
       }
       resp.status(200).send(competency);
@@ -83,8 +83,9 @@ class CompetencyController {
 
   async getCompetencyDataById(req: Request, resp: Response) {
     try {
-      const data = await CompetencyData.findOne({ where: { id: req.params.competencyDataId, competencyId: req.params.id } });
-      resp.status(200).send(data);
+      const competencyData = await CompetencyData.findOne({ where: { id: req.params.competencyDataId, competencyId: req.params.id } });
+      competencyData.data = JSON.parse(competencyData.data || '{}');
+      resp.status(200).send(competencyData.data);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }

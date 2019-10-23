@@ -8,21 +8,8 @@ const UserCompetency = Database.define('user_competency', {
         type: Sequelize.STRING
     },
     status: {
-        type: Sequelize.INTEGER
-    },
-    state: {
-        allowNull: false,
-        type: Sequelize.ENUM('completed', 'active', 'in_progress'),
-        defaultValue: 'active',
-        validate: {
-            isIn: {
-                args: [['completed', 'active', 'in_progress']],
-                msg: 'Invalid state.'
-            }
-        }
-    },
-    data: { // e.g., progress data json
-        type: Sequelize.JSON
+        type: Sequelize.INTEGER,
+        defaultValue: 0 // 0 - Not Attempted ; 1 - Completed ; 2 - In Progress
     }
 }, {
     timestamps: true,

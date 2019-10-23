@@ -98,10 +98,10 @@ app.use('/roles', ValidateToken, RoleRouter);
 app.use('/departments', ValidateToken, DepartmentRouter);
 app.use('/companies', ValidateToken, CompanyRouter);
 app.use('/clients', ValidateToken, ClientRouter);
-app.use('/campaigns', ValidateToken, CampaignRouter);
+app.use('/campaigns', CampaignRouter);
 app.use('/campaignInvites', ValidateToken, CampaignInviteRouter);
 app.use('/competencies', ValidateToken, CompetencyRouter);
-app.use('/competencyData', ValidateToken, CompetencyDataRouter);
+app.use('/competencyData', CompetencyDataRouter);
 /**
  * Add swagger endpoints
  */
