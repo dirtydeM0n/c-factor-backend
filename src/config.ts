@@ -6,6 +6,7 @@ const fs = require('fs');
 if (fs.existsSync('.env')) {
     // Load environment variables from .env file, where API keys and passwords are configured
     dotenv.config({ path: '.env' || '.env.example' });
+    console.log('.env file loaded!');
 } else {
     console.log('.env file does not exist!');
 }

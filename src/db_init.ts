@@ -15,24 +15,23 @@ import { CompetencyData } from './routes/competency/competency_data/competency_d
 import config = require('./config');
 import { Database } from './db';
 
-Role.sync();
-User.sync();
-UserProfile.sync();
-UserAuth.sync();
-Avatar.sync();
-Company.sync();
-Department.sync();
-Client.sync();
-Campaign.sync();
-CampaignInvite.sync();
-Competency.sync();
-CompetencyData.sync();
-// ClientCompetency.sync();
-// ClientCampaign.sync();
-UserCompetency.sync();
-UserCampaign.sync();
-
 if (config.NODE_ENV === 'development') {
+    Role.sync();
+    User.sync();
+    UserProfile.sync();
+    UserAuth.sync();
+    Avatar.sync();
+    Company.sync();
+    Department.sync();
+    Client.sync();
+    Campaign.sync();
+    CampaignInvite.sync();
+    Competency.sync();
+    CompetencyData.sync();
+    // ClientCompetency.sync();
+    // ClientCampaign.sync();
+    UserCompetency.sync();
+    UserCampaign.sync();
     Database.sync(/*{ alter: true }*/).then(() => {
         console.log('Database sync!!');
     }, (err) => {
