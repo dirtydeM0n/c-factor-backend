@@ -10,7 +10,7 @@ import { UserCompetency } from './user_competency.model';
 class UserController {
   async getAll(req: Request, resp: Response) {
     try {
-      const data = await User.findAll();
+      const data = await User.findAll({});
       resp.status(200).send(data);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
@@ -19,8 +19,14 @@ class UserController {
 
   async getById(req: Request, resp: Response) {
     try {
-      const data = await User.findOne({ id: req.params.id });
-      resp.status(200).send(data);
+      const user = await User.findOne({ id: req.params.id });
+      const userAuth = await UserAuth.findOne({
+        where: { id: req.params.id }
+      });
+      const userProfile = await UserProfile.findOne({
+        where: { userId: req.params.id }
+      });
+      resp.status(200).send({ ...user, profile: userProfile, auth: userAuth });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -52,13 +58,13 @@ class UserController {
     try {
       const user = await User.update({ ...req.body }, { where: { id: req.params.id } });
       if (req.body.profile) {
-        await UserProfile.update({ ...req.body.profile }, { where: { userId: user.id } });
+        await UserProfile.update({ ...req.body.profile }, { where: { userId: req.params.id } });
       }
       if (req.body.auth) {
-        await UserAuth.update({ ...req.body.auth }, { where: { userId: user.id } });
+        await UserAuth.update({ ...req.body.auth }, { where: { userId: req.params.id } });
       }
       if (req.body.avatar) {
-        await Avatar.update({ ...req.body.avatar }, { where: { userId: user.id } });
+        await Avatar.update({ ...req.body.avatar }, { where: { userId: req.params.id } });
       }
       resp.status(200).send(user);
     } catch (error) {
