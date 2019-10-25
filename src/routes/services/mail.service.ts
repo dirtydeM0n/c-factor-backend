@@ -5,7 +5,7 @@ import config = require('../../config');
 const transporter = nodemailer.createTransport({
     host: config.mail.SMTP_HOST,
     port: Number(config.mail.SMTP_PORT),
-    secure: config.NODE_ENV === 'production',
+    /*secure: config.NODE_ENV === 'production',*/
     socketTimeout: 5000,
     logger: true,
     auth: {

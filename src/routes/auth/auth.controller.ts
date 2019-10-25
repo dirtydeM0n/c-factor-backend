@@ -80,19 +80,21 @@ class AuthController {
       user.activationToken = cryptedValue.toString('hex');
       user.activationTokenExpireAt = new Date(Date.now() + (60 * 60 * 1000)); // 1 hour
       // Send activation email
+      const serverUrl = req.protocol + '://' + req.get('Host');
       const mailOptions = {
         to: user.email,
         from: config.mail.SMTP_USER,
         subject: 'Account activation',
         text: `You are receiving this email because you (or someone else) have requested account activation.\n\n
           Please click on the following link, or paste this into your browser to complete the process:\n\n
-          http://${req.headers.host}/auth/activate/${user.activationToken}\n\n
+          ${serverUrl}/auth/activate/${user.activationToken}\n\n
           If you did not request this, please ignore this email\n`
       };
       await sendMail(mailOptions);
       const role = await Role.findOne({ where: { value: 'applicant' } });
       const savedUser: IUser = await User.create({ ...user, userType: 'applicant', roleId: role ? role.id : null });
       const userProfile = await UserProfile.create({ ...req.body, ...req.body.profile, userId: savedUser.id });
+      console.log('savedUser:', savedUser);
       resp.status(200).send({ msg: 'An activation email has been sent to your email. Please check!' });
     } catch (exp) {
       console.log(exp.error);
@@ -163,13 +165,14 @@ class AuthController {
       const resetTokenSentAt = new Date(Date.now());
       const resetTokenExpireAt = new Date(Date.now() + (60 * 60 * 1000)); // 1 hour
       // Send activation email
+      const serverUrl = req.protocol + '://' + req.get('Host');
       const mailOptions = {
         to: user.email,
         from: config.mail.SMTP_USER,
         subject: 'Account password reset',
         text: `You are receiving this email because you (or someone else) have requested password reset of your account.\n\n
           Please click on the following link, or paste this into your browser to complete the process:\n\n
-          http://${req.headers.host}/auth/resetPassword/${resetToken}\n\n
+          ${serverUrl}/auth/resetPassword/${resetToken}\n\n
           If you did not request this, please ignore this email\n`
       };
       await sendMail(mailOptions);
