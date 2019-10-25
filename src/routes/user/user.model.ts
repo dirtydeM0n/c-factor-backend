@@ -130,6 +130,21 @@ const UserProfile = Database.define('profile', {
         type: Sequelize.STRING,
         defaultValue: ''
     },
+    gender: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    cnic: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    fatherName: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
     /*avatar: {
         type: Sequelize.STRING,
         defaultValue: ''
@@ -138,7 +153,27 @@ const UserProfile = Database.define('profile', {
         type: Sequelize.STRING,
         defaultValue: ''
     },
-    education: {
+    gradingSystem: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    gradingValue: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    university: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    graduationDate: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    qualification: {
         type: Sequelize.STRING
     },
     specialization: {

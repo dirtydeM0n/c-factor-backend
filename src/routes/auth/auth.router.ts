@@ -11,7 +11,7 @@ const AuthRouter = Router()
   .post('/resetPassword', AuthController.resetPassword)
   .post('/changePassword', AuthController.changePassword)
   .get('/logout', AuthController.logout)
-  .get('/user/linkedin/:authId', AuthController.fetchByAuthId)
+  .post('/user/linkedin/:authId', AuthController.fetchByAuthId)
   .get('/linkedin', passportLinkedIn.authenticate('linkedin'))
   .get('/linkedin/callback', passportLinkedIn.authenticate('linkedin', { failureRedirect: `${config.FRONTEND_URI}?error=1`, /*successRedirect: '/demo?success'*/ }),
     function (req, resp) {
