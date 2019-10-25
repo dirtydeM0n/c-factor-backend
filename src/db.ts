@@ -12,12 +12,13 @@ if (config.DATABASE_URL) {
     host: config.db.host,
     port: config.db.port,
     dialect: 'postgres', /* one of 'mysql' | 'mariadb' | 'postgres' | 'mssql' */
-    forceSchema: true,
+    /*forceSchema: true,*/
     pool: {
-      min: 0,
+      min: 1,
       max: config.db.max || 5,
-      acquire: 30000,
-      idle: config.db.idleTimeoutMillis || 10000
+      /* acquire: 30000,
+      idle: config.db.idleTimeoutMillis || 10000 // Keep this very low or it'll make all Lambda requests take longer
+      */
     },
     query: { raw: true }
   });
