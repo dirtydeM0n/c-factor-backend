@@ -45,7 +45,7 @@ app.use(flash());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
-app.use(cors(/*{
+/*app.use(cors({
   origin: function(origin, callback) {
       const whitelist = [
         'http://127.0.0.1:3000',
@@ -57,7 +57,7 @@ app.use(cors(/*{
       }
   },
   credentials: true
-}*/));
+}));*/
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(session({
