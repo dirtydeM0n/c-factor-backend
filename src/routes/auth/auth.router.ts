@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import AuthController from './auth.controller';
+import * as config from '../../config';
 
 const passportLinkedIn = require('./passport');
 
@@ -16,8 +17,8 @@ const AuthRouter = Router()
     function (req, resp) {
       console.log('LinkedIn Successful authentication => ', req.user);
       if (req.user) {
-        const serverUrl = req.protocol + '://' + req.get('Host');
-        resp.redirect(`${serverUrl}/?authId=${req.user.auth.id}`); // &code=${req.query.code}&state=${req.query.state}
+        // const serverUrl = req.protocol + '://' + req.get('Host');
+        resp.redirect(`${config.FRONTEND_URI}/?authId=${req.user.auth.id}`); // &code=${req.query.code}&state=${req.query.state}
       }
       // Successful authentication
       // resp.json(req.user);

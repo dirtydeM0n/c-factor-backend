@@ -230,7 +230,7 @@ class AuthController {
     try {
       const userAuth = await UserAuth.findOne({
         where: { id: req.params.authId },
-        include: [ { all: true }]
+        include: [ { model: User } ]
       });
       resp.status(200).send(userAuth);
     } catch (error) {

@@ -206,6 +206,7 @@ const UserAuth = Database.define('auth', {
 User.belongsTo(Role);
 UserProfile.belongsTo(User);
 User.hasMany(UserAuth);
+UserAuth.belongsTo(User);
 
 // User.sync();
 // UserProfile.sync();
