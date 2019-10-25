@@ -5,7 +5,7 @@ import * as crypto from 'crypto';
 import { IUser } from '../user/user';
 import { sendMail } from '../services/mail.service';
 import config = require('../../config');
-import { UserProfile, User } from '../user/user.model';
+import { UserProfile, User, UserAuth } from '../user/user.model';
 import { compare } from '../services/crypto.service';
 import { Role } from '../role/role.model';
 
@@ -218,6 +218,21 @@ class AuthController {
         req.session = null;
         resp.redirect('/');
       });
+    } catch (error) {
+      console.log(error);
+      resp.status(400).send({
+        msg: error
+      });
+    }
+  }
+
+  async fetchByAuthId(req: Request, resp: Response) {
+    try {
+      const userAuth = await UserAuth.findOne({
+        where: { id: req.params.authId },
+        include: [ { all: true }]
+      });
+      resp.status(200).send(userAuth);
     } catch (error) {
       console.log(error);
       resp.status(400).send({
