@@ -236,7 +236,15 @@ class AuthController {
         where: { id: userAuth.userId },
         include: [ { model: UserProfile } ]
       });
-      resp.status(200).send({ ...user, auth: userAuth });
+      const userProfile = await UserProfile.findOne({
+        where: { userId: userAuth.userId }
+      });
+      const token = jwt.sign({
+        email: user.email,
+        role: user.role,
+        username: user.username
+      }, config.JWT_SECRET, { expiresIn: '1d' });
+      resp.status(200).send({ ...user, profile: userProfile, token: token });
     } catch (error) {
       console.log(error);
       resp.status(400).send({
