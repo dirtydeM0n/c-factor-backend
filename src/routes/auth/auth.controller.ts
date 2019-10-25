@@ -232,7 +232,11 @@ class AuthController {
         where: { id: req.params.authId },
         include: [ { model: User } ]
       });
-      resp.status(200).send(userAuth);
+      const user = await UserAuth.findOne({
+        where: { id: userAuth.userId },
+        include: [ { model: UserProfile } ]
+      });
+      resp.status(200).send({ ...user, auth: userAuth });
     } catch (error) {
       console.log(error);
       resp.status(400).send({

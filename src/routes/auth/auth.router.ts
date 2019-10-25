@@ -13,7 +13,7 @@ const AuthRouter = Router()
   .get('/logout', AuthController.logout)
   .get('/user/linkedin/:authId', AuthController.fetchByAuthId)
   .get('/linkedin', passportLinkedIn.authenticate('linkedin'))
-  .get('/linkedin/callback', passportLinkedIn.authenticate('linkedin', { failureRedirect: '/auth/login', /*successRedirect: '/demo?success'*/ }),
+  .get('/linkedin/callback', passportLinkedIn.authenticate('linkedin', { failureRedirect: `${config.FRONTEND_URI}?error=1`, /*successRedirect: '/demo?success'*/ }),
     function (req, resp) {
       console.log('LinkedIn Successful authentication => ', req.user);
       if (req.user) {
