@@ -248,6 +248,7 @@ class UserController {
       if (!competency) {
         return resp.status(404).send({ msg: 'Invalid competency id or No such competency found for provided campaign!' });
       }
+      console.log('body:', req.body);
       const whereObj = { userId: req.params.userId, competencyId: req.params.competencyId };
       let userCompetency = await UserCompetency.findOne({ where: whereObj });
       if (userCompetency) {

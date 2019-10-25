@@ -40,7 +40,8 @@ const UserRouter = Router()
   // Competencies
   .post('/:userId/:campaignId/:competencyId', UserController.saveUserCompetency)
   .put('/:userId/:campaignId/:competencyId', UserController.saveUserCompetency)
-  .post('/:userId/:campaignId/:competencyId/score', UserController.saveUserCompetency);
+  .post('/:userId/:campaignId/:competencyId/score', UserController.saveUserCompetency)
+  .put('/:userId/:campaignId/:competencyId/score', UserController.saveUserCompetency);
 
 export { UserRouter };
 export { AvatarRouter } from './avatar/avatar.router';

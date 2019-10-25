@@ -30,12 +30,15 @@ class AuthController {
       }
       const isSamePass = await compare(req.body.password, user.password);
       if (isSamePass) {
+        const userProfile = await UserProfile.findOne({
+          where: { userId: user.id }
+        });
         const token = jwt.sign({
           email: user.email,
           role: user.role,
           username: user.username
         }, config.JWT_SECRET, { expiresIn: '1d' });
-        return resp.status(200).send({ token: token });
+        return resp.status(200).send({ profile: userProfile, token: token });
       } else {
         return resp.status(401).send({ msg: 'Unauthorized' });
       }
