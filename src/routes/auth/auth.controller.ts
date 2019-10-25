@@ -232,9 +232,8 @@ class AuthController {
         where: { id: req.params.authId },
         include: [ { model: User } ]
       });
-      const user = await UserAuth.findOne({
-        where: { id: userAuth.userId },
-        include: [ { model: UserProfile } ]
+      const user = await User.findOne({
+        where: { id: userAuth.userId }
       });
       const userProfile = await UserProfile.findOne({
         where: { userId: userAuth.userId }
