@@ -50,13 +50,14 @@ app.use(cors(/*{
       const whitelist = [
         'http://127.0.0.1:3000',
       ];
-      if (whitelist.indexOf(origin) !== -1) {
+      if (whitelist.indexOf(origin) !== -1) { // present
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
       }
   },
-  credentials: true
+  credentials: true,
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }*/));
 app.use(passport.initialize());
 app.use(passport.session());
