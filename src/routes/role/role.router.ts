@@ -6,6 +6,7 @@ const RoleRouter = Router()
   .get('/:id', RoleController.getById)
   .post('/', RoleController.post)
   .put('/:id', RoleController.put)
+  .post('/:id', RoleController.put)
   .delete('/:id', RoleController.delete);
 
 export { RoleRouter };

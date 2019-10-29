@@ -6,6 +6,7 @@ const CompetencyDataRouter = Router()
   .get('/:id', CompetencyDataController.getById)
   .post('/', CompetencyDataController.post)
   .put('/:id', CompetencyDataController.put)
+  .post('/:id', CompetencyDataController.put)
   .delete('/:id', CompetencyDataController.delete);
 
 export { CompetencyDataRouter };

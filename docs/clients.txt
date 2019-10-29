@@ -7,11 +7,47 @@ GET        |  /clients                     | http://localhost:3000/clients
 GET        |  /clients/:id                 | http://localhost:3000/clients/:id
 POST       |  /clients/:id                 | http://localhost:3000/clients/:id
 PUT        |  /clients/:id                 | http://localhost:3000/clients/:id
+POST       |  /clients/:id                 | http://localhost:3000/clients/:id
 DELETE     |  /clients/:id                 | http://localhost:3000/clients/:id
 
 --------------------------------------------------------------------------------------------
 
 1. GET  /clients
+
+**Description:** Fetch all clients.
+
+** Request Payload:
+
+2. POST  /clients
+
+**Description:** Create new client.
+
+** Request Payload:
+
+
+** Response:
+
+3. PUT  /clients/:id
+
+**Description:** Edit single client.
+
+** Request Payload:
+
+
+** Response:
+
+4. POST  /clients/:id
+
+**Description:** Edit single client.
+
+** Request Payload:
+
+
+** Response:
+
+4. DELETE  /clients/:id
+
+**Description:** Delete single client.
 
 ** Request Payload:
 

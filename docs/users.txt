@@ -7,28 +7,30 @@ GET        |  /users                            | http://localhost:3000/users
 GET        |  /users/:id                        | http://localhost:3000/users/:id
 POST       |  /users                            | http://localhost:3000/users
 PUT        |  /users/:id                        | http://localhost:3000/users/:id
+POST       |  /users/:id                        | http://localhost:3000/users/:id
 DELETE     |  /users/:id                        | http://localhost:3000/users/:id
 GET        |  /users/activateAccount/:id        | http://localhost:3000/users/activateAccount/:id
 GET        |  /users/deactivateAccount/:id      | http://localhost:3000/users/deactivateAccount/:id
 
 GET        |  /users/:id/avatar                 | http://localhost:3000/users/:id/avatar
 POST       |  /users/:id/avatar                 | http://localhost:3000/users/:id/avatar
-PUT        |  /users/:id/avatar                 | http://localhost:3000/users/:id/avatar
-DELETE     |  /users/:id/avatar                 | http://localhost:3000/users/:id/avatar
+PUT        |  /users/:id/avatar/:avatarId       | http://localhost:3000/users/:id/avatar
+POST       |  /users/:id/avatar/:avatarId       | http://localhost:3000/users/:id/avatar
+DELETE     |  /users/:id/avatar/:avatarId       | http://localhost:3000/users/:id/avatar
 
 // User Campaigns
 GET        | /users/:userId/campaigns                       | http://localhost:3000/users/:userId/campaigns 
 GET        |  /users/:userId/:campaignId                    | http://localhost:3000/users/:userId/:campaignId 
 DELETE     |  /users/:userId/:campaignId                    | http://localhost:3000/users/:userId/:campaignId 
 GET        |  /users/:userId/:campaignId/score              | http://localhost:3000/users/:userId/:campaignId/score
-POST       |  /users/:userId/:campaignId/score              | http://localhost:3000/users/:userId/:campaignId/score
 PUT        |  /users/:userId/:campaignId/score              | http://localhost:3000/users/:userId/:campaignId/score
+POST       |  /users/:userId/:campaignId/score              | http://localhost:3000/users/:userId/:campaignId/score
 POST       |  /users/:userId/:campaignId/status             | http://localhost:3000/users/:userId/:campaignId/status
 POST       |  /users/:userId/:campaignId/assign             | http://localhost:3000/users/:userId/:campaignId/assign
 
 // User Competencies
-POST       |  /users/:userId/:campaignId/:competencyId        | http://localhost:3000/users/:userId/:campaignId/:competencyId
 PUT        |  /users/:userId/:campaignId/:competencyId        | http://localhost:3000/users/:userId/:campaignId/:competencyId
+POST       |  /users/:userId/:campaignId/:competencyId        | http://localhost:3000/users/:userId/:campaignId/:competencyId
 POST       |  /users/:userId/:campaignId/:competencyId/score  | http://localhost:3000/users/:userId/:campaignId/:competencyId/score
 
 --------------------------------------------------------------------------------------------
@@ -141,17 +143,31 @@ userType:client
 
 7. POST  /users/:id/avatar
 
-** Request Payload:
-
-** Response:
-
-8. PUT  /users/:id/avatar
+**Description:** Create single user avatar.
 
 ** Request Payload:
 
 ** Response:
 
-9. DELETE  /users/:id/avatar
+8. PUT  /users/:id/avatar/:avatarId
+
+**Description:** Edit single user avatar.
+
+** Request Payload:
+
+** Response:
+
+9. POST  /users/:id/avatar/:avatarId
+
+**Description:** Edit single user avatar.
+
+** Request Payload:
+
+** Response:
+
+10. DELETE  /users/:id/avatar/:avatarId
+
+**Description:** Delete single user avatar.
 
 ** Request Payload:
 

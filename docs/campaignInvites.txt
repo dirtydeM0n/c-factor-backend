@@ -7,11 +7,47 @@ GET        |  /campaignInvites                     | http://localhost:3000/campa
 GET        |  /campaignInvites/:id                 | http://localhost:3000/campaignInvites/:id
 POST       |  /campaignInvites/:id                 | http://localhost:3000/campaignInvites/:id
 PUT        |  /campaignInvites/:id                 | http://localhost:3000/campaignInvites/:id
+POST       |  /campaignInvites/:id                 | http://localhost:3000/campaignInvites/:id
 DELETE     |  /campaignInvites/:id                 | http://localhost:3000/campaignInvites/:id
 
 --------------------------------------------------------------------------------------------
 
 1. GET  /campaignInvites
+
+**Description:** Fetch all campaign invites.
+
+** Request Payload:
+
+2. POST  /campaignInvites
+
+**Description:** Create new campaign invite.
+
+** Request Payload:
+
+
+** Response:
+
+3. PUT  /campaignInvites/:id
+
+**Description:** Edit single campaign invite.
+
+** Request Payload:
+
+
+** Response:
+
+4. POST  /campaignInvites/:id
+
+**Description:** Edit single campaign invite
+
+** Request Payload:
+
+
+** Response:
+
+4. DELETE  /campaignInvites/:id
+
+**Description:** Delete single campaign invite.
 
 ** Request Payload:
 

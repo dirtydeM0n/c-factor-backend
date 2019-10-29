@@ -6,6 +6,7 @@ const DepartmentRouter = Router()
   .get('/:id', DepartmentController.getById)
   .post('/', DepartmentController.post)
   .put('/:id', DepartmentController.put)
+  .post('/:id', DepartmentController.put)
   .delete('/:id', DepartmentController.delete);
 
 export { DepartmentRouter };

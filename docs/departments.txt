@@ -7,11 +7,47 @@ GET        |  /departments                     | http://localhost:3000/departmen
 GET        |  /departments/:id                 | http://localhost:3000/departments/:id
 POST       |  /departments/:id                 | http://localhost:3000/departments/:id
 PUT        |  /departments/:id                 | http://localhost:3000/departments/:id
+POST       |  /departments/:id                 | http://localhost:3000/departments/:id
 DELETE     |  /departments/:id                 | http://localhost:3000/departments/:id
 
 --------------------------------------------------------------------------------------------
 
 1. GET  /departments
+
+**Description:** Fetch all departments.
+
+** Request Payload:
+
+2. POST  /departments
+
+**Description:** Create new department.
+
+** Request Payload:
+
+
+** Response:
+
+3. PUT  /departments/:id
+
+**Description:** Edit single department.
+
+** Request Payload:
+
+
+** Response:
+
+4. POST  /departments/:id
+
+**Description:** Edit single department.
+
+** Request Payload:
+
+
+** Response:
+
+4. DELETE  /departments/:id
+
+**Description:** Delete single department.
 
 ** Request Payload:
 

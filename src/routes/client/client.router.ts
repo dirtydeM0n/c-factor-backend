@@ -6,6 +6,7 @@ const ClientRouter = Router()
   .get('/:id', ClientController.getById)
   .post('/', ClientController.post)
   .put('/:id', ClientController.put)
+  .post('/:id', ClientController.put)
   .delete('/:id', ClientController.delete)
   // Client Campaigns
   .get('/:id/campaigns', ClientController.getCampaigns)

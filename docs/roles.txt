@@ -7,13 +7,50 @@ GET        |  /roles                     | http://localhost:3000/roles
 GET        |  /roles/:id                 | http://localhost:3000/roles/:id
 POST       |  /roles/:id                 | http://localhost:3000/roles/:id
 PUT        |  /roles/:id                 | http://localhost:3000/roles/:id
+POST       |  /roles/:id                 | http://localhost:3000/roles/:id
 DELETE     |  /roles/:id                 | http://localhost:3000/roles/:id
 
 --------------------------------------------------------------------------------------------
 
 1. GET  /roles
 
+**Description:** Fetch all roles.
+
+** Request Payload:
+
+2. POST  /roles
+
+**Description:** Create new role.
+
 ** Request Payload:
 
 
 ** Response:
+
+3. PUT  /roles/:id
+
+**Description:** Edit single role.
+
+** Request Payload:
+
+
+** Response:
+
+4. POST  /roles/:id
+
+**Description:** Edit single role.
+
+** Request Payload:
+
+
+** Response:
+
+4. DELETE  /roles/:id
+
+**Description:** Delete single role.
+
+** Request Payload:
+
+
+** Response:
+

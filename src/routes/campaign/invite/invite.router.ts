@@ -6,6 +6,7 @@ const CampaignInviteRouter = Router()
     .get('/:id', CampaignInviteController.getById)
     .post('/', CampaignInviteController.post)
     .put('/:id', CampaignInviteController.put)
+    .post('/:id', CampaignInviteController.put)
     .delete('/:id', CampaignInviteController.delete);
 
 export { CampaignInviteRouter };

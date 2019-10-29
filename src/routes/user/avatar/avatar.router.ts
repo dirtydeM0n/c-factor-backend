@@ -6,6 +6,7 @@ const AvatarRouter = Router()
     .get('/:id', AvatarController.getById)
     .post('/', AvatarController.post)
     .put('/:id', AvatarController.put)
+    .post('/:id', AvatarController.put)
     .delete('/:id', AvatarController.delete);
 
 export { AvatarRouter };

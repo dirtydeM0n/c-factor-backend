@@ -7,15 +7,18 @@ GET        |  /campaigns                     | http://localhost:3000/campaigns
 GET        |  /campaigns/:id                 | http://localhost:3000/campaigns/:id
 POST       |  /campaigns/:id                 | http://localhost:3000/campaigns/:id
 PUT        |  /campaigns/:id                 | http://localhost:3000/campaigns/:id
+POST       |  /campaigns/:id                 | http://localhost:3000/campaigns/:id
 DELETE     |  /campaigns/:id                 | http://localhost:3000/campaigns/:id
 POST       |  /campaigns/:id/activate        | http://localhost:3000/campaigns/:id/activate
 POST       |  /campaigns/:id/deactivate      | http://localhost:3000/campaigns/:id/deactivate
 PUT        |  /campaigns/:id/changeState     | http://localhost:3000/campaigns/:id/changeState
+POST       |  /campaigns/:id/changeState     | http://localhost:3000/campaigns/:id/changeState
 
 GET        |  /campaigns/:id/invites         | http://localhost:3000/campaigns/:id/invites
 GET        |  /campaigns/:id/invite          | http://localhost:3000/campaigns/:id/invite
 POST       |  /campaigns/:id/invite          | http://localhost:3000/campaigns/:id/invite
 PUT        |  /campaigns/:id/invite          | http://localhost:3000/campaigns/:id/invite
+POST       |  /campaigns/:id/invite          | http://localhost:3000/campaigns/:id/invite
 DELETE     |  /campaigns/:id/invite          | http://localhost:3000/campaigns/:id/invite
 --------------------------------------------------------------------------------------------
 

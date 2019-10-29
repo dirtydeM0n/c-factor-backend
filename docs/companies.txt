@@ -7,11 +7,48 @@ GET        |  /companies                     | http://localhost:3000/companies
 GET        |  /companies/:id                 | http://localhost:3000/companies/:id
 POST       |  /companies/:id                 | http://localhost:3000/companies/:id
 PUT        |  /companies/:id                 | http://localhost:3000/companies/:id
+POST       |  /companies/:id                 | http://localhost:3000/companies/:id
 DELETE     |  /companies/:id                 | http://localhost:3000/companies/:id
 
 --------------------------------------------------------------------------------------------
 
 1. GET  /companies
+
+**Description:** Fetch all companies.
+
+** Request Payload:
+
+2. POST  /companies
+
+**Description:** Create new company.
+
+** Request Payload:
+
+
+** Response:
+
+3. PUT  /companies/:id
+
+**Description:** Edit single company.
+
+** Request Payload:
+
+
+** Response:
+
+4. POST  /companies/:id
+
+**Description:** Edit single company.
+
+** Request Payload:
+
+
+** Response:
+
+
+4. DELETE  /companies/:id
+
+**Description:** Delete single company.
 
 ** Request Payload:
 
