@@ -181,13 +181,21 @@ class UserController {
       });
       const campaigns = await Promise.all(userCampaigns.map(async (camp) => {
         const campaign = await Campaign.findOne({ where: { id: camp.campaignId } });
-        const competencies = await Competency.findAll({ where: { campaignId: camp.campaignId } });
+        const competencies = await Competency.findAll({
+          where: { campaignId: camp.campaignId },
+          attributes: {
+            exclude: ['campaignId']
+          }
+        });
         const userCompetencies = await Promise.all(competencies.map(async (comp) => {
           const data = await UserCompetency.findOne({
             where: {
               userId: req.params.userId,
               competencyId: comp.id,
               strikeable: false
+            },
+            attributes: {
+              exclude: ['competencyId', 'userId']
             }
           });
           return { ...comp, ...data/*status: data.status, score: data.score*/ };
@@ -216,13 +224,21 @@ class UserController {
         }
       });
       const campaign = await Campaign.findOne({ where: { id: req.params.campaignId } });
-      const competencies = await Competency.findAll({ where: { campaignId: req.params.campaignId } });
+      const competencies = await Competency.findAll({
+        where: { campaignId: req.params.campaignId },
+        attributes: {
+          exclude: ['campaignId']
+        }
+      });
       const userCompetencies = await Promise.all(competencies.map(async (comp) => {
         const data = await UserCompetency.findOne({
           where: {
             userId: req.params.userId,
             competencyId: comp.id,
             strikeable: false
+          },
+          attributes: {
+            exclude: ['competencyId', 'userId']
           }
         });
         return { ...comp, ...data/*status: data.status, score: data.score*/ };

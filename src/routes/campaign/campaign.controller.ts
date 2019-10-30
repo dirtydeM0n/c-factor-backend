@@ -28,7 +28,12 @@ class CampaignController {
       const campaign = await Campaign.findOne({
         where: { id: req.params.id }
       });
-      const components = await Competency.findAll({ where: { campaignId: req.params.id } });
+      const components = await Competency.findAll({
+        where: { campaignId: req.params.id },
+        attributes: {
+          exclude: ['campaignId']
+        }
+      });
       resp.status(200).send({ ...campaign, components: components });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
