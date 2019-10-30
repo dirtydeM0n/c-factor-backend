@@ -173,6 +173,11 @@ const UserProfile = Database.define('profile', {
         type: Sequelize.STRING,
         defaultValue: ''
     },
+    otherUniversity: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
     qualification: {
         type: Sequelize.STRING
     },
