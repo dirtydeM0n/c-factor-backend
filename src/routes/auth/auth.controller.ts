@@ -189,7 +189,7 @@ class AuthController {
       const updatedUser = await User.findOne({
         where: { id: existingUser.id },
         attributes: {
-          include: ['id', 'username', 'email', 'userType', 'status', 'createdAt', 'updatedAt'],
+          exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
         }
       });
       resp.status(200).send(updatedUser);
@@ -218,7 +218,7 @@ class AuthController {
       const updatedUser = await User.findOne({
         where: { resetToken: req.params.resetToken },
         attributes: {
-          include: ['id', 'username', 'email', 'userType', 'status', 'createdAt', 'updatedAt'],
+          exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
         }
       });
       return resp.status(200).send(updatedUser);
@@ -253,7 +253,7 @@ class AuthController {
       const user = await User.findOne({
         where: { id: userAuth.userId },
         attributes: {
-          include: ['id', 'username', 'email', 'userType', 'status', 'createdAt', 'updatedAt'],
+          exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
         }
       });
       const userProfile = await UserProfile.findOne({

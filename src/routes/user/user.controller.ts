@@ -12,8 +12,8 @@ class UserController {
     try {
       const users = await User.findAll({
         attributes: {
-          include: ['id', 'username', 'email', 'userType', 'status', 'createdAt', 'updatedAt'],
-          /*exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']*/
+          /*include: ['id', 'username', 'email', 'userType', 'status', 'createdAt', 'updatedAt'],*/
+          exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
         }
       });
       const data = await Promise.all(users.map(async (user) => {
@@ -36,7 +36,7 @@ class UserController {
       const user = await User.findOne({
         where: { id: req.params.id },
         attributes: {
-          include: ['id', 'username', 'email', 'userType', 'status', 'createdAt', 'updatedAt'],
+          exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
         }
       });
       /*const userAuth = await UserAuth.findOne({
