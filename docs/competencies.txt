@@ -6,7 +6,7 @@ METHOD     |   ROUTE                         | REQUEST URL
 GET        |  /competencies                     | http://localhost:3000/competencies
 GET        |  /competencies/:campaignId/all     | http://localhost:3000/competencies/:campaignId/all
 GET        |  /competencies/:id                 | http://localhost:3000/competencies/:id
-POST       |  /competencies/:id                 | http://localhost:3000/competencies/:id
+POST       |  /competencies                     | http://localhost:3000/competencies/:id
 PUT        |  /competencies/:id                 | http://localhost:3000/competencies/:id
 POST       |  /competencies/:id                 | http://localhost:3000/competencies/:id
 DELETE     |  /competencies/:id                 | http://localhost:3000/competencies/:id
@@ -31,6 +31,8 @@ description:This is Register component
 timer:15
 componentId:2
 nextComponentId:-1
+assetsURL=http://google.com/
+startupData={"component": "startup-data"}
 data:{"component": "Register"}
 ```
 
