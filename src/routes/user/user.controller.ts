@@ -10,8 +10,10 @@ import { UserCompetency } from './user_competency.model';
 class UserController {
   async getAll(req: Request, resp: Response) {
     try {
-      const data = await User.findAll({});
-      resp.status(200).send(data);
+      const users = await User.findAll({
+        include: [{ all: true }]
+      });
+      resp.status(200).send(users);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -19,14 +21,17 @@ class UserController {
 
   async getById(req: Request, resp: Response) {
     try {
-      const user = await User.findOne({ id: req.params.id });
+      const user = await User.findOne({
+        where: { id: req.params.id },
+        include: [{ all: true }]
+      });
       const userAuth = await UserAuth.findOne({
         where: { id: req.params.id }
       });
-      const userProfile = await UserProfile.findOne({
+      /*const userProfile = await UserProfile.findOne({
         where: { userId: req.params.id }
-      });
-      resp.status(200).send({ ...user, profile: userProfile, auth: userAuth });
+      });*/
+      resp.status(200).send({ ...user, /*profile: userProfile,*/ auth: userAuth });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -148,7 +153,9 @@ class UserController {
 
   async getUserCampaigns(req: Request, resp: Response) {
     try {
-      const user = await User.findOne({ where: { id: req.params.userId } });
+      const user = await User.findOne({
+        where: { id: req.params.userId }
+      });
       if (!user) {
         return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
       }
@@ -178,7 +185,10 @@ class UserController {
 
   async getUserCampaignById(req: Request, resp: Response) {
     try {
-      const user = await User.findOne({ where: { id: req.params.userId } });
+      const user = await User.findOne({
+        where: { id: req.params.userId },
+        include: [{ all: true }]
+      });
       if (!user) {
         return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
       }
@@ -208,7 +218,10 @@ class UserController {
 
   async updateUserCampaign(req: Request, resp: Response) {
     try {
-      const user = await User.findOne({ where: { id: req.params.userId } });
+      const user = await User.findOne({
+        where: { id: req.params.userId },
+        include: [{ all: true }]
+      });
       if (!user) {
         return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
       }
@@ -228,7 +241,9 @@ class UserController {
 
   async deleteUserCampaign(req: Request, resp: Response) {
     try {
-      const user = await User.findOne({ where: { userId: req.params.id } });
+      const user = await User.findOne({
+        where: { userId: req.params.id }
+      });
       if (!user) {
         return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
       }
@@ -246,7 +261,10 @@ class UserController {
 
   async saveUserCompetency(req: Request, resp: Response) {
     try {
-      const user = await User.findOne({ where: { id: req.params.userId } });
+      const user = await User.findOne({
+        where: { id: req.params.userId },
+        include: [{ all: true }]
+      });
       if (!user) {
         return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
       }
@@ -271,7 +289,10 @@ class UserController {
 
   async getCompetencies(req: Request, resp: Response) {
     try {
-      const user = await User.findOne({ id: req.params.id });
+      const user = await User.findOne({
+        where: { id: req.params.id },
+        include: [{ all: true }]
+      });
       if (!user) {
         return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
       }
@@ -285,7 +306,10 @@ class UserController {
 
   async selectCompetency(req: Request, resp: Response) {
     try {
-      const user = await User.findOne({ id: req.params.id });
+      const user = await User.findOne({
+        where: { id: req.params.id },
+        include: [{ all: true }]
+      });
       if (!user) {
         return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
       }
@@ -300,7 +324,9 @@ class UserController {
 
   async getCompetencyById(req: Request, resp: Response) {
     try {
-      const user = await User.findOne({ id: req.params.id });
+      const user = await User.findOne({
+        where: { id: req.params.id }
+      });
       if (!user) {
         return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
       }
@@ -314,7 +340,9 @@ class UserController {
 
   async editCompetency(req: Request, resp: Response) {
     try {
-      const user = await User.findOne({ id: req.params.id });
+      const user = await User.findOne({
+        where: { id: req.params.id }
+      });
       if (!user) {
         return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
       }
@@ -333,7 +361,9 @@ class UserController {
 
   async deleteCompetency(req: Request, resp: Response) {
     try {
-      const user = await User.findOne({ id: req.params.id });
+      const user = await User.findOne({
+        where: { id: req.params.id }
+      });
       if (!user) {
         return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
       }

@@ -23,7 +23,8 @@ class AuthController {
 
     try {
       const user: IUser = await User.findOne({
-        where: { email: req.body.email }
+        where: { email: req.body.email },
+        include: [{ all: true }]
       });
       if (!user) {
         return resp.status(404).send({ msg: 'User not found' });
@@ -71,7 +72,8 @@ class AuthController {
     try {
       // Check if user already exists
       const existingUser = await User.findOne({
-        where: { email: user.email }
+        where: { email: user.email },
+        include: [{ all: true }]
       });
       console.log('existingUser:', existingUser);
       if (existingUser) {
@@ -154,7 +156,8 @@ class AuthController {
     try {
       // Check if user exists
       const existingUser = await User.findOne({
-        where: { email: user.email }
+        where: { email: user.email },
+        include: [{ all: true }]
       });
       if (!existingUser) {
         return resp.status(409).send({
@@ -198,7 +201,10 @@ class AuthController {
       if (errors) {
         return resp.status(401).send({ msg: errors });
       }
-      const user = await User.findOne({ where: { resetToken: req.params.resetToken } });
+      const user = await User.findOne({
+        where: { resetToken: req.params.resetToken },
+        include: [{ all: true }]
+      });
       if (!user) {
         return resp.status(400).send({
           msg: 'User not found.'
@@ -235,17 +241,18 @@ class AuthController {
         where: { id: req.params.authId }
       });
       const user = await User.findOne({
-        where: { id: userAuth.userId }
+        where: { id: userAuth.userId },
+        include: [{ all: true }]
       });
-      const userProfile = await UserProfile.findOne({
+      /*const userProfile = await UserProfile.findOne({
         where: { userId: userAuth.userId }
-      });
+      });*/
       const token = jwt.sign({
         email: user.email,
         role: user.role,
         username: user.username
       }, config.JWT_SECRET, { expiresIn: '1d' });
-      resp.status(200).send({ ...user, profile: userProfile, token: token });
+      resp.status(200).send({ ...user, /*profile: userProfile,*/ token: token });
     } catch (error) {
       console.log(error);
       resp.status(400).send({

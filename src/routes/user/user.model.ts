@@ -6,115 +6,6 @@ import { createJWToken } from '../middleware/jwt';
 import config = require('../../config');
 import { Role } from '../role/role.model';
 
-const User = Database.define('user', {
-    id: {
-        allowNull: false,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV1,
-        primaryKey: true
-    },
-    username: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    email: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        validate: {
-            len: {
-                args: [6, 128],
-                msg: 'Email address must be between 6 and 128 characters in length'
-            },
-            isEmail: {
-                msg: 'Email address must be valid'
-            }
-        }
-    },
-    password: {
-        type: Sequelize.STRING,
-        validate: {
-            // notEmpty: true,
-            len: [6, 100]
-        }
-    },
-    userType: {
-        type: Sequelize.ENUM('admin', 'client', 'applicant', 'guest'),
-        defaultValue: 'applicant',
-        validate: {
-            isIn: {
-                args: [['admin', 'client', 'applicant', 'guest']],
-                msg: 'Invalid status.'
-            }
-        }
-    },
-    status: {
-        allowNull: false,
-        type: Sequelize.ENUM('pending', 'accepted', 'deactivated'),
-        defaultValue: 'pending',
-        validate: {
-            isIn: {
-                args: [['pending', 'accepted', 'deactivated']],
-                msg: 'Invalid status.'
-            }
-        }
-    },
-    resetToken: {
-        type: Sequelize.STRING
-    },
-    resetTokenSentAt: {
-        type: Sequelize.DATE,
-        validate: {
-            isDate: true
-        }
-    },
-    resetTokenExpireAt: {
-        type: Sequelize.DATE,
-        validate: {
-            isDate: true
-        }
-    },
-    activationToken: {
-        type: Sequelize.STRING
-    },
-    activationTokenExpireAt: {
-        type: Sequelize.DATE,
-        validate: {
-            isDate: true
-        }
-    }
-}, {
-    indexes: [{ unique: true, fields: ['email'] }],
-    timestamps: true,
-    freezeTableName: true,
-    tableName: 'users'
-});
-
-User.beforeSave((user, options) => {
-    if (user.changed('password') && user.password) {
-        user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
-    }
-});
-
-User.prototype.generateToken = function generateToken() {
-    console.log('JWT:' + config.JWT_SECRET);
-    return createJWToken({ email: this.email, id: this.id });
-};
-
-User.prototype.authenticate = function authenticate(applicantPassword: string) {
-    if (bcrypt.compareSync(applicantPassword, this.password)) {
-        return this;
-    } else {
-        return false;
-    }
-};
-/*
-User.prototype.comparePassword = function (applicantPassword: string) {
-    const qCompare = (util as any).promisify(bcrypt.compare);
-    return qCompare(applicantPassword, this.password);
-};
-*/
-
 const UserProfile = Database.define('profile', {
     /*email: {
         allowNull: false,
@@ -243,8 +134,117 @@ const UserAuth = Database.define('auth', {
     tableName: 'users_auth'
 });
 
+const User = Database.define('user', {
+    id: {
+        allowNull: false,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV1,
+        primaryKey: true
+    },
+    username: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    email: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        validate: {
+            len: {
+                args: [6, 128],
+                msg: 'Email address must be between 6 and 128 characters in length'
+            },
+            isEmail: {
+                msg: 'Email address must be valid'
+            }
+        }
+    },
+    password: {
+        type: Sequelize.STRING,
+        validate: {
+            // notEmpty: true,
+            len: [6, 100]
+        }
+    },
+    userType: {
+        type: Sequelize.ENUM('admin', 'client', 'applicant', 'guest'),
+        defaultValue: 'applicant',
+        validate: {
+            isIn: {
+                args: [['admin', 'client', 'applicant', 'guest']],
+                msg: 'Invalid status.'
+            }
+        }
+    },
+    status: {
+        allowNull: false,
+        type: Sequelize.ENUM('pending', 'accepted', 'deactivated'),
+        defaultValue: 'pending',
+        validate: {
+            isIn: {
+                args: [['pending', 'accepted', 'deactivated']],
+                msg: 'Invalid status.'
+            }
+        }
+    },
+    resetToken: {
+        type: Sequelize.STRING
+    },
+    resetTokenSentAt: {
+        type: Sequelize.DATE,
+        validate: {
+            isDate: true
+        }
+    },
+    resetTokenExpireAt: {
+        type: Sequelize.DATE,
+        validate: {
+            isDate: true
+        }
+    },
+    activationToken: {
+        type: Sequelize.STRING
+    },
+    activationTokenExpireAt: {
+        type: Sequelize.DATE,
+        validate: {
+            isDate: true
+        }
+    }
+}, {
+    indexes: [{ unique: true, fields: ['email'] }],
+    timestamps: true,
+    freezeTableName: true,
+    tableName: 'users'
+});
+
+User.beforeSave((user, options) => {
+    if (user.changed('password') && user.password) {
+        user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
+    }
+});
+
+User.prototype.generateToken = function generateToken() {
+    console.log('JWT:' + config.JWT_SECRET);
+    return createJWToken({ email: this.email, id: this.id });
+};
+
+User.prototype.authenticate = function authenticate(applicantPassword: string) {
+    if (bcrypt.compareSync(applicantPassword, this.password)) {
+        return this;
+    } else {
+        return false;
+    }
+};
+/*
+User.prototype.comparePassword = function (applicantPassword: string) {
+    const qCompare = (util as any).promisify(bcrypt.compare);
+    return qCompare(applicantPassword, this.password);
+};
+*/
+
 User.belongsTo(Role);
-UserProfile.belongsTo(User);
+User.belongsTo(UserProfile);
 User.hasMany(UserAuth);
 UserAuth.belongsTo(User);
 

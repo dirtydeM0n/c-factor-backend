@@ -50,7 +50,10 @@ passport.use(new LinkedInStrategy({
   console.log('Login with Linkedin ==>', accessToken, refreshToken, profile, req.user);
   if (req.user) {
     try {
-      const existingUser = await User.findOne({ where: { email: profile.emails[0].value } });
+      const existingUser = await User.findOne({
+        where: { email: profile.emails[0].value },
+        include: [{ all: true }]
+      });
       if (existingUser) {
         // req.flash('errors', { msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
         // done(null);
@@ -93,7 +96,10 @@ passport.use(new LinkedInStrategy({
         // done(null);
         done(null, { auth: existingUser, profile: profile, msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
       } else {
-        const existingEmailUser = await User.findOne({ where: { email: profile.emails[0].value } });
+        const existingEmailUser = await User.findOne({
+          where: { email: profile.emails[0].value },
+          include: [{ all: true }]
+        });
         if (existingEmailUser) {
           // req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with LinkedIn manually from Account Settings.' });
           // return done(null);

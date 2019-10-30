@@ -9,7 +9,7 @@ import { Campaign } from '../campaign/campaign.model';
 class ClientController {
   async getAll(req: Request, resp: Response) {
     try {
-      const data = await Client.findAll({ include: [ { all: true } ] });
+      const data = await Client.findAll({ include: [{ all: true }] });
       resp.status(200).send(data);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
@@ -20,7 +20,7 @@ class ClientController {
     try {
       const data = await Client.findOne({
         where: { id: req.params.id },
-        include: [ { all: true } ]
+        include: [{ all: true }]
       });
       resp.status(200).send(data);
     } catch (error) {
@@ -44,7 +44,10 @@ class ClientController {
       }
       let user;
       if (req.body.userId) {
-        user = await User.findOne({ where: { id: req.body.userId } });
+        user = await User.findOne({
+          where: { id: req.body.userId },
+          include: [{ all: true }]
+        });
         if (!user) {
           return resp.status(404).send({ msg: `Invalid userId provided.` });
         }
@@ -52,7 +55,10 @@ class ClientController {
           return resp.status(404).send({ msg: `Different email provided. It should be ${user.email}` });
         }
       } else {
-        user = await User.findOne({ where: { email: req.body.email } });
+        user = await User.findOne({
+          where: { email: req.body.email },
+          include: [{ all: true }]
+        });
         if (!user) { // if user not already exist
           const role = await Role.findOne({ where: { value: 'client' } });
           user = await User.create({ ...req.body, userType: 'client', roleId: role ? role.id : null });
@@ -92,7 +98,7 @@ class ClientController {
 
   async getCampaigns(req: Request, resp: Response) {
     try {
-      const client = await Client.findOne({ id: req.params.id });
+      const client = await Client.findOne({ where: { id: req.params.id } });
       if (!client) {
         return resp.status(404).send({ msg: 'Invalid client id or No client found!' });
       }
@@ -106,7 +112,7 @@ class ClientController {
 
   async createCampaign(req: Request, resp: Response) {
     try {
-      const client = await Client.findOne({ id: req.params.id });
+      const client = await Client.findOne({ where: { id: req.params.id } });
       if (!client) {
         return resp.status(404).send({ msg: 'Invalid client id or No client found!' });
       }
@@ -120,11 +126,11 @@ class ClientController {
 
   async getCampaignById(req: Request, resp: Response) {
     try {
-      const client = await Client.findOne({ id: req.params.id });
+      const client = await Client.findOne({ where: { id: req.params.id } });
       if (!client) {
         return resp.status(404).send({ msg: 'Invalid client id or No client found!' });
       }
-      const campaign = await Campaign.findOne({ id: req.params.campaignId, clientId: req.params.id });
+      const campaign = await Campaign.findOne({ where: { id: req.params.campaignId, clientId: req.params.id } });
       console.log('get client campaign by Id:', campaign);
       resp.status(200).send(campaign);
     } catch (error) {
