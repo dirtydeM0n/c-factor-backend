@@ -166,9 +166,9 @@ class UserController {
               strikeable: false
             }
           });
-          return { ...comp, ...data/*status: data.status, score: data.score, activeComponentId: data.activeComponentId*/ };
+          return { ...comp, ...data/*status: data.status, score: data.score*/ };
         }));
-        return { ...campaign, status: camp.status, score: camp.score, components: userCompetencies };
+        return { ...campaign, status: camp.status, score: camp.score, activeComponentId: camp.activeComponentId, components: userCompetencies };
       }));
       resp.status(200).send(campaigns);
     } catch (error) {
@@ -198,9 +198,9 @@ class UserController {
             strikeable: false
           }
         });
-        return { ...comp, ...data/*status: data.status, score: data.score, activeComponentId: data.activeComponentId*/ };
+        return { ...comp, ...data/*status: data.status, score: data.score*/ };
       }));
-      resp.status(200).send({ ...campaign, status: userCampaign.status, score: userCampaign.score, components: userCompetencies });
+      resp.status(200).send({ ...campaign, status: userCampaign.status, score: userCampaign.score, activeComponentId: userCampaign.activeComponentId, components: userCompetencies });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }

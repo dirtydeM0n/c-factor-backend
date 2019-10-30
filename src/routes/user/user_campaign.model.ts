@@ -4,6 +4,9 @@ import { Campaign } from '../campaign/campaign.model';
 import { User } from './user.model';
 
 const UserCampaign = Database.define('user_campaign', {
+    activeComponentId: {
+        type: Sequelize.STRING
+    },
     score: {
         type: Sequelize.INTEGER,
         defaultValue: 0

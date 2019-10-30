@@ -5,9 +5,6 @@ import { Competency } from '../competency/competency.model';
 import { Campaign } from '../campaign/campaign.model';
 
 const UserCompetency = Database.define('user_competency', {
-    activeComponentId: {
-        type: Sequelize.STRING
-    },
     score: {
         type: Sequelize.INTEGER,
         defaultValue: 0
