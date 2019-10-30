@@ -11,9 +11,21 @@ class UserController {
   async getAll(req: Request, resp: Response) {
     try {
       const users = await User.findAll({
-        include: [{ all: true }]
+        attributes: {
+          include: ['id', 'username', 'email', 'userType', 'status', 'createdAt', 'updatedAt'],
+          /*exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']*/
+        }
       });
-      resp.status(200).send(users);
+      const data = await Promise.all(users.map(async (user) => {
+        const profile = await UserProfile.findOne({
+          where: { userId: user.id },
+          attributes: {
+            exclude: ['id', 'userId', 'createdAt', 'updatedAt']
+          }
+        });
+        return { ...user, profile: profile };
+      }));
+      resp.status(200).send(data);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -23,15 +35,20 @@ class UserController {
     try {
       const user = await User.findOne({
         where: { id: req.params.id },
-        include: [{ all: true }]
+        attributes: {
+          include: ['id', 'username', 'email', 'userType', 'status', 'createdAt', 'updatedAt'],
+        }
       });
-      const userAuth = await UserAuth.findOne({
+      /*const userAuth = await UserAuth.findOne({
         where: { id: req.params.id }
-      });
-      /*const userProfile = await UserProfile.findOne({
-        where: { userId: req.params.id }
       });*/
-      resp.status(200).send({ ...user, /*profile: userProfile,*/ auth: userAuth });
+      const userProfile = await UserProfile.findOne({
+        where: { userId: req.params.id },
+        attributes: {
+          exclude: ['id', 'userId', 'createdAt', 'updatedAt']
+        }
+      });
+      resp.status(200).send({ ...user, profile: userProfile });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }

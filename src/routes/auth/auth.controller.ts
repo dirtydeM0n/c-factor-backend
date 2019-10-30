@@ -4,7 +4,7 @@ import * as util from 'util';
 import * as crypto from 'crypto';
 import { IUser } from '../user/user';
 import { sendMail } from '../services/mail.service';
-import config = require('../../config');
+import * as config from '../../config';
 import { UserProfile, User, UserAuth } from '../user/user.model';
 import { compare } from '../services/crypto.service';
 import { Role } from '../role/role.model';
@@ -24,7 +24,6 @@ class AuthController {
     try {
       const user: IUser = await User.findOne({
         where: { email: req.body.email },
-        include: [{ all: true }]
       });
       if (!user) {
         return resp.status(404).send({ msg: 'User not found' });
@@ -32,7 +31,10 @@ class AuthController {
       const isSamePass = await compare(req.body.password, user.password);
       if (isSamePass) {
         const userProfile = await UserProfile.findOne({
-          where: { userId: user.id }
+          where: { userId: user.id },
+          attributes: {
+            include: ['id', 'username', 'email', 'userType', 'status', 'createdAt', 'updatedAt'],
+          }
         });
         const token = jwt.sign({
           email: user.email,
@@ -72,10 +74,8 @@ class AuthController {
     try {
       // Check if user already exists
       const existingUser = await User.findOne({
-        where: { email: user.email },
-        include: [{ all: true }]
+        where: { email: user.email }
       });
-      console.log('existingUser:', existingUser);
       if (existingUser) {
         return resp.status(409).send({ msg: 'User already exists' });
       }
@@ -156,8 +156,7 @@ class AuthController {
     try {
       // Check if user exists
       const existingUser = await User.findOne({
-        where: { email: user.email },
-        include: [{ all: true }]
+        where: { email: user.email }
       });
       if (!existingUser) {
         return resp.status(409).send({
@@ -182,11 +181,17 @@ class AuthController {
           If you did not request this, please ignore this email\n`
       };
       await sendMail(mailOptions);
-      const updatedUser: IUser = await User.update({
+      await User.update({
         resetToken: resetToken,
         resetTokenExpireAt: resetTokenExpireAt,
         resetTokenSentAt: resetTokenSentAt
       }, { where: { id: existingUser.id } });
+      const updatedUser = await User.findOne({
+        where: { id: existingUser.id },
+        attributes: {
+          include: ['id', 'username', 'email', 'userType', 'status', 'createdAt', 'updatedAt'],
+        }
+      });
       resp.status(200).send(updatedUser);
     } catch (exp) {
       console.log(exp.error);
@@ -202,15 +207,20 @@ class AuthController {
         return resp.status(401).send({ msg: errors });
       }
       const user = await User.findOne({
-        where: { resetToken: req.params.resetToken },
-        include: [{ all: true }]
+        where: { resetToken: req.params.resetToken }
       });
       if (!user) {
         return resp.status(400).send({
           msg: 'User not found.'
         });
       }
-      const updatedUser = await User.update({ ...req.body, resetToken: null }, { where: { resetToken: req.params.resetToken } });
+      await User.update({ ...req.body, resetToken: null }, { where: { resetToken: req.params.resetToken } });
+      const updatedUser = await User.findOne({
+        where: { resetToken: req.params.resetToken },
+        attributes: {
+          include: ['id', 'username', 'email', 'userType', 'status', 'createdAt', 'updatedAt'],
+        }
+      });
       return resp.status(200).send(updatedUser);
     } catch (error) {
       console.log(error);
@@ -242,17 +252,22 @@ class AuthController {
       });
       const user = await User.findOne({
         where: { id: userAuth.userId },
-        include: [{ all: true }]
+        attributes: {
+          include: ['id', 'username', 'email', 'userType', 'status', 'createdAt', 'updatedAt'],
+        }
       });
-      /*const userProfile = await UserProfile.findOne({
-        where: { userId: userAuth.userId }
-      });*/
+      const userProfile = await UserProfile.findOne({
+        where: { userId: userAuth.userId },
+        attributes: {
+          exclude: ['id', 'userId', 'createdAt', 'updatedAt']
+        }
+      });
       const token = jwt.sign({
         email: user.email,
         role: user.role,
         username: user.username
       }, config.JWT_SECRET, { expiresIn: '1d' });
-      resp.status(200).send({ ...user, /*profile: userProfile,*/ token: token });
+      resp.status(200).send({ ...user, profile: userProfile, token: token });
     } catch (error) {
       console.log(error);
       resp.status(400).send({

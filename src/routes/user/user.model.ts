@@ -244,7 +244,7 @@ User.prototype.comparePassword = function (applicantPassword: string) {
 */
 
 User.belongsTo(Role);
-User.belongsTo(UserProfile);
+UserProfile.belongsTo(User);
 User.hasMany(UserAuth);
 UserAuth.belongsTo(User);
 
