@@ -1,34 +1,26 @@
 [
   {
-    "username": "tesla",
     "email": "tesla@example.com",
     "password": "test123!",
-    "role": 0,
+    "userType": "applicant",
     "active": false,
-    "profile": {
-      "firstname": "Nikola",
-      "lastname": "Tesla",
-      "info": "The father of our modern technological age",
-      "country": "PK",
-      "phone": "00923123841914",
-      "address": "Karachi, Pakistan",
-      "dob": "25-12-1992"
-    }
+    "name": "Nikola Tesla",
+    "bio": "The father of our modern technological age",
+    "country": "PK",
+    "phone": "00923123841914",
+    "address": "Karachi, Pakistan",
+    "dob": "25-12-1992"
   },
   {
-    "username": "aaronsw",
     "email": "aaronsw@example.com",
     "password": "test123!",
-    "role": 0,
+    "userType": "applicant",
     "active": false,
-    "profile": {
-      "firstname": "Aaron",
-      "lastname": "Swartz",
-      "info": "Internet's own boy",
-      "country": "PK",
-      "phone": "00923123841914",
-      "address": "Karachi, Pakistan",
-      "dob": "25-12-1992"
-    }
+    "name": "Aaron Swartz",
+    "bio": "Internet's own boy",
+    "country": "PK",
+    "phone": "00923123841914",
+    "address": "Karachi, Pakistan",
+    "dob": "25-12-1992"
   }
 ]

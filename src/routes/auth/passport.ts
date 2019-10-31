@@ -66,8 +66,7 @@ passport.use(new LinkedInStrategy({
           email: profile.emails[0].value,
           profile: {
             email: profile.emails[0].value,
-            firstname: user.firstname || profile.name.givenName,
-            lastname: user.lastname || profile.name.familyName,
+            name: user.name || (profile.name.givenName + ' ' + profile.name.familyName),
             avatar: user.avatar || profile.photos[3].value
           }
         };
@@ -126,8 +125,7 @@ passport.use(new LinkedInStrategy({
           });
           const userProfile = await UserProfile.create({
             userId: savedUser.id,
-            firstname: profile.name.givenName,
-            lastname: profile.name.familyName,
+            name: profile.name.givenName + ' ' + profile.name.familyName,
             avatar: profile.photos[3].value
           });
           userAuth = await UserAuth.create({

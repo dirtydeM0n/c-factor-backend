@@ -62,7 +62,7 @@ Pass token from `/auth/login` when using protected endpoints (for example: getti
 # CURL
 - Register
 ```
-curl -d '{"email":"jdoe@example.com", "password":"PASSWORD", "lastname": "Doe", "firstname": "John", "role": "guest", "username": "jdoe"}' -H "Content-Type: application/json" -X POST http://localhost:3000/auth/register
+curl -d '{"email":"jdoe@example.com", "password":"PASSWORD",  "name": "John Doe", "userType": "guest"}' -H "Content-Type: application/json" -X POST http://localhost:3000/auth/register
 ```
 - Activation
 ```

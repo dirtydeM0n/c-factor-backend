@@ -22,10 +22,8 @@ describe('/auth', () => {
   const userForm = {
     email: 'tester@chester.com',
     password: 'PASSWORD',
-    lastname: 'Tester',
-    firstname: 'Chester',
-    role: 'guest',
-    username: 'testerchester'
+    name: 'Chester Tester',
+    userType: 'guest'
   };
 
   describe('POST /register', () => {

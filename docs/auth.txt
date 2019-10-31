@@ -19,8 +19,7 @@ GET        |  /auth/logout               | http://localhost:3000/auth/logout
 ```
 email:test1@client.com
 password:123456
-firstname:Test
-lastname:Client
+name:Test Client
 country:Pakistan
 address:Karachi, Pakistan
 phone:03123841914

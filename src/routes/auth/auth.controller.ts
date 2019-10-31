@@ -51,8 +51,7 @@ class AuthController {
 
   async register(req: Request, resp: Response, next: NextFunction) {
     req.assert('password', 'Password cannot be blank').notEmpty();
-    req.assert('firstname', 'First name must be specified').notEmpty();
-    req.assert('lastname', 'Last name must be specified').notEmpty();
+    req.assert('name', 'name must be specified').notEmpty();
     // req.assert('country', 'Country must be specified').notEmpty();
     // req.assert('address', 'Address must be specified').notEmpty();
     // req.assert('phone', 'Phone must be specified').notEmpty();

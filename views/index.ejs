@@ -13,7 +13,7 @@
     <% } else { %>
 
     <div>
-        <h2>Hello, <%= user.profile.firstname %>.</h2>
+        <h2>Hello, <%= user.name %>.</h2>
         <p>
             <a style="padding-right:10px;" href="/">Home</a> |
             <a style="padding-right:10px;" href="/logout">Log Out</a>
@@ -21,8 +21,8 @@
 
         <h3>My Profile</h3>
         <p>ID: <%= user.id %></p>
-        <p>Username: <%= user.username %></p>
-        <p>Name :<%= user.displayName %></p>
+        <p>Email: <%= user.email %></p>
+        <p>Name :<%= user.name %></p>
 
     </div>
 

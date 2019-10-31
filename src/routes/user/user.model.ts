@@ -7,16 +7,7 @@ import config = require('../../config');
 import { Role } from '../role/role.model';
 
 const UserProfile = Database.define('profile', {
-    /*email: {
-        allowNull: false,
-        type: Sequelize.STRING
-    },*/
-    firstname: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    lastname: {
+    name: {
         allowNull: false,
         type: Sequelize.STRING,
         defaultValue: ''
@@ -36,10 +27,6 @@ const UserProfile = Database.define('profile', {
         type: Sequelize.STRING,
         defaultValue: ''
     },
-    /*avatar: {
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },*/
     phone: {
         type: Sequelize.STRING,
         defaultValue: ''
@@ -97,41 +84,9 @@ const UserProfile = Database.define('profile', {
         defaultValue: ''
     }
 }, {
-    /*indexes: [{ unique: true, fields: ['email'] }],*/
     timestamps: true,
     freezeTableName: true,
     tableName: 'users_profile'
-});
-
-const UserAuth = Database.define('auth', {
-    id: {
-        allowNull: false,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV1,
-        primaryKey: true
-    },
-    profile_id: {
-        type: Sequelize.STRING
-    },
-    provider: {
-        allowNull: false,
-        type: Sequelize.ENUM('linkedin'),
-        defaultValue: 'linkedin',
-        validate: {
-            isIn: {
-                args: [['linkedin']],
-                msg: 'Invalid status.'
-            }
-        }
-    },
-    token: {
-        type: Sequelize.TEXT
-    }
-}, {
-    indexes: [{ unique: true, fields: ['token'] }],
-    timestamps: true,
-    freezeTableName: true,
-    tableName: 'users_auth'
 });
 
 const User = Database.define('user', {
@@ -140,11 +95,6 @@ const User = Database.define('user', {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV1,
         primaryKey: true
-    },
-    username: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
     },
     email: {
         allowNull: false,
@@ -186,6 +136,82 @@ const User = Database.define('user', {
                 msg: 'Invalid status.'
             }
         }
+    },
+    name: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    gender: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    cnic: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    fatherName: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    phone: {
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    gradingSystem: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    gradingValue: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    university: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    otherUniversity: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    graduationDate: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    qualification: {
+        type: Sequelize.STRING
+    },
+    specialization: {
+        type: Sequelize.STRING
+    },
+    city: {
+        type: Sequelize.STRING
+    },
+    region: {
+        type: Sequelize.STRING
+    },
+    country: {
+        type: Sequelize.STRING,
+        defaultValue: ''
+    },
+    address: {
+        type: Sequelize.TEXT,
+        defaultValue: ''
+    },
+    dob: {
+        type: Sequelize.STRING
+    },
+    bio: {
+        type: Sequelize.STRING,
+        defaultValue: ''
     },
     resetToken: {
         type: Sequelize.STRING
@@ -236,12 +262,37 @@ User.prototype.authenticate = function authenticate(applicantPassword: string) {
         return false;
     }
 };
-/*
-User.prototype.comparePassword = function (applicantPassword: string) {
-    const qCompare = (util as any).promisify(bcrypt.compare);
-    return qCompare(applicantPassword, this.password);
-};
-*/
+
+const UserAuth = Database.define('auth', {
+    id: {
+        allowNull: false,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV1,
+        primaryKey: true
+    },
+    profile_id: {
+        type: Sequelize.STRING
+    },
+    provider: {
+        allowNull: false,
+        type: Sequelize.ENUM('linkedin'),
+        defaultValue: 'linkedin',
+        validate: {
+            isIn: {
+                args: [['linkedin']],
+                msg: 'Invalid status.'
+            }
+        }
+    },
+    token: {
+        type: Sequelize.TEXT
+    }
+}, {
+    indexes: [{ unique: true, fields: ['token'] }],
+    timestamps: true,
+    freezeTableName: true,
+    tableName: 'users_auth'
+});
 
 User.belongsTo(Role);
 UserProfile.belongsTo(User);

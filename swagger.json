@@ -260,10 +260,9 @@
     },
     "UserProfile": {
       "required": [
-        "firstname"
+        "name"
       ],
       "optional": [
-        "lastname",
         "phone",
         "dob",
         "education",
@@ -275,10 +274,7 @@
         "bio"
       ],
       "properties": {
-        "lastname": {
-          "type": "string"
-        },
-        "firstname": {
+        "name": {
           "type": "string"
         },
         "phone": {
