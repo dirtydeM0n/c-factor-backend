@@ -12,7 +12,6 @@ class UserController {
     try {
       const users = await User.findAll({
         attributes: {
-          /*include: ['id', 'username', 'email', 'userType', 'status', 'createdAt', 'updatedAt'],*/
           exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
         }
       });

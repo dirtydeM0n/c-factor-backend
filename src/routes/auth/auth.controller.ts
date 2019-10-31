@@ -23,7 +23,7 @@ class AuthController {
 
     try {
       const user: IUser = await User.findOne({
-        where: { email: req.body.email },
+        where: { email: req.body.email }
       });
       if (!user) {
         return resp.status(404).send({ msg: 'User not found' });
@@ -33,7 +33,7 @@ class AuthController {
         const userProfile = await UserProfile.findOne({
           where: { userId: user.id },
           attributes: {
-            include: ['id', 'username', 'email', 'userType', 'status', 'createdAt', 'updatedAt'],
+            exclude: ['id', 'userId', 'createdAt', 'updatedAt']
           }
         });
         const token = jwt.sign({
