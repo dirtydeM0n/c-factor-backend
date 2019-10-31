@@ -241,12 +241,22 @@ class AuthController {
       const userAuth = await UserAuth.findOne({
         where: { id: req.params.authId }
       });
+      if (!userAuth) {
+        return resp.status(400).send({
+          msg: 'authId is invalid or not found.'
+        });
+      }
       const user = await User.findOne({
         where: { id: userAuth.userId },
         attributes: {
           exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
         }
       });
+      if (!user) {
+        return resp.status(400).send({
+          msg: 'User not found.'
+        });
+      }
       const token = jwt.sign({
         email: user.email,
         userType: user.userType
