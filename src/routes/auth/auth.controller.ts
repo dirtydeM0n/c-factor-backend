@@ -97,7 +97,7 @@ class AuthController {
       await sendMail(mailOptions);
       const role = await Role.findOne({ where: { value: 'applicant' } });
       const savedUser = await User.create({ ...user, userType: 'applicant', roleId: role ? role.id : null });
-      const userProfile = await UserProfile.create({ ...req.body, ...req.body.profile, userId: savedUser.id });
+      const userProfile = await UserProfile.create({ ...req.body, userId: savedUser.id });
       console.log('savedUser:', savedUser);
       resp.status(200).send({ msg: 'An activation email has been sent to your email. Please check!' });
     } catch (exp) {

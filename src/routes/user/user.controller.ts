@@ -60,16 +60,15 @@ class UserController {
       if (userType === 'client') {
         const client = await Client.create({ ...req.body, userId: user.id });
       }
-      if (req.body.profile) {
-        await UserProfile.create({ ...req.body, ...req.body.profile, userId: user.id });
-      }
+      const profile = await UserProfile.create({ ...req.body, userId: user.id });
+      let auth = null, avatar = null;
       if (req.body.auth) {
-        await UserAuth.create({ ...req.body, ...req.body.auth, userId: user.id });
+        auth = await UserAuth.create({ ...req.body, ...req.body.auth, userId: user.id });
       }
       if (req.body.avatar) {
-        await Avatar.create({ ...req.body.avatar, userId: user.id });
+        avatar = await Avatar.create({ ...req.body.avatar, userId: user.id });
       }
-      resp.status(200).send(user);
+      resp.status(200).send({ ...user, ...profile, auth, avatar });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -78,16 +77,14 @@ class UserController {
   async put(req: Request, resp: Response) {
     try {
       const user = await User.update({ ...req.body }, { where: { id: req.params.id } });
-      if (req.body.profile) {
-        await UserProfile.update({ ...req.body.profile }, { where: { userId: req.params.id } });
-      }
+      const profile = await UserProfile.update({ ...req.body }, { where: { userId: req.params.id } });
       if (req.body.auth) {
         await UserAuth.update({ ...req.body.auth }, { where: { userId: req.params.id } });
       }
       if (req.body.avatar) {
         await Avatar.update({ ...req.body.avatar }, { where: { userId: req.params.id } });
       }
-      resp.status(200).send(user);
+      resp.status(200).send({ ...user, ...profile });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
