@@ -64,7 +64,7 @@ passport.use(new LinkedInStrategy({
         // done(null);
         done(null, { user: { ...existingUser }, msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
       } else {
-        const user = await User.findById(req.user.id);
+        const user = await User.findOne({ where: { id: req.user.id } });
         const updateUser = {
           email: profile.emails[0].value,
           name: user.name || (profile.name.givenName + ' ' + profile.name.familyName),
