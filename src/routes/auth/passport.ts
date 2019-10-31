@@ -97,50 +97,45 @@ passport.use(new LinkedInStrategy({
     }
   } else if (profile) {
     try {
-      let userAuth = await UserAuth.findOne({
-        where: { profile_id: profile.id }
-      });
-      if (userAuth) {
-        const existingUser = await User.findOne({
-          where: { id: userAuth.userId },
-          attributes: {
-            exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
-          }
+      let userAuth = null;
+      let whereObj = {};
+      if (profile.id) {
+        userAuth = await UserAuth.findOne({
+          where: { profile_id: profile.id }
         });
+        whereObj = { id: userAuth.userId };
+      } else {
+        whereObj = { email: profile.emails[0].value };
+      }
+      const existingUser = await User.findOne({
+        where: whereObj,
+        attributes: {
+          exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
+        }
+      });
+      if (existingUser) {
         // req.flash('errors', { msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
         // done(null);
         done(null, { user: { ...existingUser, auth: userAuth }, msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
       } else {
-        const existingUser = await User.findOne({
-          where: { email: profile.emails[0].value },
-          attributes: {
-            exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
-          }
+        const role = await Role.findOne({ where: { value: 'applicant' } });
+        const savedUser = await User.create({
+          email: profile.emails[0].value,
+          userType: 'applicant',
+          roleId: role ? role.id : null, // applicant
+          status: 'accepted',
+          name: profile.name.givenName + ' ' + profile.name.familyName,
+          avatar: profile.photos[3].value
         });
-        if (existingUser) {
-          // req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with LinkedIn manually from Account Settings.' });
-          // return done(null);
-          return done(null, { user: { ...existingUser, auth: userAuth }, msg: 'There is already an account using this email address. Sign in to that account and link it with LinkedIn manually from Account Settings.' });
-        } else {
-          const role = await Role.findOne({ where: { value: 'applicant' } });
-          const savedUser = await User.create({
-            email: profile.emails[0].value,
-            userType: 'applicant',
-            roleId: role ? role.id : null, // applicant
-            status: 'accepted',
-            name: profile.name.givenName + ' ' + profile.name.familyName,
-            avatar: profile.photos[3].value
-          });
-          userAuth = await UserAuth.create({
-            userId: savedUser.id,
-            profile_id: profile.id,
-            provider: 'linkedin',
-            token: accessToken
-          });
-          // req.flash('info', { msg: 'LinkedIn account has been linked.' });
-          // done(null);
-          done(null, { user: { ...savedUser, auth: userAuth }, msg: 'LinkedIn account has been linked.' });
-        }
+        userAuth = await UserAuth.create({
+          userId: savedUser.id,
+          profile_id: profile.id,
+          provider: 'linkedin',
+          token: accessToken
+        });
+        // req.flash('info', { msg: 'LinkedIn account has been linked.' });
+        // done(null);
+        done(null, { user: { ...savedUser, auth: userAuth }, msg: 'LinkedIn account has been linked.' });
       }
     } catch (err) {
       return done(err);
