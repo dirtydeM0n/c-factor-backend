@@ -18,11 +18,11 @@ const AuthRouter = Router()
     async (req, resp) => {
       try {
         console.log('<== LinkedIn Successful authentication ==>');
-        if (req.user) {
-          const userData = req.user.data;
-          console.log('userData:', userData);
+        const userData = (req.user || {}).data;
+        console.log('userData:', userData);
+        if (userData && userData.user) {
           let authId = null;
-          if (!userData.auth || !(userData.auth || {}).id) {
+          if (!userData.auth) {
             const auth = await UserAuth.findOne({ where: { userId: userData.user.id } });
             authId = auth.id;
           } else {
@@ -31,9 +31,9 @@ const AuthRouter = Router()
           console.log('authId:', authId);
           return resp.redirect(`${config.FRONTEND_URI}/?authId=${authId}`); // &code=${req.query.code}&state=${req.query.state}
         }
-        return resp.redirect(req.session.returnTo || `${config.FRONTEND_URI}`);
+        return resp.redirect(req.session.returnTo || `${config.FRONTEND_URI}?error=1`);
       } catch (err) {
-        console.log(err);
+        console.log('some error:', err);
         return resp.redirect(`${config.FRONTEND_URI}?error=1`);
       }
     });
