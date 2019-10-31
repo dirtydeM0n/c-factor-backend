@@ -22,7 +22,7 @@ class UserController {
             exclude: ['id', 'userId', 'createdAt', 'updatedAt']
           }
         });
-        return { ...user, profile: profile };
+        return { ...user, ...profile };
       }));
       resp.status(200).send(data);
     } catch (error) {
@@ -47,7 +47,7 @@ class UserController {
           exclude: ['id', 'userId', 'createdAt', 'updatedAt']
         }
       });
-      resp.status(200).send({ ...user, profile: userProfile });
+      resp.status(200).send({ ...user, ...userProfile });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }

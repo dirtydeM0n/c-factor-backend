@@ -59,7 +59,7 @@ passport.use(new LinkedInStrategy({
       if (existingUser) {
         // req.flash('errors', { msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
         // done(null);
-        done(null, { user: existingUser, profile: profile, msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+        done(null, { user: { ...existingUser, ...profile }, msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
       } else {
         const user = await User.findById(req.user.id);
         const updateUser = {
@@ -91,12 +91,12 @@ passport.use(new LinkedInStrategy({
           existingAuthUser = await UserAuth.create(authObj);
         }
         // req.flash('info', { msg: 'LinkedIn account has been linked.' });
-        done(null, { user: savedUser, auth: existingAuthUser, profile: profile, msg: 'LinkedIn account has been linked.' });
+        done(null, { user: { ...savedUser, ...profile, auth: existingAuthUser }, msg: 'LinkedIn account has been linked.' });
       }
     } catch (err) {
       return done(err);
     }
-  } else {
+  } else if (profile) {
     try {
       let userAuth = await UserAuth.findOne({
         where: { profile_id: profile.id }
@@ -104,7 +104,7 @@ passport.use(new LinkedInStrategy({
       if (userAuth) {
         // req.flash('errors', { msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
         // done(null);
-        done(null, { auth: userAuth, profile: profile, msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+        done(null, { user: { ...profile, auth: userAuth }, msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
       } else {
         const existingUser = await User.findOne({
           where: { email: profile.emails[0].value },
@@ -115,7 +115,7 @@ passport.use(new LinkedInStrategy({
         if (existingUser) {
           // req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with LinkedIn manually from Account Settings.' });
           // return done(null);
-          return done(null, { user: existingUser, auth: userAuth, profile: profile, msg: 'There is already an account using this email address. Sign in to that account and link it with LinkedIn manually from Account Settings.' });
+          return done(null, { user: { ...existingUser, ...profile, auth: userAuth }, msg: 'There is already an account using this email address. Sign in to that account and link it with LinkedIn manually from Account Settings.' });
         } else {
           const role = await Role.findOne({ where: { value: 'applicant' } });
           const savedUser = await User.create({
@@ -138,7 +138,7 @@ passport.use(new LinkedInStrategy({
           });
           // req.flash('info', { msg: 'LinkedIn account has been linked.' });
           // done(null);
-          done(null, { user: savedUser, auth: userAuth, profile: profile, msg: 'LinkedIn account has been linked.' });
+          done(null, { user: { ...savedUser, ...profile, auth: userAuth }, msg: 'LinkedIn account has been linked.' });
         }
       }
     } catch (err) {

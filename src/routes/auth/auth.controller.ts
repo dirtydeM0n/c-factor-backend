@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 import * as util from 'util';
 import * as crypto from 'crypto';
-import { IUser } from '../user/user';
 import { sendMail } from '../services/mail.service';
 import * as config from '../../config';
 import { UserProfile, User, UserAuth } from '../user/user.model';
@@ -22,7 +21,7 @@ class AuthController {
     }
 
     try {
-      const user: IUser = await User.findOne({
+      const user = await User.findOne({
         where: { email: req.body.email }
       });
       if (!user) {
@@ -41,7 +40,7 @@ class AuthController {
           role: user.role,
           username: user.username
         }, config.JWT_SECRET, { expiresIn: '1d' });
-        return resp.status(200).send({ profile: userProfile, token: token });
+        return resp.status(200).send({ id: user.id, email: user.email, userType: user.userType, status: user.status, ...userProfile, token: token });
       } else {
         return resp.status(401).send({ msg: 'Unauthorized' });
       }
@@ -70,7 +69,7 @@ class AuthController {
       return resp.status(401).send({ msg: errors });
     }
 
-    const user: IUser = { ...req.body };
+    const user = { ...req.body };
     try {
       // Check if user already exists
       const existingUser = await User.findOne({
@@ -97,7 +96,7 @@ class AuthController {
       };
       await sendMail(mailOptions);
       const role = await Role.findOne({ where: { value: 'applicant' } });
-      const savedUser: IUser = await User.create({ ...user, userType: 'applicant', roleId: role ? role.id : null });
+      const savedUser = await User.create({ ...user, userType: 'applicant', roleId: role ? role.id : null });
       const userProfile = await UserProfile.create({ ...req.body, ...req.body.profile, userId: savedUser.id });
       console.log('savedUser:', savedUser);
       resp.status(200).send({ msg: 'An activation email has been sent to your email. Please check!' });
@@ -111,7 +110,7 @@ class AuthController {
 
   async activate(req: Request, resp: Response) {
     try {
-      const user: IUser = await User.update({ status: 'accepted', activationToken: null }, { where: { activationToken: req.params.activationToken, status: 'pending' } });
+      const user = await User.update({ status: 'accepted', activationToken: null }, { where: { activationToken: req.params.activationToken, status: 'pending' } });
       if (!user) {
         return resp.status(400).send({
           msg: 'Activation token invalid, please register again!'
@@ -152,7 +151,7 @@ class AuthController {
       });
     }
 
-    const user: IUser = { ...req.body };
+    const user = { ...req.body };
     try {
       // Check if user exists
       const existingUser = await User.findOne({
@@ -267,7 +266,7 @@ class AuthController {
         role: user.role,
         username: user.username
       }, config.JWT_SECRET, { expiresIn: '1d' });
-      resp.status(200).send({ ...user, profile: userProfile, token: token });
+      resp.status(200).send({ ...user, ...userProfile, token: token });
     } catch (error) {
       console.log(error);
       resp.status(400).send({
