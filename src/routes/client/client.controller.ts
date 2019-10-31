@@ -45,8 +45,7 @@ class ClientController {
       let user;
       if (req.body.userId) {
         user = await User.findOne({
-          where: { id: req.body.userId },
-          include: [{ all: true }]
+          where: { id: req.body.userId }
         });
         if (!user) {
           return resp.status(404).send({ msg: `Invalid userId provided.` });
@@ -56,8 +55,7 @@ class ClientController {
         }
       } else {
         user = await User.findOne({
-          where: { email: req.body.email },
-          include: [{ all: true }]
+          where: { email: req.body.email }
         });
         if (!user) { // if user not already exist
           const role = await Role.findOne({ where: { value: 'client' } });

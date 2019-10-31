@@ -211,8 +211,7 @@ class UserController {
   async getUserCampaignById(req: Request, resp: Response) {
     try {
       const user = await User.findOne({
-        where: { id: req.params.userId },
-        include: [{ all: true }]
+        where: { id: req.params.userId }
       });
       if (!user) {
         return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
@@ -252,8 +251,7 @@ class UserController {
   async updateUserCampaign(req: Request, resp: Response) {
     try {
       const user = await User.findOne({
-        where: { id: req.params.userId },
-        include: [{ all: true }]
+        where: { id: req.params.userId }
       });
       if (!user) {
         return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
@@ -295,8 +293,7 @@ class UserController {
   async saveUserCompetency(req: Request, resp: Response) {
     try {
       const user = await User.findOne({
-        where: { id: req.params.userId },
-        include: [{ all: true }]
+        where: { id: req.params.userId }
       });
       if (!user) {
         return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
@@ -323,15 +320,14 @@ class UserController {
   async getCompetencies(req: Request, resp: Response) {
     try {
       const user = await User.findOne({
-        where: { id: req.params.id },
-        include: [{ all: true }]
+        where: { id: req.params.id }
       });
       if (!user) {
         return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
       }
       const competencies = user.getCompetencies();
       console.log('user competencies:', competencies);
-      resp.status(200).send({ ...user, competencies: competencies });
+      resp.status(200).send({ ...user, components: competencies });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -340,8 +336,7 @@ class UserController {
   async selectCompetency(req: Request, resp: Response) {
     try {
       const user = await User.findOne({
-        where: { id: req.params.id },
-        include: [{ all: true }]
+        where: { id: req.params.id }
       });
       if (!user) {
         return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
@@ -349,7 +344,7 @@ class UserController {
       user.addCompetency(req.params.competencyId, { through: { state: req.body.state || 'active' } });
       const competencies = user.getCompetencies();
       console.log('user competencies:', competencies);
-      resp.status(200).send({ ...user, competencies: competencies });
+      resp.status(200).send({ ...user, components: competencies });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
