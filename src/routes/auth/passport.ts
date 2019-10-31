@@ -98,15 +98,14 @@ passport.use(new LinkedInStrategy({
   } else if (profile) {
     try {
       let userAuth = null;
-      let whereObj = {};
+      let whereObj = null;
       if (profile.id) {
         userAuth = await UserAuth.findOne({
           where: { profile_id: profile.id }
         });
-        whereObj = { id: userAuth.userId };
-      } else {
-        whereObj = { email: profile.emails[0].value };
+        whereObj = userAuth ? { id: userAuth.userId } : null;
       }
+      whereObj = whereObj ? whereObj : { email: profile.emails[0].value };
       const existingUser = await User.findOne({
         where: whereObj,
         attributes: {
