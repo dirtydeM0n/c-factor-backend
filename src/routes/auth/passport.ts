@@ -6,16 +6,19 @@ const config = require('../../config');
 
 // serialize user into the session
 passport.serializeUser(function (user, done) {
-  console.log('serializeUser:', user);
-  done(null, user);
+  try {
+    console.log('serializeUser:', user);
+    done(null, user);
+  } catch (err) {
+    done(err, null);
+  }
 });
 
 passport.deserializeUser(async function (obj, done) {
   console.log('deserializeUser:', obj);
   try {
-    const user = await User.findById(obj.id);
-    console.log('user data', user);
-    done(null, user);
+    // const user = await User.findOne({ where: { id: obj.id } });
+    done(null, obj);
   } catch (err) {
     done(err, null);
   }
