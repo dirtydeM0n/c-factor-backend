@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { UserProfile, UserAuth, User } from './user.model';
+import { UserAuth, User } from './user.model';
 import { Avatar } from './avatar/avatar.model';
 import { Campaign } from '../campaign/campaign.model';
 import { Client } from '../client/client.model';
@@ -15,16 +15,7 @@ class UserController {
           exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
         }
       });
-      const data = await Promise.all(users.map(async (user) => {
-        const profile = await UserProfile.findOne({
-          where: { userId: user.id },
-          attributes: {
-            exclude: ['id', 'userId', 'createdAt', 'updatedAt']
-          }
-        });
-        return { ...user, ...profile };
-      }));
-      resp.status(200).send(data);
+      resp.status(200).send(users);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -38,16 +29,7 @@ class UserController {
           exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
         }
       });
-      /*const userAuth = await UserAuth.findOne({
-        where: { id: req.params.id }
-      });*/
-      const userProfile = await UserProfile.findOne({
-        where: { userId: req.params.id },
-        attributes: {
-          exclude: ['id', 'userId', 'createdAt', 'updatedAt']
-        }
-      });
-      resp.status(200).send({ ...user, ...userProfile });
+      resp.status(200).send({ ...user });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -60,7 +42,6 @@ class UserController {
       if (userType === 'client') {
         const client = await Client.create({ ...req.body, userId: user.id });
       }
-      const profile = await UserProfile.create({ ...req.body, userId: user.id });
       let auth = null, avatar = null;
       if (req.body.auth) {
         auth = await UserAuth.create({ ...req.body, ...req.body.auth, userId: user.id });
@@ -68,7 +49,7 @@ class UserController {
       if (req.body.avatar) {
         avatar = await Avatar.create({ ...req.body.avatar, userId: user.id });
       }
-      resp.status(200).send({ ...user, ...profile, auth, avatar });
+      resp.status(200).send({ ...user, auth, avatar });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -77,14 +58,14 @@ class UserController {
   async put(req: Request, resp: Response) {
     try {
       const user = await User.update({ ...req.body }, { where: { id: req.params.id } });
-      const profile = await UserProfile.update({ ...req.body }, { where: { userId: req.params.id } });
+      let auth = null, avatar = null;
       if (req.body.auth) {
-        await UserAuth.update({ ...req.body.auth }, { where: { userId: req.params.id } });
+        auth = await UserAuth.update({ ...req.body.auth }, { where: { userId: req.params.id } });
       }
       if (req.body.avatar) {
-        await Avatar.update({ ...req.body.avatar }, { where: { userId: req.params.id } });
+        avatar = await Avatar.update({ ...req.body.avatar }, { where: { userId: req.params.id } });
       }
-      resp.status(200).send({ ...user, ...profile });
+      resp.status(200).send({ ...user, auth, avatar });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }

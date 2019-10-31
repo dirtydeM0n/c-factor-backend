@@ -6,89 +6,6 @@ import { createJWToken } from '../middleware/jwt';
 import config = require('../../config');
 import { Role } from '../role/role.model';
 
-const UserProfile = Database.define('profile', {
-    name: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    gender: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    cnic: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    fatherName: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    phone: {
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    gradingSystem: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    gradingValue: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    university: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    graduationDate: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    otherUniversity: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    qualification: {
-        type: Sequelize.STRING
-    },
-    specialization: {
-        type: Sequelize.STRING
-    },
-    city: {
-        type: Sequelize.STRING
-    },
-    region: {
-        type: Sequelize.STRING
-    },
-    country: {
-        type: Sequelize.STRING,
-        defaultValue: ''
-    },
-    address: {
-        type: Sequelize.TEXT,
-        defaultValue: ''
-    },
-    dob: {
-        type: Sequelize.STRING
-    },
-    bio: {
-        type: Sequelize.STRING,
-        defaultValue: ''
-    }
-}, {
-    timestamps: true,
-    freezeTableName: true,
-    tableName: 'users_profile'
-});
-
 const User = Database.define('user', {
     id: {
         allowNull: false,
@@ -295,12 +212,10 @@ const UserAuth = Database.define('auth', {
 });
 
 User.belongsTo(Role);
-UserProfile.belongsTo(User);
 User.hasMany(UserAuth);
 UserAuth.belongsTo(User);
 
 // User.sync();
-// UserProfile.sync();
 // UserAuth.sync();
 
-export { User, UserProfile, UserAuth };
+export { User, UserAuth };

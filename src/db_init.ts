@@ -1,4 +1,4 @@
-import { User, UserProfile, UserAuth } from './routes/user/user.model';
+import { User, UserAuth } from './routes/user/user.model';
 import { Role } from './routes/role/role.model';
 import { Company } from './routes/company/company.model';
 import { Avatar } from './routes/user/avatar/avatar.model';
@@ -18,7 +18,6 @@ import { Database } from './db';
 if (config.NODE_ENV === 'development') {
     Role.sync();
     User.sync();
-    UserProfile.sync();
     UserAuth.sync();
     Avatar.sync();
     Company.sync();

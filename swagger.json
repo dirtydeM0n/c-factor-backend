@@ -239,28 +239,9 @@
     },
     "User": {
       "required": [
+        "name",
         "email",
         "password"
-      ],
-      "optional": [
-        "username"
-      ],
-      "properties": {
-        "email": {
-          "type": "string",
-          "uniqueItems": true
-        },
-        "password": {
-          "type": "string"
-        },
-        "username": {
-          "type": "string"
-        }
-      }
-    },
-    "UserProfile": {
-      "required": [
-        "name"
       ],
       "optional": [
         "phone",
@@ -274,6 +255,13 @@
         "bio"
       ],
       "properties": {
+        "email": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "password": {
+          "type": "string"
+        },
         "name": {
           "type": "string"
         },

@@ -4,7 +4,7 @@ import * as util from 'util';
 import * as crypto from 'crypto';
 import { sendMail } from '../services/mail.service';
 import * as config from '../../config';
-import { UserProfile, User, UserAuth } from '../user/user.model';
+import { User, UserAuth } from '../user/user.model';
 import { compare } from '../services/crypto.service';
 import { Role } from '../role/role.model';
 
@@ -19,28 +19,24 @@ class AuthController {
     if (errors) {
       return resp.status(401).send({ msg: errors });
     }
-
     try {
       const user = await User.findOne({
-        where: { email: req.body.email }
+        where: { email: req.body.email },
+        attributes: {
+          exclude: ['resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
+        }
       });
       if (!user) {
         return resp.status(404).send({ msg: 'User not found' });
       }
       const isSamePass = await compare(req.body.password, user.password);
       if (isSamePass) {
-        const userProfile = await UserProfile.findOne({
-          where: { userId: user.id },
-          attributes: {
-            exclude: ['id', 'userId', 'createdAt', 'updatedAt']
-          }
-        });
+        delete user.password; // manually remove password from user object.
         const token = jwt.sign({
           email: user.email,
-          role: user.role,
-          username: user.username
+          userType: user.userType
         }, config.JWT_SECRET, { expiresIn: '1d' });
-        return resp.status(200).send({ id: user.id, email: user.email, userType: user.userType, status: user.status, ...userProfile, token: token });
+        return resp.status(200).send({ ...user, token: token });
       } else {
         return resp.status(401).send({ msg: 'Unauthorized' });
       }
@@ -68,11 +64,10 @@ class AuthController {
       return resp.status(401).send({ msg: errors });
     }
 
-    const user = { ...req.body };
     try {
       // Check if user already exists
       const existingUser = await User.findOne({
-        where: { email: user.email }
+        where: { email: req.body.email }
       });
       if (existingUser) {
         return resp.status(409).send({ msg: 'User already exists' });
@@ -80,23 +75,22 @@ class AuthController {
       // Generate activation token
       const qRandomBytes = (util as any).promisify(crypto.randomBytes);
       const cryptedValue = await qRandomBytes(16);
-      user.activationToken = cryptedValue.toString('hex');
-      user.activationTokenExpireAt = new Date(Date.now() + (60 * 60 * 1000)); // 1 hour
+      req.body.activationToken = cryptedValue.toString('hex');
+      req.body.activationTokenExpireAt = new Date(Date.now() + (60 * 60 * 1000)); // 1 hour
       // Send activation email
       const serverUrl = req.protocol + '://' + req.get('Host');
       const mailOptions = {
-        to: user.email,
+        to: req.body.email,
         from: config.mail.SMTP_USER,
         subject: 'Account activation',
         text: `You are receiving this email because you (or someone else) have requested account activation.\n\n
           Please click on the following link, or paste this into your browser to complete the process:\n\n
-          ${serverUrl}/auth/activate/${user.activationToken}\n\n
+          ${serverUrl}/auth/activate/${req.body.activationToken}\n\n
           If you did not request this, please ignore this email\n`
       };
       await sendMail(mailOptions);
       const role = await Role.findOne({ where: { value: 'applicant' } });
-      const savedUser = await User.create({ ...user, userType: 'applicant', roleId: role ? role.id : null });
-      const userProfile = await UserProfile.create({ ...req.body, userId: savedUser.id });
+      const savedUser = await User.create({ ...req.body, userType: 'applicant', roleId: role ? role.id : null });
       console.log('savedUser:', savedUser);
       resp.status(200).send({ msg: 'An activation email has been sent to your email. Please check!' });
     } catch (exp) {
@@ -123,8 +117,7 @@ class AuthController {
       }
       /*const token = jwt.sign({
         email: user.email,
-        role: user.role,
-        username: user.username
+        userType: user.userType
       }, config.JWT_SECRET, { expiresIn: '1d' });
       // return resp.status(200).send({ token: token });
       resp.redirect(config.FRONTEND_URI + '/enter/' + token);*/
@@ -254,18 +247,11 @@ class AuthController {
           exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
         }
       });
-      const userProfile = await UserProfile.findOne({
-        where: { userId: userAuth.userId },
-        attributes: {
-          exclude: ['id', 'userId', 'createdAt', 'updatedAt']
-        }
-      });
       const token = jwt.sign({
         email: user.email,
-        role: user.role,
-        username: user.username
+        userType: user.userType
       }, config.JWT_SECRET, { expiresIn: '1d' });
-      resp.status(200).send({ ...user, ...userProfile, token: token });
+      resp.status(200).send({ ...user, token: token });
     } catch (error) {
       console.log(error);
       resp.status(400).send({
