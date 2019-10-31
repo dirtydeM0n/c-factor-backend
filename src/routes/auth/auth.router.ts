@@ -17,24 +17,23 @@ const AuthRouter = Router()
   .get('/linkedin/callback', passportLinkedIn.authenticate('linkedin', { failureRedirect: `${config.FRONTEND_URI}?error=1`, /*successRedirect: '/demo?success'*/ }),
     async (req, resp) => {
       try {
-        console.log('LinkedIn Successful authentication => ', req.user);
+        console.log('<== LinkedIn Successful authentication ==>');
         if (req.user) {
+          const userData = req.user.data;
           let authId = null;
-          if (req.user.auth && req.user.auth.id) {
-            authId = req.user.auth.id;
-          } else {
-            const auth = await UserAuth.findOne({ where: { userId: req.user.id } });
+          if (!userData.auth) {
+            const auth = await UserAuth.findOne({ where: { userId: userData.id } });
             authId = auth.id;
+          } else {
+            authId = userData.auth.id;
           }
           console.log('authId:', authId);
-          resp.redirect(`${config.FRONTEND_URI}/?authId=${authId}`); // &code=${req.query.code}&state=${req.query.state}
+          return resp.redirect(`${config.FRONTEND_URI}/?authId=${authId}`); // &code=${req.query.code}&state=${req.query.state}
         }
-        // Successful authentication
-        // resp.json(req.user);
-        resp.redirect(req.session.returnTo || `${config.FRONTEND_URI}`);
+        return resp.redirect(req.session.returnTo || `${config.FRONTEND_URI}`);
       } catch (err) {
         console.log(err);
-        resp.redirect(`${config.FRONTEND_URI}?error=1`);
+        return resp.redirect(`${config.FRONTEND_URI}?error=1`);
       }
     });
 
