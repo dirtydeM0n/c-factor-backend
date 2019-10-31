@@ -20,9 +20,10 @@ const AuthRouter = Router()
         console.log('<== LinkedIn Successful authentication ==>');
         if (req.user) {
           const userData = req.user.data;
+          console.log('userData:', userData);
           let authId = null;
-          if (!userData.auth) {
-            const auth = await UserAuth.findOne({ where: { userId: userData.id } });
+          if (!userData.auth || !(userData.auth || {}).id) {
+            const auth = await UserAuth.findOne({ where: { userId: userData.user.id } });
             authId = auth.id;
           } else {
             authId = userData.auth.id;

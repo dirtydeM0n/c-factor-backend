@@ -65,17 +65,13 @@ passport.use(new LinkedInStrategy({
         const auth = await UserAuth.findOne({ where: { userId: user.id, provider: 'linkedin' } });
         done(null, { data: { user, auth }, msg: 'There is already a LinkedIn account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
       } else {
-        user = await User.findOne({ where: { id: req.user.id } });
-        if (!user) {
-
-        }
         await User.update({
           email: profile.emails[0].value,
-          name: user.name || (profile.name.givenName + ' ' + profile.name.familyName),
+          name: profile.name.givenName + ' ' + profile.name.familyName,
           avatar: user.avatar || profile.photos[3].value
-        }, { where: { id: user.id } });
+        }, { where: { id: req.user.id } });
         user = await User.findOne({
-          where: { id: user.id },
+          where: { id: req.user.id },
           attributes: {
             exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
           }
