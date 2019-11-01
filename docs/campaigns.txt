@@ -9,6 +9,7 @@ POST       |  /campaigns/:id                 | http://localhost:3000/campaigns/:
 PUT        |  /campaigns/:id                 | http://localhost:3000/campaigns/:id
 POST       |  /campaigns/:id                 | http://localhost:3000/campaigns/:id
 DELETE     |  /campaigns/:id                 | http://localhost:3000/campaigns/:id
+GET        |  /campaigns/:id/status          | http://localhost:3000/campaigns/:id/status
 POST       |  /campaigns/:id/activate        | http://localhost:3000/campaigns/:id/activate
 POST       |  /campaigns/:id/deactivate      | http://localhost:3000/campaigns/:id/deactivate
 PUT        |  /campaigns/:id/changeState     | http://localhost:3000/campaigns/:id/changeState
@@ -240,5 +241,66 @@ Authorization Bearer <Token>
             "campaignId": "55ceb8f0-f35d-11e9-932d-0334653fb91c"
         }
     ]
+}
+```
+
+5. POST /campaigns/:id/activate
+
+** Request Payload:
+
+** Response:
+```
+{
+    "id": "ba1e7d60-f37e-11e9-840e-d3da449f0abd",
+    "state": "active",
+    "allow_direct_applications": false,
+    "allow_invites_only": false,
+    "startupComponentId": "1",
+    "name": "testing123",
+    "title": "Testing 123!!",
+    "description": "This is a test campaign!",
+    "start_date": "2019-10-21",
+    "end_date": "2019-11-21",
+    "active": true,
+    "updatedAt": "2019-10-20T21:15:22.551Z",
+    "createdAt": "2019-10-20T21:15:22.551Z",
+    "image_url": null,
+    "clientId": null
+}
+```
+
+6. POST /campaigns/:id/deactivate
+
+** Request Payload:
+
+** Response:
+```
+{
+    "id": "ba1e7d60-f37e-11e9-840e-d3da449f0abd",
+    "state": "active",
+    "allow_direct_applications": false,
+    "allow_invites_only": false,
+    "startupComponentId": "1",
+    "name": "testing123",
+    "title": "Testing 123!!",
+    "description": "This is a test campaign!",
+    "start_date": "2019-10-21",
+    "end_date": "2019-11-21",
+    "active": false,
+    "updatedAt": "2019-10-20T21:15:22.551Z",
+    "createdAt": "2019-10-20T21:15:22.551Z",
+    "image_url": null,
+    "clientId": null
+}
+```
+
+7. GET /campaigns/:id/status
+
+** Request Payload:
+
+** Response:
+```
+{
+    "active": false
 }
 ```

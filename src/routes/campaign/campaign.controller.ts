@@ -85,6 +85,15 @@ class CampaignController {
     }
   }
 
+  async getStatusById(req: Request, resp: Response) {
+    try {
+      const campaign = await Campaign.findOne({ where: { id: req.params.id } });
+      resp.status(200).send({ active: campaign.active });
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
   async activate(req: Request, resp: Response) {
     try {
       const data = await Campaign.update({ active: 1 }, { where: { id: req.params.id } });
