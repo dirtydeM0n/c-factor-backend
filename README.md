@@ -40,13 +40,33 @@ npm install
 ```
 - Start your postgreSQL server (you'll probably want another command prompt)
 ```
-> postgres -D /usr/local/var/postgres
+$ postgres -D /usr/local/var/postgres
 ```
 - Build and run the project
 ```
-> npm run build
-> npm start
+$ npm run build
+$ npm start
 ```
+
+# Production Build
+```
+$ cd <project_name>
+$ npm install
+$ nano .env # create .env file with your production configs (for sample we have .env.sample in the root folder)
+$ npm run build
+```
+
+You can use [PM2](https://github.com/Unitech/pm2), it's a production process manager for Node.js applications with a built-in load balancer.
+
+### Install PM2
+
+`$ npm install pm2 -g`
+
+### Start an application (on production server)
+
+`$ pm2 start dist/server.js`
+
+For more regarding pm2 commands please read the SO [here](https://stackoverflow.com/a/40254977)
 
 # Swagger
 To access Swagger UI for available endpoints
