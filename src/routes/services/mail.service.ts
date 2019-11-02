@@ -1,13 +1,13 @@
 
-import * as nodemailer from 'nodemailer';
+import { createTransport } from 'nodemailer';
 import config = require('../../config');
 
-const transporter = nodemailer.createTransport({
+const transporter = createTransport({
     host: config.mail.SMTP_HOST,
     port: Number(config.mail.SMTP_PORT),
     /*secure: config.NODE_ENV === 'production',*/
     socketTimeout: 5000,
-    logger: true,
+    logger: config.NODE_ENV === 'production',
     auth: {
         user: config.mail.SMTP_USER,
         pass: config.mail.SMTP_PASSWORD
