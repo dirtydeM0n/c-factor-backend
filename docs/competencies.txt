@@ -31,7 +31,7 @@ description:This is Register component
 timer:15
 componentId:2
 nextComponentId:-1
-assetsURL=http://google.com/
+assetsURL=/path/to/folder/
 startupData={"component": "startup-data"}
 data:{"component": "Register"}
 ```

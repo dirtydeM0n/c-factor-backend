@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { Competency } from './competency.model';
 import { CompetencyData } from './competency_data/competency_data.model';
+import * as config from '../../config';
 
 class CompetencyController {
   async getAll(req: Request, resp: Response) {
@@ -27,7 +28,8 @@ class CompetencyController {
 
   async post(req: Request, resp: Response) {
     try {
-      const competency = await Competency.create({ ...req.body });
+      const assetsUrl = config.ASSETS_FOLDER_URI + req.body.assetsURL;
+      const competency = await Competency.create({ ...req.body, assetsURL: assetsUrl });
       if (req.body.data) {
         const competencyData = await CompetencyData.create({ ...req.body, data: req.body.data, competencyId: competency.id });
         const dataURL = req.protocol + '://' + req.get('Host') + `/competencyData/${competencyData.id}`;
