@@ -28,6 +28,7 @@ import {
   CompetencyDataRouter,
 } from './routes/index';
 import { ValidateToken } from './routes/middleware/validate_token';
+import { validateRoles, validateRole } from './routes/middleware/validate_role';
 
 // Create Express server
 const app = express();
@@ -66,6 +67,7 @@ app.use(session({
   saveUninitialized: true,
   secret: config.SESSION_SECRET
 }));
+
 // app.use(lusca.xframe('SAMEORIGIN'));
 // app.use(lusca.xssProtection(true));
 
@@ -93,15 +95,15 @@ app.use(function (err, req, resp, next) {
 
 app.use('/', RootRouter);
 app.use('/auth', AuthRouter);
-app.use('/users', ValidateToken, UserRouter);
-app.use('/avatars', ValidateToken, AvatarRouter);
-app.use('/roles', ValidateToken, RoleRouter);
-app.use('/departments', ValidateToken, DepartmentRouter);
-app.use('/companies', ValidateToken, CompanyRouter);
-app.use('/clients', ValidateToken, ClientRouter);
-app.use('/campaigns', ValidateToken, CampaignRouter);
-app.use('/campaignInvites', ValidateToken, CampaignInviteRouter);
-app.use('/competencies', ValidateToken, CompetencyRouter);
+app.use('/users', ValidateToken, validateRoles(['applicant', 'admin', 'client']), UserRouter);
+app.use('/clients', ValidateToken, validateRoles(['admin']), ClientRouter);
+app.use('/roles', ValidateToken, validateRole('admin'), RoleRouter);
+app.use('/departments', ValidateToken, validateRoles(['client']), DepartmentRouter);
+app.use('/companies', ValidateToken, validateRoles(['client']), CompanyRouter);
+app.use('/avatars', ValidateToken, validateRoles(['applicant', 'admin', 'client']), AvatarRouter);
+app.use('/campaigns', ValidateToken, validateRoles(['admin', 'client']), CampaignRouter);
+app.use('/campaignInvites', ValidateToken, validateRoles(['admin', 'client']), CampaignInviteRouter);
+app.use('/competencies', ValidateToken, validateRoles(['admin', 'client']), CompetencyRouter);
 app.use('/competencyData', CompetencyDataRouter);
 /**
  * Add swagger endpoints

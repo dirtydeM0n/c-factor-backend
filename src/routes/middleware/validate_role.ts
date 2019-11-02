@@ -5,7 +5,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 export const validateRole = (allowedRole: string) => async (req: Request, resp: Response, next: NextFunction) => {
-    const role = req.session.role.value;
+    const role = req.session.userType;
     if (role === allowedRole) {
         await next();
     } else {
@@ -14,7 +14,7 @@ export const validateRole = (allowedRole: string) => async (req: Request, resp: 
 };
 
 export const validateRoles = (allowedRoles = []) => async (req: Request, resp: Response, next: NextFunction) => {
-    const role = req.session.role.value;
+    const role = req.session.userType;
     if (allowedRoles.indexOf(role) !== -1) {
         await next();
     } else {
@@ -23,7 +23,7 @@ export const validateRoles = (allowedRoles = []) => async (req: Request, resp: R
 };
 
 export const validateRolesNotToBe = (notAllowedRoles = []) => async (req: Request, resp: Response, next: NextFunction) => {
-    const role = req.session.role.value;
+    const role = req.session.userType;
     if (notAllowedRoles.indexOf(role) === -1) {
         await next();
     } else {
