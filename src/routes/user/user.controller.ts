@@ -193,12 +193,15 @@ class UserController {
       if (!user) {
         return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
       }
-      const userCampaign = await UserCampaign.findOne({
+      let userCampaign = await UserCampaign.findOne({
         where: {
           userId: req.params.userId,
           campaignId: req.params.campaignId
         }
       });
+      if (!userCampaign) {
+        userCampaign = await UserCampaign.create({ userId: req.params.userId, campaignId: req.params.campaignId });
+      }
       const campaign = await Campaign.findOne({ where: { id: req.params.campaignId } });
       const competencies = await Competency.findAll({
         where: { campaignId: req.params.campaignId },
