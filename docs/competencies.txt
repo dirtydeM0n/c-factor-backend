@@ -4,9 +4,9 @@ BASE REQUEST URL: http://localhost:3000/competencies
 METHOD     |   ROUTE                         | REQUEST URL
 --------------------------------------------------------------------------------------------
 GET        |  /competencies                     | http://localhost:3000/competencies
+POST       |  /competencies                     | http://localhost:3000/competencies/:id
 GET        |  /competencies/:campaignId/all     | http://localhost:3000/competencies/:campaignId/all
 GET        |  /competencies/:id                 | http://localhost:3000/competencies/:id
-POST       |  /competencies                     | http://localhost:3000/competencies/:id
 PUT        |  /competencies/:id                 | http://localhost:3000/competencies/:id
 POST       |  /competencies/:id                 | http://localhost:3000/competencies/:id
 DELETE     |  /competencies/:id                 | http://localhost:3000/competencies/:id
@@ -19,11 +19,12 @@ GET        |  /competencies/:id/state           | http://localhost:3000/competen
 PUT        |  /competencies/:id/state           | http://localhost:3000/competencies/:id/state
 POST       |  /competencies/:id/state           | http://localhost:3000/competencies/:id/state
 
-GET        |  /competencies/:id/data                            | http://localhost:3000/competencies/:id/data
-POST       |  /competencies/:id/data                            | http://localhost:3000/competencies/:id/data
-PUT        |  /competencies/:id/data/:competencyDataId          | http://localhost:3000/competencies/:id/data
-POST        |  /competencies/:id/data/:competencyDataId         | http://localhost:3000/competencies/:id/data
-DELETE     |  /competencies/:id/data/:competencyDataId          | http://localhost:3000/competencies/:id/data
+// Competency Data routes
+GET        |  /competencies/:id/data                        | http://localhost:3000/competencies/:id/data
+POST       |  /competencies/:id/data                        | http://localhost:3000/competencies/:id/data
+PUT        |  /competencies/:competencyId/data/:id          | http://localhost:3000/competencies/:competencyId/data/:id
+POST       |  /competencies/:competencyId/data/:id          | http://localhost:3000/competencies/:competencyId/data/:id
+DELETE     |  /competencies/:competencyId/data/:id          | http://localhost:3000/competencies/:competencyId/data/:id
 --------------------------------------------------------------------------------------------
 
 1. POST /competencies

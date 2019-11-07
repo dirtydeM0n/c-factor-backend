@@ -18,12 +18,12 @@ const CampaignRouter = Router()
   .put('/:id/state', CampaignController.updateState)
   .post('/:id/state', CampaignController.updateState)
   // campaign invites routes
-  .get('/:id/invites', CampaignController.getAllInvites)
-  .get('/:id/invite', CampaignController.getInvite)
-  .post('/:id/invite/create', CampaignController.createInvite)
-  .put('/:id/invite', CampaignController.editInvite)
-  .post('/:id/invite', CampaignController.editInvite)
-  .delete('/:id/invite', CampaignController.deleteInvite);
+  .get('/:campaignId/invites', CampaignController.getAllInvites)
+  .post('/:campaignId/invites', CampaignController.createInvite)
+  .get('/:campaignId/invites/:id', CampaignController.getInvite)
+  .put('/:campaignId/invites/:id', CampaignController.editInvite)
+  .post('/:campaignId/invites/:id', CampaignController.editInvite)
+  .delete('/:campaignId/invites/:id', CampaignController.deleteInvite);
 
 export { CampaignRouter };
 export { CampaignInviteRouter } from './invite/invite.router';

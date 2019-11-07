@@ -142,19 +142,18 @@ class CampaignController {
     }
   }
 
-  async createInvite(req: Request, resp: Response) {
+  async getAllInvites(req: Request, resp: Response) {
     try {
-      const campaignInvite = await CampaignInvite.create({ ...req.body, campaignId: req.params.id });
-      resp.status(200).send(campaignInvite);
+      const campaignInvites = await CampaignInvite.findAll({ where: { campaignId: req.params.campaignId } });
+      resp.status(200).send(campaignInvites);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
   }
 
-  async editInvite(req: Request, resp: Response) {
+  async createInvite(req: Request, resp: Response) {
     try {
-      let campaignInvite = await CampaignInvite.update({ ...req.body }, { where: { campaignId: req.params.id } });
-      campaignInvite = await CampaignInvite.findOne({ where: { campaignId: req.params.id } });
+      const campaignInvite = await CampaignInvite.create({ ...req.body, campaignId: req.params.campaignId });
       resp.status(200).send(campaignInvite);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
@@ -163,16 +162,17 @@ class CampaignController {
 
   async getInvite(req: Request, resp: Response) {
     try {
-      const campaignInvite = await CampaignInvite.findOne({ where: { campaignId: req.params.id } });
+      const campaignInvite = await CampaignInvite.findOne({ where: { id: req.params.id, campaignId: req.params.campaignId } });
       resp.status(200).send(campaignInvite);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
   }
 
-  async getAllInvites(req: Request, resp: Response) {
+  async editInvite(req: Request, resp: Response) {
     try {
-      const campaignInvite = await CampaignInvite.findAll({ where: { campaignId: req.params.id } });
+      let campaignInvite = await CampaignInvite.update({ ...req.body }, { where: { id: req.params.id, campaignId: req.params.campaignId } });
+      campaignInvite = await CampaignInvite.findOne({ where: { id: req.params.id, campaignId: req.params.campaignId } });
       resp.status(200).send(campaignInvite);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
@@ -181,7 +181,7 @@ class CampaignController {
 
   async deleteInvite(req: Request, resp: Response) {
     try {
-      const campaignInvite = await CampaignInvite.destroy({ where: { campaignId: req.params.id } });
+      const campaignInvite = await CampaignInvite.destroy({ where: { id: req.params.id, campaignId: req.params.campaignId } });
       resp.status(200).send(campaignInvite);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });

@@ -11,18 +11,18 @@ class AvatarController {
     }
   }
 
-  async getById(req: Request, resp: Response) {
+  async post(req: Request, resp: Response) {
     try {
-      const avatar = await Avatar.findOne({ where: { id: req.params.id } });
+      const avatar = await Avatar.create({ ...req.body });
       resp.status(200).send(avatar);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
   }
 
-  async post(req: Request, resp: Response) {
+  async getById(req: Request, resp: Response) {
     try {
-      const avatar = await Avatar.create({ ...req.body });
+      const avatar = await Avatar.findOne({ where: { id: req.params.id } });
       resp.status(200).send(avatar);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });

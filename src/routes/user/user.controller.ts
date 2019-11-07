@@ -21,20 +21,6 @@ class UserController {
     }
   }
 
-  async getById(req: Request, resp: Response) {
-    try {
-      const user = await User.findOne({
-        where: { id: req.params.id },
-        attributes: {
-          exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
-        }
-      });
-      resp.status(200).send({ ...user });
-    } catch (error) {
-      resp.status(404).send({ msg: 'Not found' });
-    }
-  }
-
   async post(req: Request, resp: Response) {
     try {
       const userType = req.body.userType || 'applicant';
@@ -50,6 +36,20 @@ class UserController {
         avatar = await Avatar.create({ ...req.body.avatar, userId: user.id });
       }
       resp.status(200).send({ ...user, auth, avatar });
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
+  async getById(req: Request, resp: Response) {
+    try {
+      const user = await User.findOne({
+        where: { id: req.params.id },
+        attributes: {
+          exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
+        }
+      });
+      resp.status(200).send({ ...user });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -88,7 +88,7 @@ class UserController {
     }
   }
 
-  async activateAccount(req: Request, resp: Response) {
+  async activate(req: Request, resp: Response) {
     try {
       let user = await User.update({ status: 'accepted' }, { where: { id: req.params.id } });
       user = await User.findOne({ where: { id: req.params.id } });
@@ -98,7 +98,7 @@ class UserController {
     }
   }
 
-  async deactivateAccount(req: Request, resp: Response) {
+  async deactivate(req: Request, resp: Response) {
     try {
       let user = await User.update({ status: 'deactivated' }, { where: { id: req.params.id } });
       user = await User.findOne({ where: { id: req.params.id } });
@@ -108,9 +108,18 @@ class UserController {
     }
   }
 
+  async getAvatars(req: Request, resp: Response) {
+    try {
+      const avatar = await Avatar.findAll({ where: { userId: req.params.userId } });
+      resp.status(200).send(avatar);
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
   async createAvatar(req: Request, resp: Response) {
     try {
-      const avatar = await Avatar.create({ ...req.body, userId: req.params.id });
+      const avatar = await Avatar.create({ ...req.body, userId: req.params.userId });
       resp.status(200).send(avatar);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
@@ -119,8 +128,8 @@ class UserController {
 
   async editAvatar(req: Request, resp: Response) {
     try {
-      let avatar = await Avatar.update({ ...req.body }, { where: { userId: req.params.id } });
-      avatar = await Avatar.findOne({ where: { userId: req.params.id } });
+      let avatar = await Avatar.update({ ...req.body }, { where: { id: req.params.id, userId: req.params.userId } });
+      avatar = await Avatar.findOne({ where: { id: req.params.id, userId: req.params.userId } });
       resp.status(200).send(avatar);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
@@ -129,7 +138,7 @@ class UserController {
 
   async getAvatar(req: Request, resp: Response) {
     try {
-      const avatar = await Avatar.findOne({ where: { userId: req.params.id } });
+      const avatar = await Avatar.findOne({ where: { id: req.params.id, userId: req.params.userId } });
       resp.status(200).send(avatar);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
@@ -138,7 +147,7 @@ class UserController {
 
   async deleteAvatar(req: Request, resp: Response) {
     try {
-      const avatar = await Avatar.destroy({ where: { userId: req.params.id } });
+      const avatar = await Avatar.destroy({ where: { id: req.params.id, userId: req.params.userId } });
       resp.status(200).send(avatar);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });

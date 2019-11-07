@@ -127,7 +127,16 @@ class CompetencyController {
 
   async getCompetencyData(req: Request, resp: Response) {
     try {
-      const competencyData = await CompetencyData.find({ where: { competencyId: req.params.id } });
+      const competencyData = await CompetencyData.find({ where: { competencyId: req.params.competencyId } });
+      resp.status(200).send(competencyData);
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
+  async createCompetencyData(req: Request, resp: Response) {
+    try {
+      const competencyData = await CompetencyData.create({ ...req.body, competencyId: req.params.competencyId });
       resp.status(200).send(competencyData);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
@@ -136,7 +145,7 @@ class CompetencyController {
 
   async getCompetencyDataById(req: Request, resp: Response) {
     try {
-      const competencyData = await CompetencyData.findOne({ where: { id: req.params.competencyDataId, competencyId: req.params.id } });
+      const competencyData = await CompetencyData.findOne({ where: { id: req.params.id, competencyId: req.params.competencyId } });
       competencyData.data = JSON.parse(competencyData.data || '{}');
       resp.status(200).send(competencyData.data);
     } catch (error) {
@@ -144,19 +153,10 @@ class CompetencyController {
     }
   }
 
-  async createCompetencyData(req: Request, resp: Response) {
-    try {
-      const competencyData = await CompetencyData.create({ ...req.body, competencyId: req.params.id });
-      resp.status(200).send(competencyData);
-    } catch (error) {
-      resp.status(404).send({ msg: 'Not found' });
-    }
-  }
-
   async editCompetencyData(req: Request, resp: Response) {
     try {
-      let competencyData = await CompetencyData.update({ ...req.body }, { where: { id: req.params.competencyDataId, competencyId: req.params.id } });
-      competencyData = await CompetencyData.findOne({ where: { id: req.params.competencyDataId, competencyId: req.params.id } });
+      let competencyData = await CompetencyData.update({ ...req.body }, { where: { id: req.params.id, competencyId: req.params.competencyId } });
+      competencyData = await CompetencyData.findOne({ where: { id: req.params.id, competencyId: req.params.competencyId } });
       resp.status(200).send(competencyData);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
@@ -165,7 +165,7 @@ class CompetencyController {
 
   async deleteCompetencyData(req: Request, resp: Response) {
     try {
-      const competencyData = await CompetencyData.destroy({ where: { id: req.params.competencyDataId, competencyId: req.params.id } });
+      const competencyData = await CompetencyData.destroy({ where: { id: req.params.id, competencyId: req.params.competencyId } });
       resp.status(200).send(competencyData);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
