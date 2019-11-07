@@ -31,8 +31,9 @@ class CampaignInviteController {
 
   async put(req: Request, resp: Response) {
     try {
-      const data = await CampaignInvite.update({ ...req.body }, { where: { id: req.params.id } });
-      resp.status(200).send(data);
+      let campaignInvite = await CampaignInvite.update({ ...req.body }, { where: { id: req.params.id } });
+      campaignInvite = await CampaignInvite.findOne({ where: { id: req.params.id } });
+      resp.status(200).send(campaignInvite);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }

@@ -10,8 +10,14 @@ POST       |  /competencies                     | http://localhost:3000/competen
 PUT        |  /competencies/:id                 | http://localhost:3000/competencies/:id
 POST       |  /competencies/:id                 | http://localhost:3000/competencies/:id
 DELETE     |  /competencies/:id                 | http://localhost:3000/competencies/:id
-PUT        |  /competencies/:id/changeState     | http://localhost:3000/competencies/:id/changeState
-POST       |  /competencies/:id/changeState     | http://localhost:3000/competencies/:id/changeState
+GET        |  /competencies/:id/status          | http://localhost:3000/competencies/:id/status
+PUT        |  /competencies/:id/status          | http://localhost:3000/competencies/:id/status
+POST       |  /competencies/:id/status          | http://localhost:3000/competencies/:id/status
+POST       |  /competencies/:id/activate        | http://localhost:3000/competencies/:id/activate
+POST       |  /competencies/:id/deactivate      | http://localhost:3000/competencies/:id/deactivate
+GET        |  /competencies/:id/state           | http://localhost:3000/competencies/:id/state
+PUT        |  /competencies/:id/state           | http://localhost:3000/competencies/:id/state
+POST       |  /competencies/:id/state           | http://localhost:3000/competencies/:id/state
 
 GET        |  /competencies/:id/data                            | http://localhost:3000/competencies/:id/data
 POST       |  /competencies/:id/data                            | http://localhost:3000/competencies/:id/data

@@ -57,14 +57,22 @@ class UserController {
 
   async put(req: Request, resp: Response) {
     try {
-      const user = await User.update({ ...req.body }, { where: { id: req.params.id } });
+      let user = await User.update({ ...req.body }, { where: { id: req.params.id } });
       let auth = null, avatar = null;
       if (req.body.auth) {
         auth = await UserAuth.update({ ...req.body.auth }, { where: { userId: req.params.id } });
+        auth = await UserAuth.findOne({ where: { userId: req.params.id }, attributes: { exclude: ['userId'] } });
       }
       if (req.body.avatar) {
         avatar = await Avatar.update({ ...req.body.avatar }, { where: { userId: req.params.id } });
+        avatar = await Avatar.findOne({ where: { userId: req.params.id }, attributes: { exclude: ['userId'] } });
       }
+      user = await User.findOne({
+        where: { id: req.params.id },
+        attributes: {
+          exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
+        }
+      });
       resp.status(200).send({ ...user, auth, avatar });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
@@ -73,8 +81,8 @@ class UserController {
 
   async delete(req: Request, resp: Response) {
     try {
-      const data = await User.destroy({ where: { id: req.params.id } });
-      resp.status(200).send(data);
+      const user = await User.destroy({ where: { id: req.params.id } });
+      resp.status(200).send(user);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -82,8 +90,9 @@ class UserController {
 
   async activateAccount(req: Request, resp: Response) {
     try {
-      const data = await User.update({ status: 'accepted' }, { where: { id: req.params.id } });
-      resp.status(200).send(data);
+      let user = await User.update({ status: 'accepted' }, { where: { id: req.params.id } });
+      user = await User.findOne({ where: { id: req.params.id } });
+      resp.status(200).send({ status: user.status });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -91,8 +100,9 @@ class UserController {
 
   async deactivateAccount(req: Request, resp: Response) {
     try {
-      const data = await User.update({ status: 'deactivated' }, { where: { id: req.params.id } });
-      resp.status(200).send(data);
+      let user = await User.update({ status: 'deactivated' }, { where: { id: req.params.id } });
+      user = await User.findOne({ where: { id: req.params.id } });
+      resp.status(200).send({ status: user.status });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -100,8 +110,8 @@ class UserController {
 
   async createAvatar(req: Request, resp: Response) {
     try {
-      const data = await Avatar.create({ ...req.body, userId: req.params.id });
-      resp.status(200).send(data);
+      const avatar = await Avatar.create({ ...req.body, userId: req.params.id });
+      resp.status(200).send(avatar);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -109,8 +119,9 @@ class UserController {
 
   async editAvatar(req: Request, resp: Response) {
     try {
-      const data = await Avatar.update({ ...req.body }, { where: { userId: req.params.id } });
-      resp.status(200).send(data);
+      let avatar = await Avatar.update({ ...req.body }, { where: { userId: req.params.id } });
+      avatar = await Avatar.findOne({ where: { userId: req.params.id } });
+      resp.status(200).send(avatar);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -118,8 +129,8 @@ class UserController {
 
   async getAvatar(req: Request, resp: Response) {
     try {
-      const data = await Avatar.findOne({ where: { userId: req.params.id } });
-      resp.status(200).send(data);
+      const avatar = await Avatar.findOne({ where: { userId: req.params.id } });
+      resp.status(200).send(avatar);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -127,8 +138,8 @@ class UserController {
 
   async deleteAvatar(req: Request, resp: Response) {
     try {
-      const data = await Avatar.destroy({ where: { userId: req.params.id } });
-      resp.status(200).send(data);
+      const avatar = await Avatar.destroy({ where: { userId: req.params.id } });
+      resp.status(200).send(avatar);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -165,7 +176,7 @@ class UserController {
           }
         });
         const userCompetencies = await Promise.all(competencies.map(async (comp) => {
-          const data = await UserCompetency.findOne({
+          const userCompetency = await UserCompetency.findOne({
             where: {
               userId: req.params.userId,
               competencyId: comp.id,
@@ -175,7 +186,7 @@ class UserController {
               exclude: ['competencyId', 'userId']
             }
           });
-          return { ...comp, ...data/*status: data.status, score: data.score*/ };
+          return { ...comp, ...userCompetency/*status: userCompetency.status, score: userCompetency.score*/ };
         }));
         return { ...campaign, status: camp.status, score: camp.score, activeComponentId: camp.activeComponentId, components: userCompetencies };
       }));
@@ -210,7 +221,7 @@ class UserController {
         }
       });
       const userCompetencies = await Promise.all(competencies.map(async (comp) => {
-        const data = await UserCompetency.findOne({
+        const userCompetency = await UserCompetency.findOne({
           where: {
             userId: req.params.userId,
             competencyId: comp.id,
@@ -220,7 +231,7 @@ class UserController {
             exclude: ['competencyId', 'userId']
           }
         });
-        return { ...comp, ...data/*status: data.status, score: data.score*/ };
+        return { ...comp, ...userCompetency/*status: userCompetency.status, score: userCompetency.score*/ };
       }));
       resp.status(200).send({ ...campaign, status: userCampaign.status, score: userCampaign.score, activeComponentId: userCampaign.activeComponentId, components: userCompetencies });
     } catch (error) {
@@ -258,13 +269,13 @@ class UserController {
       if (!user) {
         return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
       }
-      const data = await UserCampaign.destroy({
+      const userCampaign = await UserCampaign.destroy({
         where: {
           userId: req.params.userId,
           campaignId: req.params.campaignId
         }
       });
-      resp.status(200).send(data);
+      resp.status(200).send(userCampaign);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }

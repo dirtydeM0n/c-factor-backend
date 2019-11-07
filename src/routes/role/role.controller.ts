@@ -31,7 +31,8 @@ class RoleController {
 
   async put(req: Request, resp: Response) {
     try {
-      const role = await Role.update({ ...req.body }, { where: { id: req.params.id } });
+      let role = await Role.update({ ...req.body }, { where: { id: req.params.id } });
+      role = await Role.findOne({ where: { id: req.params.id } });
       resp.status(200).send(role);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
