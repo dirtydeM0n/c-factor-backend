@@ -10,7 +10,7 @@ class CompetencyController {
       if (req.params.campaignId) {
         find = { where: { campaignId: req.params.campaignId } };
       }
-      const competencies = await Competency.findAll(find);
+      const competencies = await Competency.findAll({ ...find, order: [['createdAt', 'ASC']] });
       resp.status(200).send(competencies);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });

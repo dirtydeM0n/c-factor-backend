@@ -28,6 +28,7 @@ class CampaignController {
       const campaign = await Campaign.findOne({ where: { id: req.params.id } });
       const components = await Competency.findAll({
         where: { campaignId: req.params.id },
+        order: [['createdAt', 'ASC']],
         attributes: {
           exclude: ['campaignId']
         }

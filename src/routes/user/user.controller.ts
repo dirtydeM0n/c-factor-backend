@@ -180,6 +180,7 @@ class UserController {
         const campaign = await Campaign.findOne({ where: { id: camp.campaignId } });
         const competencies = await Competency.findAll({
           where: { campaignId: camp.campaignId },
+          order: [['createdAt', 'ASC']],
           attributes: {
             exclude: ['campaignId']
           }
@@ -225,6 +226,7 @@ class UserController {
       const campaign = await Campaign.findOne({ where: { id: req.params.campaignId } });
       const competencies = await Competency.findAll({
         where: { campaignId: req.params.campaignId },
+        order: [['createdAt', 'ASC']],
         attributes: {
           exclude: ['campaignId']
         }
