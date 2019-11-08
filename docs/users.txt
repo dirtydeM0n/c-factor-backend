@@ -21,20 +21,29 @@ POST       |  /users/:userId/avatar/:id             | http://localhost:3000/user
 DELETE     |  /users/:userId/avatar/:id             | http://localhost:3000/users/:userId/avatar/:id
 
 // User Campaigns
-GET        | /users/:userId/campaigns                       | http://localhost:3000/users/:userId/campaigns 
-GET        |  /users/:userId/:campaignId                    | http://localhost:3000/users/:userId/:campaignId 
-DELETE     |  /users/:userId/:campaignId                    | http://localhost:3000/users/:userId/:campaignId 
-GET        |  /users/:userId/:campaignId/score              | http://localhost:3000/users/:userId/:campaignId/score
-PUT        |  /users/:userId/:campaignId/score              | http://localhost:3000/users/:userId/:campaignId/score
-POST       |  /users/:userId/:campaignId/score              | http://localhost:3000/users/:userId/:campaignId/score
-POST       |  /users/:userId/:campaignId/status             | http://localhost:3000/users/:userId/:campaignId/status
-POST       |  /users/:userId/:campaignId/assign             | http://localhost:3000/users/:userId/:campaignId/assign
+GET        | /users/:userId/campaigns                                 | http://localhost:3000/users/:userId/campaigns 
+GET        |  /users/:userId/campaigns/:campaignId                    | http://localhost:3000/users/:userId/campaigns/:campaignId 
+DELETE     |  /users/:userId/campaigns/:campaignId                    | http://localhost:3000/users/:userId/campaigns/:campaignId 
+GET        |  /users/:userId/campaigns/:campaignId/score              | http://localhost:3000/users/:userId/campaigns/:campaignId/score
+PUT        |  /users/:userId/campaigns/:campaignId/score              | http://localhost:3000/users/:userId/campaigns/:campaignId/score
+POST       |  /users/:userId/campaigns/:campaignId/score              | http://localhost:3000/users/:userId/campaigns/:campaignId/score
+GET        |  /users/:userId/campaigns/:campaignId/status             | http://localhost:3000/users/:userId/campaigns/:campaignId/status
+PUT        |  /users/:userId/campaigns/:campaignId/status             | http://localhost:3000/users/:userId/campaigns/:campaignId/status
+POST       |  /users/:userId/campaigns/:campaignId/status             | http://localhost:3000/users/:userId/campaigns/:campaignId/status
+POST       |  /users/:userId/campaigns/:campaignId/assign             | http://localhost:3000/users/:userId/campaigns/:campaignId/assign
 
 // User Competencies
-PUT        |  /users/:userId/:campaignId/:competencyId        | http://localhost:3000/users/:userId/:campaignId/:competencyId
-POST       |  /users/:userId/:campaignId/:competencyId        | http://localhost:3000/users/:userId/:campaignId/:competencyId
-POST       |  /users/:userId/:campaignId/:competencyId/score  | http://localhost:3000/users/:userId/:campaignId/:competencyId/score
-PUT        |  /users/:userId/:campaignId/:competencyId/score  | http://localhost:3000/users/:userId/:campaignId/:competencyId/score
+GET        |  /users/:userId/campaigns/:campaignId/competencies                      | http://localhost:3000/users/:userId/campaigns/:campaignId/competencies
+GET        |  /users/:userId/campaigns/:campaignId/competencies/:competencyId        | http://localhost:3000/users/:userId/campaigns/:campaignId/competencies/:competencyId
+PUT        |  /users/:userId/campaigns/:campaignId/competencies/:competencyId        | http://localhost:3000/users/:userId/campaigns/:campaignId/competencies/:competencyId
+POST       |  /users/:userId/campaigns/:campaignId/competencies/:competencyId        | http://localhost:3000/users/:userId/campaigns/:campaignId/competencies/:competencyId
+DELETE     |  /users/:userId/campaigns/:campaignId/competencies/:competencyId        | http://localhost:3000/users/:userId/campaigns/:campaignId/competencies/:competencyId
+GET        |  /users/:userId/campaigns/:campaignId/competencies/:competencyId/score  | http://localhost:3000/users/:userId/campaigns/:campaignId/competencies/:competencyId/score
+PUT        |  /users/:userId/campaigns/:campaignId/competencies/:competencyId/score  | http://localhost:3000/users/:userId/campaigns/:campaignId/competencies/:competencyId/score
+POST       |  /users/:userId/campaigns/:campaignId/competencies/:competencyId/score  | http://localhost:3000/users/:userId/campaigns/:campaignId/competencies/:competencyId/score
+GET        |  /users/:userId/campaigns/:campaignId/competencies/:competencyId/status  | http://localhost:3000/users/:userId/campaigns/:campaignId/competencies/:competencyId/status
+PUT        |  /users/:userId/campaigns/:campaignId/competencies/:competencyId/status  | http://localhost:3000/users/:userId/campaigns/:campaignId/competencies/:competencyId/status
+POST       |  /users/:userId/campaigns/:campaignId/competencies/:competencyId/status  | http://localhost:3000/users/:userId/campaigns/:campaignId/competencies/:competencyId/status
 
 --------------------------------------------------------------------------------------------
 
@@ -136,14 +145,14 @@ userType:client
 
 ** Response:
 
-6. GET  /users/:id/avatar
+6. GET  /users/:userId/avatar
 
 ** Request Payload:
 
 
 ** Response:
 
-7. POST  /users/:id/avatar
+7. POST  /users/:userId/avatar
 
 **Description:** Create single user avatar.
 
@@ -151,7 +160,7 @@ userType:client
 
 ** Response:
 
-8. PUT  /users/:id/avatar/:avatarId
+8. PUT  /users/:userId/avatar/:id
 
 **Description:** Edit single user avatar.
 
@@ -159,7 +168,7 @@ userType:client
 
 ** Response:
 
-9. POST  /users/:id/avatar/:avatarId
+9. POST  /users/:userId/avatar/:id
 
 **Description:** Edit single user avatar.
 
@@ -167,7 +176,7 @@ userType:client
 
 ** Response:
 
-10. DELETE  /users/:id/avatar/:avatarId
+10. DELETE  /users/:userId/avatar/:id
 
 **Description:** Delete single user avatar.
 
@@ -175,3 +184,226 @@ userType:client
 
 ** Response:
 
+11. GET  /users/:userId/campaigns
+
+**Description:** GET user campaigns.
+
+** Request Payload:
+
+** Response:
+
+
+12. GET  /users/:userId/campaigns/:campaignId
+
+**Description:** GET user's single campaign by ID.
+
+** Request Payload:
+
+** Response:
+
+
+13. DELETE  /users/:userId/campaigns/:campaignId
+
+**Description:** Delete user's campaign by ID.
+
+** Request Payload:
+
+** Response:
+
+14. GET  /users/:userId/campaigns/:campaignId/score
+
+**Description:** GET user's campaign score by ID.
+
+** Request Payload:
+
+** Response:
+```
+{ score: 0 }
+```
+
+15. PUT  /users/:userId/campaigns/:campaignId/score
+
+**Description:** Update user's campaign score by ID.
+
+** Request Payload:
+```
+score: 10
+```
+** Response:
+```
+{ score: 10 }
+```
+
+16. POST  /users/:userId/campaigns/:campaignId/score
+
+**Description:** Update user's campaign score by ID.
+
+** Request Payload:
+```
+score: 10
+```
+** Response:
+```
+{ score: 10 }
+```
+
+17. GET  /users/:userId/campaigns/:campaignId/status
+
+**Description:** GET user's campaign status by ID.
+
+** Request Payload:
+
+** Response:
+```
+{ active: false }
+```
+18. PUT  /users/:userId/campaigns/:campaignId/status
+
+**Description:** Update user's campaign status by ID.
+
+** Request Payload:
+```
+active: true
+```
+** Response:
+```
+{ active: true }
+```
+
+19. POST  /users/:userId/campaigns/:campaignId/status
+
+**Description:** Update user's campaign status by ID.
+
+** Request Payload:
+```
+active: true
+```
+** Response:
+```
+{ active: true }
+```
+
+20. POST  /users/:userId/campaigns/:campaignId/assign
+
+**Description:** Assign campaign to user.
+
+** Request Payload:
+
+** Response:
+
+-------------------
+
+21. GET  /users/:userId/campaigns/:campaignId/competencies
+
+**Description:** GET user's campaign competencies.
+
+** Request Payload:
+
+** Response:
+
+22. GET  /users/:userId/campaigns/:campaignId/competencies/:competencyId
+
+**Description:** GET user's campaign competency by ID.
+
+** Request Payload:
+
+** Response:
+
+
+23. PUT  /users/:userId/campaigns/:campaignId/competencies/:competencyId
+
+**Description:** Update user's campaign competency by ID.
+
+** Request Payload:
+
+** Response:
+
+24. POST  /users/:userId/campaigns/:campaignId/competencies/:competencyId
+
+**Description:** Update user's campaign competency by ID.
+
+** Request Payload:
+
+** Response:
+
+25. DELETE  /users/:userId/campaigns/:campaignId/competencies/:competencyId
+
+**Description:** Delete user's campaign competency by ID.
+
+** Request Payload:
+
+** Response:
+
+26. GET  /users/:userId/campaigns/:campaignId/competencies/:competencyId/score
+
+**Description:** GET user's campaign competency score by ID.
+
+** Request Payload:
+
+** Response:
+```
+{ score: 0 }
+```
+
+27. PUT  /users/:userId/campaigns/:campaignId/competencies/:competencyId/score
+
+**Description:** Update user's campaign competency score by ID.
+
+** Request Payload:
+```
+score: 10
+```
+** Response:
+```
+{ score: 10 }
+```
+
+28. POST  /users/:userId/campaigns/:campaignId/competencies/:competencyId/score
+
+**Description:** Update user's campaign competency score by ID.
+
+** Request Payload:
+```
+score: 10
+```
+** Response:
+```
+{ score: 10 }
+```
+
+29. GET  /users/:userId/campaigns/:campaignId/competencies/:competencyId/status
+
+**Description:** GET user's campaign competency status by ID.
+
+** Request Payload:
+
+** Response:
+```
+{ active: false }
+```
+
+30. PUT  /users/:userId/campaigns/:campaignId/competencies/:competencyId/status
+
+**Description:** Update user's campaign competency status by ID.
+
+** Request Payload:
+```
+active: true
+```
+** Response:
+```
+{ active: true }
+```
+
+31. POST  /users/:userId/campaigns/:campaignId/competencies/:competencyId/status
+
+**Description:** Update user's campaign competency status by ID.
+
+** Request Payload:
+```
+active: true
+```
+** Response:
+```
+{ active: true }
+```
