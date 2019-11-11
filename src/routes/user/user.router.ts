@@ -36,6 +36,8 @@ const UserRouter = Router()
   // Campaigns
   .get('/:userId/campaigns', UserController.getUserCampaigns)
   .get('/:userId/:campaignId', UserController.getUserCampaignById)
+  .put('/:userId/:campaignId', UserController.updateUserCampaign)
+  .post('/:userId/:campaignId', UserController.updateUserCampaign)
   .delete('/:userId/:campaignId', UserController.deleteUserCampaign)
   .get('/:userId/:campaignId/score', UserController.getUserCampaignById)
   .put('/:userId/:campaignId/score', UserController.updateUserCampaign)
