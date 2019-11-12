@@ -17,7 +17,7 @@ const UserCampaign = Database.define('user_campaign', {
     },
     status: {
         allowNull: false,
-        type: Sequelize.ENUM('completed', 'active', 'in_progress'),
+        type: Sequelize.ENUM(['completed', 'active', 'in_progress']),
         defaultValue: 'active',
         validate: {
             isIn: {
