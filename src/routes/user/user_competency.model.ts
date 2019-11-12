@@ -6,7 +6,7 @@ import { Campaign } from '../campaign/campaign.model';
 
 const UserCompetency = Database.define('user_competency', {
     score: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         defaultValue: 0
     },
     status: {

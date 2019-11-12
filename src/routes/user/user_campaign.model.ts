@@ -8,7 +8,7 @@ const UserCampaign = Database.define('user_campaign', {
         type: Sequelize.STRING
     },
     score: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         defaultValue: 0
     },
     strikeable: {
