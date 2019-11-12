@@ -3,6 +3,7 @@ import UserController from './user.controller';
 
 // FYI: Here `:id` is a `:userId`
 const UserRouter = Router()
+  .get('/campaigns', UserController.getAllUsersCampaigns)
   .get('/', UserController.getAll)
   .post('/', UserController.post)
   .get('/:id', UserController.getById)
@@ -18,14 +19,6 @@ const UserRouter = Router()
   .put('/:userId/avatar/:id', UserController.editAvatar)
   .post('/:userId/avatar/:id', UserController.editAvatar)
   .delete('/:userId/avatar/:id', UserController.deleteAvatar)
-  // User Campaigns
-  // .get('/:id/campaigns', UserController.getUserCampaigns)
-  // .post('/:id/campaigns/:campaignId/select', UserController.selectCampaign)
-  // .post('/:id/campaigns/:campaignId', UserController.selectCampaign)
-  // .get('/:id/campaigns/:campaignId', UserController.getCampaignById)
-  // .put('/:id/campaigns/:campaignId', UserController.editCampaign)
-  // .post('/:id/campaigns/:campaignId', UserController.editCampaign)
-  // .delete('/:id/campaigns/:campaignId', UserController.deleteUserCampaign)
   // User Compentencies
   .get('/:id/campaigns/:campaignId/competencies', UserController.getCompetencies)
   .post('/:id/campaigns/:campaignId/competencies/:competencyId/select', UserController.selectCompetency)
@@ -33,7 +26,7 @@ const UserRouter = Router()
   .put('/:id/campaigns/:campaignId/competencies/:competencyId', UserController.editCompetency)
   .post('/:id/campaigns/:campaignId/competencies/:competencyId', UserController.editCompetency)
   .delete('/:id/campaigns/:campaignId/competencies/:competencyId', UserController.deleteCompetency)
-  // Campaigns
+  // User Campaigns
   .get('/:userId/campaigns', UserController.getUserCampaigns)
   .get('/:userId/:campaignId', UserController.getUserCampaignById)
   .put('/:userId/:campaignId', UserController.updateUserCampaign)

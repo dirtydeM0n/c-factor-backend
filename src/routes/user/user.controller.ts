@@ -165,6 +165,55 @@ class UserController {
   }
   */
 
+  async getAllUsersCampaigns(req: Request, resp: Response) {
+    try {
+      const users = await User.findAll({
+        /*where: { status: 'accepted' },*/
+        attributes: {
+          exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
+        }
+      });
+      // console.log('users:', users);
+      /*if (users.length === 0) {
+        return resp.status(404).send({ msg: 'No users found!' });
+      }*/
+      const data = await Promise.all(users.map(async (user) => {
+        const userCampaigns = await UserCampaign.findAll({
+          where: { userId: user.id, strikeable: false }
+        });
+        const campaigns = await Promise.all(userCampaigns.map(async (camp) => {
+          const campaign = await Campaign.findOne({ where: { id: camp.campaignId } });
+          const competencies = await Competency.findAll({
+            where: { campaignId: camp.campaignId },
+            order: [['createdAt', 'ASC']],
+            attributes: {
+              exclude: ['campaignId']
+            }
+          });
+          const userCompetencies = await Promise.all(competencies.map(async (comp) => {
+            const userCompetency = await UserCompetency.findOne({
+              where: {
+                userId: user.id,
+                competencyId: comp.id,
+                strikeable: false
+              },
+              attributes: {
+                exclude: ['competencyId', 'userId']
+              }
+            });
+            return { ...comp, ...userCompetency/*status: userCompetency.status, score: userCompetency.score*/ };
+          }));
+          return { ...campaign, status: camp.status, score: camp.score, activeComponentId: camp.activeComponentId, components: userCompetencies };
+        }));
+        return { ...user, campaigns: campaigns };
+      }));
+      resp.status(200).send(data);
+    } catch (error) {
+      console.log('error:', error);
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
   async getUserCampaigns(req: Request, resp: Response) {
     try {
       const user = await User.findOne({
