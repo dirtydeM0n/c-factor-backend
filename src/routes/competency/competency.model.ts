@@ -10,6 +10,11 @@ const Competency = Database.define('competency', {
         primaryKey: true
     },
     type: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: 'SJT' // Possible values are: 'SJT', 'Aptitude', 'Minigame', 'Login', 'Registration', 'RESUME_UPLOAD_SCREEN', 'END_SCREEN'
+    },
+    /*type: {
         type: Sequelize.ENUM(['SJT', 'Aptitude', 'Minigame', 'Login', 'Registration', 'RESUME_UPLOAD_SCREEN', 'END_SCREEN']),
         defaultValue: 'SJT',
         validate: {
@@ -18,7 +23,7 @@ const Competency = Database.define('competency', {
                 msg: 'Invalid competency type.'
             }
         }
-    },
+    },*/
     title: {
         allowNull: false,
         type: Sequelize.STRING,
