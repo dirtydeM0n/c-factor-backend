@@ -23,6 +23,8 @@ DELETE     |  /users/:userId/avatar/:id             | http://localhost:3000/user
 // User Campaigns
 GET        | /users/:userId/campaigns                       | http://localhost:3000/users/:userId/campaigns 
 GET        |  /users/:userId/:campaignId                    | http://localhost:3000/users/:userId/:campaignId 
+PUT        |  /users/:userId/:campaignId                    | http://localhost:3000/users/:userId/:campaignId 
+POST       |  /users/:userId/:campaignId                    | http://localhost:3000/users/:userId/:campaignId 
 DELETE     |  /users/:userId/:campaignId                    | http://localhost:3000/users/:userId/:campaignId 
 GET        |  /users/:userId/:campaignId/score              | http://localhost:3000/users/:userId/:campaignId/score
 PUT        |  /users/:userId/:campaignId/score              | http://localhost:3000/users/:userId/:campaignId/score
