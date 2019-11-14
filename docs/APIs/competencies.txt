@@ -4,20 +4,27 @@ BASE REQUEST URL: http://localhost:3000/competencies
 METHOD     |   ROUTE                         | REQUEST URL
 --------------------------------------------------------------------------------------------
 GET        |  /competencies                     | http://localhost:3000/competencies
+POST       |  /competencies                     | http://localhost:3000/competencies/:id
 GET        |  /competencies/:campaignId/all     | http://localhost:3000/competencies/:campaignId/all
 GET        |  /competencies/:id                 | http://localhost:3000/competencies/:id
-POST       |  /competencies                     | http://localhost:3000/competencies/:id
 PUT        |  /competencies/:id                 | http://localhost:3000/competencies/:id
 POST       |  /competencies/:id                 | http://localhost:3000/competencies/:id
 DELETE     |  /competencies/:id                 | http://localhost:3000/competencies/:id
-PUT        |  /competencies/:id/changeState     | http://localhost:3000/competencies/:id/changeState
-POST       |  /competencies/:id/changeState     | http://localhost:3000/competencies/:id/changeState
+GET        |  /competencies/:id/status          | http://localhost:3000/competencies/:id/status
+PUT        |  /competencies/:id/status          | http://localhost:3000/competencies/:id/status
+POST       |  /competencies/:id/status          | http://localhost:3000/competencies/:id/status
+POST       |  /competencies/:id/activate        | http://localhost:3000/competencies/:id/activate
+POST       |  /competencies/:id/deactivate      | http://localhost:3000/competencies/:id/deactivate
+GET        |  /competencies/:id/state           | http://localhost:3000/competencies/:id/state
+PUT        |  /competencies/:id/state           | http://localhost:3000/competencies/:id/state
+POST       |  /competencies/:id/state           | http://localhost:3000/competencies/:id/state
 
-GET        |  /competencies/:id/data                            | http://localhost:3000/competencies/:id/data
-POST       |  /competencies/:id/data                            | http://localhost:3000/competencies/:id/data
-PUT        |  /competencies/:id/data/:competencyDataId          | http://localhost:3000/competencies/:id/data
-POST        |  /competencies/:id/data/:competencyDataId         | http://localhost:3000/competencies/:id/data
-DELETE     |  /competencies/:id/data/:competencyDataId          | http://localhost:3000/competencies/:id/data
+// Competency Data routes
+GET        |  /competencies/:id/data                        | http://localhost:3000/competencies/:id/data
+POST       |  /competencies/:id/data                        | http://localhost:3000/competencies/:id/data
+PUT        |  /competencies/:competencyId/data/:id          | http://localhost:3000/competencies/:competencyId/data/:id
+POST       |  /competencies/:competencyId/data/:id          | http://localhost:3000/competencies/:competencyId/data/:id
+DELETE     |  /competencies/:competencyId/data/:id          | http://localhost:3000/competencies/:competencyId/data/:id
 --------------------------------------------------------------------------------------------
 
 1. POST /competencies
@@ -31,7 +38,7 @@ description:This is Register component
 timer:15
 componentId:2
 nextComponentId:-1
-assetsURL=http://google.com/
+assetsURL=/path/to/folder/
 startupData={"component": "startup-data"}
 data:{"component": "Register"}
 ```

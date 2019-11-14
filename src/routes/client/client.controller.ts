@@ -9,8 +9,8 @@ import { Campaign } from '../campaign/campaign.model';
 class ClientController {
   async getAll(req: Request, resp: Response) {
     try {
-      const data = await Client.findAll({ include: [{ all: true }] });
-      resp.status(200).send(data);
+      const clients = await Client.findAll({ include: [{ all: true }] });
+      resp.status(200).send(clients);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -18,11 +18,11 @@ class ClientController {
 
   async getById(req: Request, resp: Response) {
     try {
-      const data = await Client.findOne({
+      const client = await Client.findOne({
         where: { id: req.params.id },
         include: [{ all: true }]
       });
-      resp.status(200).send(data);
+      resp.status(200).send(client);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -78,8 +78,9 @@ class ClientController {
 
   async put(req: Request, resp: Response) {
     try {
-      const data = await Client.update({ ...req.body }, { where: { id: req.params.id } });
-      resp.status(200).send(data);
+      let client = await Client.update({ ...req.body }, { where: { id: req.params.id } });
+      client = await Client.findOne({ where: { id: req.params.id } });
+      resp.status(200).send(client);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -87,8 +88,8 @@ class ClientController {
 
   async delete(req: Request, resp: Response) {
     try {
-      const data = await Client.destroy({ where: { id: req.params.id } });
-      resp.status(200).send(data);
+      const client = await Client.destroy({ where: { id: req.params.id } });
+      resp.status(200).send(client);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }

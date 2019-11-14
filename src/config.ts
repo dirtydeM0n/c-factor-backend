@@ -16,6 +16,7 @@ const config = {
     loggerLevel: 'debug',
     PORT: Number(process.env.PORT) || 3000,
     NODE_ENV: process.env.NODE_ENV || 'development',
+    ASSETS_FOLDER_URI: process.env.ASSETS_FOLDER_URI || '',
     FRONTEND_URI: process.env.FRONTEND_URI || '',
     DATABASE_URL: process.env.DATABASE_URL || '',
     SESSION_SECRET: process.env.SESSION_SECRET || '',

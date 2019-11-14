@@ -35,7 +35,8 @@ class CompetencyDataController {
 
   async put(req: Request, resp: Response) {
     try {
-      const competencyData = await CompetencyData.update({ ...req.body }, { where: { id: req.params.id } });
+      let competencyData = await CompetencyData.update({ ...req.body }, { where: { id: req.params.id } });
+      competencyData = await CompetencyData.findOne({ where: { id: req.params.id } });
       resp.status(200).send(competencyData);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });

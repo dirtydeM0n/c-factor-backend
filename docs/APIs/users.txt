@@ -4,23 +4,27 @@ BASE REQUEST URL: http://localhost:3000/users
 METHOD     |   ROUTE                            | REQUEST URL
 --------------------------------------------------------------------------------------------
 GET        |  /users                            | http://localhost:3000/users
-GET        |  /users/:id                        | http://localhost:3000/users/:id
 POST       |  /users                            | http://localhost:3000/users
+GET        |  /users/:id                        | http://localhost:3000/users/:id
 PUT        |  /users/:id                        | http://localhost:3000/users/:id
 POST       |  /users/:id                        | http://localhost:3000/users/:id
 DELETE     |  /users/:id                        | http://localhost:3000/users/:id
-GET        |  /users/activateAccount/:id        | http://localhost:3000/users/activateAccount/:id
-GET        |  /users/deactivateAccount/:id      | http://localhost:3000/users/deactivateAccount/:id
+GET        |  /users/:id/activate               | http://localhost:3000/users/:id/activate
+GET        |  /users/:id/deactivate             | http://localhost:3000/users/:id/deactivate
 
-GET        |  /users/:id/avatar                 | http://localhost:3000/users/:id/avatar
-POST       |  /users/:id/avatar                 | http://localhost:3000/users/:id/avatar
-PUT        |  /users/:id/avatar/:avatarId       | http://localhost:3000/users/:id/avatar
-POST       |  /users/:id/avatar/:avatarId       | http://localhost:3000/users/:id/avatar
-DELETE     |  /users/:id/avatar/:avatarId       | http://localhost:3000/users/:id/avatar
+// User Avatars
+GET        |  /users/:userId/avatar                 | http://localhost:3000/users/:userId/avatar
+POST       |  /users/:userId/avatar                 | http://localhost:3000/users/:userId/avatar
+GET        |  /users/:userId/avatar/:id             | http://localhost:3000/users/:userId/avatar/:id
+PUT        |  /users/:userId/avatar/:id             | http://localhost:3000/users/:userId/avatar/:id
+POST       |  /users/:userId/avatar/:id             | http://localhost:3000/users/:userId/avatar/:id
+DELETE     |  /users/:userId/avatar/:id             | http://localhost:3000/users/:userId/avatar/:id
 
 // User Campaigns
 GET        | /users/:userId/campaigns                       | http://localhost:3000/users/:userId/campaigns 
 GET        |  /users/:userId/:campaignId                    | http://localhost:3000/users/:userId/:campaignId 
+PUT        |  /users/:userId/:campaignId                    | http://localhost:3000/users/:userId/:campaignId 
+POST       |  /users/:userId/:campaignId                    | http://localhost:3000/users/:userId/:campaignId 
 DELETE     |  /users/:userId/:campaignId                    | http://localhost:3000/users/:userId/:campaignId 
 GET        |  /users/:userId/:campaignId/score              | http://localhost:3000/users/:userId/:campaignId/score
 PUT        |  /users/:userId/:campaignId/score              | http://localhost:3000/users/:userId/:campaignId/score
@@ -32,6 +36,7 @@ POST       |  /users/:userId/:campaignId/assign             | http://localhost:3
 PUT        |  /users/:userId/:campaignId/:competencyId        | http://localhost:3000/users/:userId/:campaignId/:competencyId
 POST       |  /users/:userId/:campaignId/:competencyId        | http://localhost:3000/users/:userId/:campaignId/:competencyId
 POST       |  /users/:userId/:campaignId/:competencyId/score  | http://localhost:3000/users/:userId/:campaignId/:competencyId/score
+PUT        |  /users/:userId/:campaignId/:competencyId/score  | http://localhost:3000/users/:userId/:campaignId/:competencyId/score
 
 --------------------------------------------------------------------------------------------
 
@@ -119,14 +124,14 @@ userType:client
 }
 ```
 
-4. GET  /users/activateAccount/:id
+4. GET  /users/:id/activate
 
 ** Request Payload:
 
 
 ** Response:
 
-5. GET  /users/deactivateAccount/:id
+5. GET  /users/:id/deactivate
 
 ** Request Payload:
 

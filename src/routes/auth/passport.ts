@@ -84,8 +84,8 @@ passport.use(new LinkedInStrategy({
           token: accessToken
         };
         if (auth) {
-          await UserAuth.update(authObj, { where: { profile_id: profile.id, } });
-          auth = { auth, ...authObj };
+          await UserAuth.update(authObj, { where: { profile_id: profile.id } });
+          auth = await UserAuth.findOne({ where: { profile_id: profile.id } });
         } else {
           auth = await UserAuth.create(authObj);
         }

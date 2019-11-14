@@ -7,8 +7,8 @@ import { Client } from '../client/client.model';
 class CampaignController {
   async getAll(req: Request, resp: Response) {
     try {
-      const data = await Campaign.findAll({});
-      resp.status(200).send(data);
+      const campaigns = await Campaign.findAll({});
+      resp.status(200).send(campaigns);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -16,8 +16,8 @@ class CampaignController {
 
   async getById(req: Request, resp: Response) {
     try {
-      const data = await Campaign.findOne({ where: { id: req.params.id } });
-      resp.status(200).send(data);
+      const campaign = await Campaign.findOne({ where: { id: req.params.id } });
+      resp.status(200).send(campaign);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -25,11 +25,10 @@ class CampaignController {
 
   async getByIdFormatted(req: Request, resp: Response) {
     try {
-      const campaign = await Campaign.findOne({
-        where: { id: req.params.id }
-      });
+      const campaign = await Campaign.findOne({ where: { id: req.params.id } });
       const components = await Competency.findAll({
         where: { campaignId: req.params.id },
+        order: [['createdAt', 'ASC']],
         attributes: {
           exclude: ['campaignId']
         }
@@ -64,8 +63,9 @@ class CampaignController {
         end_date = new Date(req.body.end_date),
         today_date = new Date();
       if (start_date < end_date && end_date > today_date) {
-        const data = await Campaign.update({ ...req.body }, { where: { id: req.params.id } });
-        resp.status(200).send(data);
+        let campaign = await Campaign.update({ ...req.body }, { where: { id: req.params.id } });
+        campaign = await Campaign.findOne({ where: { id: req.params.id } });
+        resp.status(200).send(campaign);
       } else {
         resp.status(201).send({
           msg: 'Params `start_date` should less than `end_date` and `end_date` should be after today date.'
@@ -94,10 +94,21 @@ class CampaignController {
     }
   }
 
+  async updateStatusById(req: Request, resp: Response) {
+    try {
+      let campaign = await Campaign.update({ active: req.body.active }, { where: { id: req.params.id } });
+      campaign = await Campaign.findOne({ where: { id: req.params.id } });
+      resp.status(200).send({ active: campaign.active });
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
   async activate(req: Request, resp: Response) {
     try {
-      const data = await Campaign.update({ active: 1 }, { where: { id: req.params.id } });
-      resp.status(200).send(data);
+      let campaign = await Campaign.update({ active: 1 }, { where: { id: req.params.id } });
+      campaign = await Campaign.findOne({ where: { id: req.params.id } });
+      resp.status(200).send({ active: campaign.active });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -105,44 +116,28 @@ class CampaignController {
 
   async deactivate(req: Request, resp: Response) {
     try {
-      const data = await Campaign.update({ active: 0 }, { where: { id: req.params.id } });
-      resp.status(200).send(data);
+      let campaign = await Campaign.update({ active: 0 }, { where: { id: req.params.id } });
+      campaign = await Campaign.findOne({ where: { id: req.params.id } });
+      resp.status(200).send({ active: campaign.active });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
   }
 
-  async changeState(req: Request, resp: Response) {
+  async getStateById(req: Request, resp: Response) {
     try {
-      const data = await Campaign.update({ state: req.body.state }, { where: { id: req.params.id } });
-      resp.status(200).send(data);
+      const campaign = await Campaign.findOne({ where: { id: req.params.id } });
+      resp.status(200).send({ state: campaign.state });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
   }
 
-  async createInvite(req: Request, resp: Response) {
+  async updateState(req: Request, resp: Response) {
     try {
-      const data = await CampaignInvite.create({ ...req.body, campaignId: req.params.id });
-      resp.status(200).send(data);
-    } catch (error) {
-      resp.status(404).send({ msg: 'Not found' });
-    }
-  }
-
-  async editInvite(req: Request, resp: Response) {
-    try {
-      const data = await CampaignInvite.update({ ...req.body }, { where: { campaignId: req.params.id } });
-      resp.status(200).send(data);
-    } catch (error) {
-      resp.status(404).send({ msg: 'Not found' });
-    }
-  }
-
-  async getInvite(req: Request, resp: Response) {
-    try {
-      const data = await CampaignInvite.findOne({ where: { campaignId: req.params.id } });
-      resp.status(200).send(data);
+      let campaign = await Campaign.update({ state: req.body.state }, { where: { id: req.params.id } });
+      campaign = await Campaign.findOne({ where: { id: req.params.id } });
+      resp.status(200).send({ state: campaign.state });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -150,8 +145,36 @@ class CampaignController {
 
   async getAllInvites(req: Request, resp: Response) {
     try {
-      const data = await CampaignInvite.findAll({ where: { campaignId: req.params.id } });
-      resp.status(200).send(data);
+      const campaignInvites = await CampaignInvite.findAll({ where: { campaignId: req.params.campaignId } });
+      resp.status(200).send(campaignInvites);
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
+  async createInvite(req: Request, resp: Response) {
+    try {
+      const campaignInvite = await CampaignInvite.create({ ...req.body, campaignId: req.params.campaignId });
+      resp.status(200).send(campaignInvite);
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
+  async getInvite(req: Request, resp: Response) {
+    try {
+      const campaignInvite = await CampaignInvite.findOne({ where: { id: req.params.id, campaignId: req.params.campaignId } });
+      resp.status(200).send(campaignInvite);
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
+  async editInvite(req: Request, resp: Response) {
+    try {
+      let campaignInvite = await CampaignInvite.update({ ...req.body }, { where: { id: req.params.id, campaignId: req.params.campaignId } });
+      campaignInvite = await CampaignInvite.findOne({ where: { id: req.params.id, campaignId: req.params.campaignId } });
+      resp.status(200).send(campaignInvite);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }
@@ -159,8 +182,8 @@ class CampaignController {
 
   async deleteInvite(req: Request, resp: Response) {
     try {
-      const data = await CampaignInvite.destroy({ where: { campaignId: req.params.id } });
-      resp.status(200).send(data);
+      const campaignInvite = await CampaignInvite.destroy({ where: { id: req.params.id, campaignId: req.params.campaignId } });
+      resp.status(200).send(campaignInvite);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }

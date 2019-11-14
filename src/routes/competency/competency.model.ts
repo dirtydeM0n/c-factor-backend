@@ -10,15 +10,20 @@ const Competency = Database.define('competency', {
         primaryKey: true
     },
     type: {
-        type: Sequelize.ENUM('SJT', 'Aptitude', 'Minigame', 'Login', 'Registration'),
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: 'SJT' // Possible values are: 'SJT', 'Aptitude', 'Minigame', 'Login', 'Registration', 'RESUME_UPLOAD_SCREEN', 'END_SCREEN'
+    },
+    /*type: {
+        type: Sequelize.ENUM(['SJT', 'Aptitude', 'Minigame', 'Login', 'Registration', 'RESUME_UPLOAD_SCREEN', 'END_SCREEN']),
         defaultValue: 'SJT',
         validate: {
             isIn: {
-                args: [['SJT', 'Aptitude', 'Minigame', 'Login', 'Registration']],
+                args: [['SJT', 'Aptitude', 'Minigame', 'Login', 'Registration', 'RESUME_UPLOAD_SCREEN', 'END_SCREEN']],
                 msg: 'Invalid competency type.'
             }
         }
-    },
+    },*/
     title: {
         allowNull: false,
         type: Sequelize.STRING,
@@ -53,7 +58,7 @@ const Competency = Database.define('competency', {
     },
     state: {
         allowNull: false,
-        type: Sequelize.ENUM('completed', 'open', 'in_progress'),
+        type: Sequelize.ENUM(['completed', 'open', 'in_progress']),
         defaultValue: 'open',
         validate: {
             isIn: {

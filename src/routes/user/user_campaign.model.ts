@@ -8,7 +8,7 @@ const UserCampaign = Database.define('user_campaign', {
         type: Sequelize.STRING
     },
     score: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         defaultValue: 0
     },
     strikeable: {
@@ -17,7 +17,7 @@ const UserCampaign = Database.define('user_campaign', {
     },
     status: {
         allowNull: false,
-        type: Sequelize.ENUM('completed', 'active', 'in_progress'),
+        type: Sequelize.ENUM(['completed', 'active', 'in_progress']),
         defaultValue: 'active',
         validate: {
             isIn: {

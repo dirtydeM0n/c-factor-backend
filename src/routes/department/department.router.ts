@@ -3,8 +3,8 @@ import DepartmentController from './department.controller';
 
 const DepartmentRouter = Router()
   .get('/', DepartmentController.getAll)
-  .get('/:id', DepartmentController.getById)
   .post('/', DepartmentController.post)
+  .get('/:id', DepartmentController.getById)
   .put('/:id', DepartmentController.put)
   .post('/:id', DepartmentController.put)
   .delete('/:id', DepartmentController.delete);

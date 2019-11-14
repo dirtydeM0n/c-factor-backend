@@ -11,15 +11,6 @@ class RoleController {
     }
   }
 
-  async getById(req: Request, resp: Response) {
-    try {
-      const role = await Role.findOne({ where: { id: req.params.id } });
-      resp.status(200).send(role);
-    } catch (error) {
-      resp.status(404).send({ msg: 'Not found' });
-    }
-  }
-
   async post(req: Request, resp: Response) {
     try {
       const role = await Role.create({ ...req.body });
@@ -29,9 +20,19 @@ class RoleController {
     }
   }
 
+  async getById(req: Request, resp: Response) {
+    try {
+      const role = await Role.findOne({ where: { id: req.params.id } });
+      resp.status(200).send(role);
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
   async put(req: Request, resp: Response) {
     try {
-      const role = await Role.update({ ...req.body }, { where: { id: req.params.id } });
+      let role = await Role.update({ ...req.body }, { where: { id: req.params.id } });
+      role = await Role.findOne({ where: { id: req.params.id } });
       resp.status(200).send(role);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });

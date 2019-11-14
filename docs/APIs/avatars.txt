@@ -5,7 +5,7 @@ METHOD     |   ROUTE                      | REQUEST URL
 --------------------------------------------------------------------------------------------
 GET        |  /avatars                     | http://localhost:3000/avatars
 GET        |  /avatars/:id                 | http://localhost:3000/avatars/:id
-POST       |  /avatars/:id                 | http://localhost:3000/avatars/:id
+POST       |  /avatars                     | http://localhost:3000/avatars/:id
 PUT        |  /avatars/:id                 | http://localhost:3000/avatars/:id
 POST       |  /avatars/:id                 | http://localhost:3000/avatars/:id
 DELETE     |  /avatars/:id                 | http://localhost:3000/avatars/:id
@@ -18,12 +18,21 @@ DELETE     |  /avatars/:id                 | http://localhost:3000/avatars/:id
 
 ** Request Payload:
 
+** Response:
+
+2. GET  /avatars/:id
+
+**Description:** Get single avatar by ID.
+
+** Request Payload:
+
+** Response:
+
 2. POST  /avatars
 
 **Description:** Create new avatar.
 
 ** Request Payload:
-
 
 ** Response:
 
