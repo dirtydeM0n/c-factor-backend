@@ -12,3 +12,4 @@ export { CompanyRouter } from './company/company.router';
 export { ClientRouter } from './client/client.router';
 export { CampaignRouter, CampaignInviteRouter } from './campaign/campaign.router';
 export { CompetencyRouter, CompetencyDataRouter } from './competency/competency.router';
+export { QueryRouter } from './query/query.router';

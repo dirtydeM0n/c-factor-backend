@@ -26,6 +26,7 @@ import {
   CampaignInviteRouter,
   CompetencyRouter,
   CompetencyDataRouter,
+  QueryRouter
 } from './routes/index';
 import { ValidateToken } from './routes/middleware/validate_token';
 
@@ -103,6 +104,8 @@ app.use('/campaigns', ValidateToken, CampaignRouter);
 app.use('/campaignInvites', ValidateToken, CampaignInviteRouter);
 app.use('/competencies', ValidateToken, CompetencyRouter);
 app.use('/competencyData', CompetencyDataRouter);
+app.use('/execute', ValidateToken, QueryRouter);
+
 /**
  * Add swagger endpoints
  */
