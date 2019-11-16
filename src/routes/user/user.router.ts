@@ -4,6 +4,7 @@ import UserController from './user.controller';
 // FYI: Here `:id` is a `:userId`
 const UserRouter = Router()
   .get('/campaigns', UserController.getAllUsersCampaigns)
+  .get('/competencies', UserController.getAllUsersCompetencies)
   .get('/', UserController.getAll)
   .post('/', UserController.post)
   .get('/:id', UserController.getById)

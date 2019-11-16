@@ -214,6 +214,47 @@ class UserController {
     }
   }
 
+  async getAllUsersCompetencies(req: Request, resp: Response) {
+    try {
+      const users = await User.findAll({
+        /*where: { status: 'accepted' },*/
+        attributes: {
+          exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
+        }
+      });
+      // console.log('users:', users);
+      /*if (users.length === 0) {
+        return resp.status(404).send({ msg: 'No users found!' });
+      }*/
+      const data = await Promise.all(users.map(async (user) => {
+        const userCompetencies = await UserCompetency.findAll({
+          where: {
+            userId: user.id,
+            strikeable: false
+          },
+          attributes: {
+            exclude: ['userId']
+          }
+        });
+        const components = await Promise.all(userCompetencies.map(async (comp) => {
+          const competency = await Competency.findOne({
+            where: { id: comp.competencyId },
+            order: [['createdAt', 'ASC']],
+            /*attributes: {
+              exclude: ['campaignId']
+            }*/
+          });
+          return { score: comp.score, status: comp.status, title: competency.title, type: competency.type, id: competency.id };
+        }));
+        return { ...user, components: components };
+      }));
+      resp.status(200).send(data);
+    } catch (error) {
+      console.log('error:', error);
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
   async getUserCampaigns(req: Request, resp: Response) {
     try {
       const user = await User.findOne({
