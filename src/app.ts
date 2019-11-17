@@ -26,6 +26,7 @@ import {
   CampaignInviteRouter,
   CompetencyRouter,
   CompetencyDataRouter,
+  QueryRouter
 } from './routes/index';
 import { ValidateToken } from './routes/middleware/validate_token';
 import { validateRoles, validateRole } from './routes/middleware/validate_role';
@@ -105,6 +106,8 @@ app.use('/campaigns', ValidateToken, validateRoles(['admin', 'client']), Campaig
 app.use('/campaignInvites', ValidateToken, validateRoles(['admin', 'client']), CampaignInviteRouter);
 app.use('/competencies', ValidateToken, validateRoles(['admin', 'client']), CompetencyRouter);
 app.use('/competencyData', CompetencyDataRouter);
+app.use('/execute', ValidateToken, QueryRouter);
+
 /**
  * Add swagger endpoints
  */

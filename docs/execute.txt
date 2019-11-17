@@ -1,0 +1,33 @@
+
+BASE REQUEST URL: http://localhost:3000/execute
+--------------------------------------------------------------------------------------------
+METHOD     |   ROUTE                     | REQUEST URL
+--------------------------------------------------------------------------------------------
+GET        |  /execute                     | http://localhost:3000/execute
+POST       |  /execute/query               | http://localhost:3000/execute/query
+
+--------------------------------------------------------------------------------------------
+
+1. GET  /execute
+
+**Description:** Check if execute API endpoint exists.
+
+** Request Payload:
+
+```{}```
+
+** Response:
+
+```{ msg: "Query API is available!" }```
+
+2. POST  /execute/query
+
+**Description:** Execute Raw SQL query on the live DB and get JSON response at your end.
+
+** Request Payload:
+```
+query: 'SELECT count(*) FROM users'
+```
+** Response:
+
+```[{"count": 10 }]```
