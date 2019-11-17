@@ -21,6 +21,7 @@ POST       |  /users/:userId/avatar/:id             | http://localhost:3000/user
 DELETE     |  /users/:userId/avatar/:id             | http://localhost:3000/users/:userId/avatar/:id
 
 // User Campaigns
+GET        |  /users/campaigns                              | http://localhost:3000/users/campaigns
 GET        | /users/:userId/campaigns                       | http://localhost:3000/users/:userId/campaigns 
 GET        |  /users/:userId/:campaignId                    | http://localhost:3000/users/:userId/:campaignId 
 PUT        |  /users/:userId/:campaignId                    | http://localhost:3000/users/:userId/:campaignId 
@@ -33,6 +34,7 @@ POST       |  /users/:userId/:campaignId/status             | http://localhost:3
 POST       |  /users/:userId/:campaignId/assign             | http://localhost:3000/users/:userId/:campaignId/assign
 
 // User Competencies
+GET        |  /users/competencies                             | http://localhost:3000/users/competencies
 PUT        |  /users/:userId/:campaignId/:competencyId        | http://localhost:3000/users/:userId/:campaignId/:competencyId
 POST       |  /users/:userId/:campaignId/:competencyId        | http://localhost:3000/users/:userId/:campaignId/:competencyId
 POST       |  /users/:userId/:campaignId/:competencyId/score  | http://localhost:3000/users/:userId/:campaignId/:competencyId/score
@@ -177,3 +179,152 @@ userType:client
 
 ** Response:
 
+
+11. GET  /users/campaigns
+
+**Description:** GET users campaigns.
+
+** Request Payload:
+
+```{}```
+
+** Response:
+
+```
+[
+    {
+        "id": "1e1c8f10-0459-11ea-af54-d3dd930da350",
+        "email": "amnakamran27@gmail.com",
+        "userType": "applicant",
+        "status": "accepted",
+        "name": "Amna Kamran",
+        "gender": "2",
+        "cnic": "4230196981946",
+        "fatherName": "Kamran Jalil",
+        "phone": "03012206851",
+        "gradingSystem": "1",
+        "gradingValue": "",
+        "university": "7",
+        "otherUniversity": "",
+        "graduationDate": "Sun Nov 12 2017 00:00:00 GMT+0500 (Pakistan Standard Time)",
+        "qualification": "4",
+        "specialization": null,
+        "city": null,
+        "region": null,
+        "country": "",
+        "address": "",
+        "dob": "Invalid Date",
+        "bio": "",
+        "createdAt": "2019-11-11T07:58:59.201Z",
+        "updatedAt": "2019-11-13T08:27:12.337Z",
+        "roleId": "63e1d2d0-f702-11e9-846b-b7702e3b2426",
+        "campaigns": [
+            {
+                "id": "0de90950-017c-11ea-98cb-35502d159b42",
+                "startupComponentId": null,
+                "name": " GrameenPhone3",
+                "title": " GrameenPhone3",
+                "description": "This is a  GrameenPhone3 campaign!",
+                "image_url": null,
+                "state": "active",
+                "start_date": "2019-10-21",
+                "end_date": "2020-11-21",
+                "active": true,
+                "allow_direct_applications": false,
+                "allow_invites_only": false,
+                "createdAt": "2019-11-07T16:31:30.917Z",
+                "updatedAt": "2019-11-12T19:37:11.529Z",
+                "clientId": null,
+                "status": "active",
+                "score": 0,
+                "activeComponentId": "10",
+                "components": [
+                    {
+                        "id": "7b5211d0-017c-11ea-98cb-35502d159b42",
+                        "type": "SJT",
+                        "title": "",
+                        "description": "SJT",
+                        "timer": 15,
+                        "componentId": "2",
+                        "nextComponentId": "3",
+                        "icon": null,
+                        "url": null,
+                        "startupData": null,
+                        "dataURL": "http://18.217.28.50:3000/competencyData/7b58a180-017c-11ea-98cb-35502d159b42",
+                        "assetsURL": "https://s3.us-east-2.amazonaws.com/demo.grameenphone.c-factor.live/grameen3/assets/SJTImages/SCENE1/",
+                        "state": "open",
+                        "active": true,
+                        "createdAt": "2019-11-11T08:02:33.685Z",
+                        "updatedAt": "2019-11-13T08:35:49.150Z",
+                        "score": 25,
+                        "status": 0,
+                        "strikeable": false
+                    },
+                    ....
+                ]
+            }
+        ]
+    },
+    ....
+]
+```
+
+12. GET  /users/competencies
+
+**Description:** GET users competencies.
+
+** Request Payload:
+
+```{}```
+
+** Response:
+
+```
+[
+    {
+        "id": "1e1c8f10-0459-11ea-af54-d3dd930da350",
+        "email": "amnakamran27@gmail.com",
+        "userType": "applicant",
+        "status": "accepted",
+        "name": "Amna Kamran",
+        "gender": "2",
+        "cnic": "4230196981946",
+        "fatherName": "Kamran Jalil",
+        "phone": "03012206851",
+        "gradingSystem": "1",
+        "gradingValue": "",
+        "university": "7",
+        "otherUniversity": "",
+        "graduationDate": "Sun Nov 12 2017 00:00:00 GMT+0500 (Pakistan Standard Time)",
+        "qualification": "4",
+        "specialization": null,
+        "city": null,
+        "region": null,
+        "country": "",
+        "address": "",
+        "dob": "Invalid Date",
+        "bio": "",
+        "createdAt": "2019-11-11T07:58:59.201Z",
+        "updatedAt": "2019-11-13T08:27:12.337Z",
+        "roleId": "63e1d2d0-f702-11e9-846b-b7702e3b2426",
+        "components": [
+            {
+                "score": 68,
+                "status": 0,
+                "title": "Collaboration",
+                "type": "SJT",
+                "id": "27754cc0-017d-11ea-98cb-35502d159b42"
+            },
+            {
+                "score": 81,
+                "status": 0,
+                "title": "Customer Service",
+                "type": "SJT",
+                "id": "be6fec80-017c-11ea-98cb-35502d159b42"
+            },
+            ....
+        ]
+    },
+    ....
+]
+```
