@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 import config = require('./../../config');
 
-export function verifyJWTToken(token) {
+export function verifyJWTToken(token: string) {
     return new Promise((resolve, reject) => {
         jwt.verify(token, config.JWT_SECRET, (err, decodedToken) => {
             if (err || !decodedToken) {
@@ -12,11 +12,11 @@ export function verifyJWTToken(token) {
     });
 }
 
-export function createJWToken(payload) {
+export function createJWToken(payload: Object) {
     return jwt.sign({
-        data: payload
+        ...payload
     }, config.JWT_SECRET, {
-            expiresIn: 3600,
-            algorithm: 'HS256'
-        });
+        expiresIn: 3600, // '1d'
+        algorithm: 'HS256'
+    });
 }

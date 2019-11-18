@@ -33,6 +33,7 @@ class AuthController {
       if (isSamePass) {
         delete user.password; // manually remove password from user object.
         const token = jwt.sign({
+          id: user.id,
           email: user.email,
           userType: user.userType
         }, config.JWT_SECRET, { expiresIn: '1d' });
@@ -116,6 +117,7 @@ class AuthController {
         });
       }
       /*const token = jwt.sign({
+        id: user.id,
         email: user.email,
         userType: user.userType
       }, config.JWT_SECRET, { expiresIn: '1d' });
@@ -258,6 +260,7 @@ class AuthController {
         });
       }
       const token = jwt.sign({
+        id: user.id,
         email: user.email,
         userType: user.userType
       }, config.JWT_SECRET, { expiresIn: '1d' });
