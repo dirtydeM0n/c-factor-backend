@@ -93,19 +93,26 @@ app.use(function (err, req, resp, next) {
   }
 });
 
+// Valid Role Constants
+const ROLES = {
+  ADMIN: 'admin',
+  CLIENT: 'client',
+  APPLICANT: 'applicant'
+};
+
 app.use('/', RootRouter);
 app.use('/auth', AuthRouter);
-app.use('/users', ValidateToken, validateRoles(['applicant', 'admin', 'client']), UserRouter);
-app.use('/clients', ValidateToken, validateRoles(['admin']), ClientRouter);
-app.use('/roles', ValidateToken, validateRole('admin'), RoleRouter);
-app.use('/departments', ValidateToken, validateRoles(['client']), DepartmentRouter);
-app.use('/companies', ValidateToken, validateRoles(['client']), CompanyRouter);
-app.use('/avatars', ValidateToken, validateRoles(['applicant', 'admin', 'client']), AvatarRouter);
-app.use('/campaigns', ValidateToken, validateRoles(['admin', 'client']), CampaignRouter);
-app.use('/campaignInvites', ValidateToken, validateRoles(['admin', 'client']), CampaignInviteRouter);
-app.use('/competencies', ValidateToken, validateRoles(['admin', 'client']), CompetencyRouter);
+app.use('/users', ValidateToken, validateRoles([ROLES.ADMIN, ROLES.CLIENT, ROLES.APPLICANT]), UserRouter);
+app.use('/clients', ValidateToken, validateRoles([ROLES.ADMIN]), ClientRouter);
+app.use('/roles', ValidateToken, validateRoles([ROLES.ADMIN]), RoleRouter);
+app.use('/departments', ValidateToken, validateRoles([ROLES.CLIENT]), DepartmentRouter);
+app.use('/companies', ValidateToken, validateRoles([ROLES.CLIENT]), CompanyRouter);
+app.use('/avatars', ValidateToken, validateRoles([ROLES.APPLICANT, ROLES.ADMIN, ROLES.CLIENT]), AvatarRouter);
+app.use('/campaigns', ValidateToken, validateRoles([ROLES.ADMIN, ROLES.CLIENT]), CampaignRouter);
+app.use('/campaignInvites', ValidateToken, validateRoles([ROLES.ADMIN, ROLES.CLIENT]), CampaignInviteRouter);
+app.use('/competencies', ValidateToken, validateRoles([ROLES.ADMIN, ROLES.CLIENT]), CompetencyRouter);
 app.use('/competencyData', CompetencyDataRouter);
-app.use('/execute', ValidateToken, validateRoles(['admin']), QueryRouter);
+app.use('/execute', ValidateToken, validateRoles([ROLES.ADMIN]), QueryRouter);
 
 /**
  * Add swagger endpoints
