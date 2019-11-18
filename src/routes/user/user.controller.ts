@@ -8,6 +8,56 @@ import { Competency } from '../competency/competency.model';
 import { UserCompetency } from './user_competency.model';
 
 class UserController {
+
+  async getUsersCount(req: Request, resp: Response) {
+    try {
+      const count = await User.count({
+        /*where: { status: 'accepted' },*/
+      });
+      resp.status(200).send({ count: count });
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
+  async getAllUsersGamePlayCount(req: Request, resp: Response) {
+    try {
+      const usersCount = await User.count({
+        /*where: { status: 'accepted' },*/
+      });
+      const completedCount = await UserCompetency.count({
+        where: { status: 1 }, // completed
+      });
+      const inProgressCount = await UserCompetency.count({
+        where: { status: 2 }, // In Progress
+      });
+      resp.status(200).send({
+        users: usersCount,
+        completed: completedCount,
+        inProgress: inProgressCount
+      });
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
+  async getUserGamePlayCountById(req: Request, resp: Response) {
+    try {
+      const completedCount = await UserCompetency.count({
+        where: { userId: req.params.userId, status: 1 }, // completed
+      });
+      const inProgressCount = await UserCompetency.count({
+        where: { userId: req.params.userId, status: 2 }, // In Progress
+      });
+      resp.status(200).send({
+        completed: completedCount,
+        inProgress: inProgressCount
+      });
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
   async getAll(req: Request, resp: Response) {
     try {
       const users = await User.findAll({
@@ -362,6 +412,96 @@ class UserController {
     }
   }
 
+  async updateUserCampaignScore(req: Request, resp: Response) {
+    try {
+      const user = await User.findOne({
+        where: { id: req.params.userId }
+      });
+      if (!user) {
+        return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
+      }
+      const whereObj = { userId: req.params.userId, campaignId: req.params.campaignId };
+      let userCampaign = await UserCampaign.findOne({ where: whereObj });
+      if (userCampaign) {
+        await UserCampaign.update({ score: req.body.score }, { where: whereObj });
+        userCampaign = await UserCampaign.findOne({ where: whereObj });
+      } else {
+        userCampaign = await UserCampaign.create({ score: req.body.score, ...whereObj });
+      }
+      resp.status(200).send({ score: userCampaign.score });
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
+  async updateUserCampaignStatus(req: Request, resp: Response) {
+    try {
+      const user = await User.findOne({
+        where: { id: req.params.userId }
+      });
+      if (!user) {
+        return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
+      }
+      const whereObj = { userId: req.params.userId, campaignId: req.params.campaignId };
+      let userCampaign = await UserCampaign.findOne({ where: whereObj });
+      if (userCampaign) {
+        await UserCampaign.update({ status: req.body.status }, { where: whereObj });
+        userCampaign = await UserCampaign.findOne({ where: whereObj });
+      } else {
+        userCampaign = await UserCampaign.create({ status: req.body.status, ...whereObj });
+      }
+      resp.status(200).send({ status: userCampaign.status });
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
+  async getUserCampaignScore(req: Request, resp: Response) {
+    try {
+      const user = await User.findOne({
+        where: { id: req.params.userId }
+      });
+      if (!user) {
+        return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
+      }
+      let userCampaign = await UserCampaign.findOne({
+        where: {
+          userId: req.params.userId,
+          campaignId: req.params.campaignId
+        }
+      });
+      if (!userCampaign) {
+        userCampaign = await UserCampaign.create({ userId: req.params.userId, campaignId: req.params.campaignId });
+      }
+      resp.status(200).send({ score: userCampaign.score });
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
+  async getUserCampaignStatus(req: Request, resp: Response) {
+    try {
+      const user = await User.findOne({
+        where: { id: req.params.userId }
+      });
+      if (!user) {
+        return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
+      }
+      let userCampaign = await UserCampaign.findOne({
+        where: {
+          userId: req.params.userId,
+          campaignId: req.params.campaignId
+        }
+      });
+      if (!userCampaign) {
+        userCampaign = await UserCampaign.create({ userId: req.params.userId, campaignId: req.params.campaignId });
+      }
+      resp.status(200).send({ status: userCampaign.status });
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
   async deleteUserCampaign(req: Request, resp: Response) {
     try {
       const user = await User.findOne({
@@ -404,6 +544,116 @@ class UserController {
         userCompetency = await UserCompetency.create({ ...req.body, ...whereObj });
       }
       resp.status(200).send(userCompetency);
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
+  async getUserCompetencyById(req: Request, resp: Response) {
+    try {
+      const user = await User.findOne({ where: { id: req.params.userId } });
+      if (!user) {
+        return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
+      }
+      const competency = await Competency.findOne({ where: { id: req.params.competencyId, campaignId: req.params.campaignId } });
+      if (!competency) {
+        return resp.status(404).send({ msg: 'Invalid competency id or No such competency found for provided campaign!' });
+      }
+      let userCompetency = await UserCompetency.findOne({ where: { userId: req.params.userId, competencyId: req.params.competencyId } });
+      if (!userCompetency) {
+        userCompetency = await UserCompetency.create({ userId: req.params.userId, competencyId: req.params.competencyId });
+      }
+      resp.status(200).send(userCompetency);
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
+  async getUserCompetencyStatus(req: Request, resp: Response) {
+    try {
+      const user = await User.findOne({ where: { id: req.params.userId } });
+      if (!user) {
+        return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
+      }
+      const competency = await Competency.findOne({ where: { id: req.params.competencyId, campaignId: req.params.campaignId } });
+      if (!competency) {
+        return resp.status(404).send({ msg: 'Invalid competency id or No such competency found for provided campaign!' });
+      }
+      let userCompetency = await UserCompetency.findOne({ where: { userId: req.params.userId, competencyId: req.params.competencyId } });
+      if (!userCompetency) {
+        userCompetency = await UserCompetency.create({ userId: req.params.userId, competencyId: req.params.competencyId });
+      }
+      resp.status(200).send({ status: userCompetency.status });
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
+  async getUserCompetencyScore(req: Request, resp: Response) {
+    try {
+      const user = await User.findOne({ where: { id: req.params.userId } });
+      if (!user) {
+        return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
+      }
+      const competency = await Competency.findOne({ where: { id: req.params.competencyId, campaignId: req.params.campaignId } });
+      if (!competency) {
+        return resp.status(404).send({ msg: 'Invalid competency id or No such competency found for provided campaign!' });
+      }
+      let userCompetency = await UserCompetency.findOne({ where: { userId: req.params.userId, competencyId: req.params.competencyId } });
+      if (!userCompetency) {
+        userCompetency = await UserCompetency.create({ userId: req.params.userId, competencyId: req.params.competencyId });
+      }
+      resp.status(200).send({ score: userCompetency.score });
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
+  async saveUserCompetencyScore(req: Request, resp: Response) {
+    try {
+      const user = await User.findOne({ where: { id: req.params.userId } });
+      if (!user) {
+        return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
+      }
+      const competency = await Competency.findOne({ where: { id: req.params.competencyId, campaignId: req.params.campaignId } });
+      if (!competency) {
+        return resp.status(404).send({ msg: 'Invalid competency id or No such competency found for provided campaign!' });
+      }
+      console.log('body:', req.body);
+      const whereObj = { userId: req.params.userId, competencyId: req.params.competencyId };
+      let userCompetency = await UserCompetency.findOne({ where: whereObj });
+      if (userCompetency) {
+        await UserCompetency.update({ score: req.body.score }, { where: whereObj });
+        userCompetency = await UserCompetency.findOne({ where: whereObj });
+      } else {
+        userCompetency = await UserCompetency.create({ score: req.body.score, ...whereObj });
+      }
+      resp.status(200).send({ score: userCompetency.score });
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
+  async saveUserCompetencyStatus(req: Request, resp: Response) {
+    try {
+      const user = await User.findOne({ where: { id: req.params.userId } });
+      if (!user) {
+        return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
+      }
+      const competency = await Competency.findOne({ where: { id: req.params.competencyId, campaignId: req.params.campaignId } });
+      if (!competency) {
+        return resp.status(404).send({ msg: 'Invalid competency id or No such competency found for provided campaign!' });
+      }
+      console.log('body:', req.body);
+      const whereObj = { userId: req.params.userId, competencyId: req.params.competencyId };
+      let userCompetency = await UserCompetency.findOne({ where: whereObj });
+      if (userCompetency) {
+        await UserCompetency.update({ status: req.body.status }, { where: whereObj });
+        userCompetency = await UserCompetency.findOne({ where: whereObj });
+      } else {
+        userCompetency = await UserCompetency.create({ status: req.body.status, ...whereObj });
+      }
+      resp.status(200).send({ status: userCompetency.status });
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });
     }

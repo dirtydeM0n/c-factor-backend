@@ -2,7 +2,6 @@ const Sequelize = require('sequelize');
 import { Database } from '../../db';
 import { User } from './user.model';
 import { Competency } from '../competency/competency.model';
-import { Campaign } from '../campaign/campaign.model';
 
 const UserCompetency = Database.define('user_competency', {
     score: {
