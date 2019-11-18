@@ -169,7 +169,7 @@ User.beforeSave((user, options) => {
 
 User.prototype.generateToken = function generateToken() {
     console.log('JWT:' + config.JWT_SECRET);
-    return createJWToken({ email: this.email, id: this.id });
+    return createJWToken({ id: this.id, email: this.email, userType: this.userType });
 };
 
 User.prototype.authenticate = function authenticate(applicantPassword: string) {
