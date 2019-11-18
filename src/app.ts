@@ -75,7 +75,6 @@ app.use(session({
 app.use(expressJwt({
   secret: config.JWT_SECRET,
   credentialsRequired: false,
-  requestProperty: 'auth',
   getToken: function fromHeader(req: express.Request) {
     const tokenHeader = req.headers.Authorization || req.headers.authorization;
     if (tokenHeader && (tokenHeader as string).split(' ')[0] === 'Bearer') {
