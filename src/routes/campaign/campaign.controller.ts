@@ -2,12 +2,13 @@ import { Request, Response } from 'express';
 import { Campaign } from './campaign.model';
 import { CampaignInvite } from './invite/invite.model';
 import { Competency } from '../competency/competency.model';
-import { Client } from '../client/client.model';
 
 class CampaignController {
   async getAll(req: Request, resp: Response) {
     try {
-      const campaigns = await Campaign.findAll({});
+      const campaigns = await Campaign.findAll({
+        order: [['createdAt', 'ASC']],
+      });
       resp.status(200).send(campaigns);
     } catch (error) {
       resp.status(404).send({ msg: 'Not found' });

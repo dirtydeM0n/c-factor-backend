@@ -229,16 +229,15 @@ class UserController {
       }*/
       const data = await Promise.all(users.map(async (user) => {
         const userCampaigns = await UserCampaign.findAll({
-          where: { userId: user.id, strikeable: false }
+          where: { userId: user.id, strikeable: false },
+          order: [['createdAt', 'ASC']],
         });
         const campaigns = await Promise.all(userCampaigns.map(async (camp) => {
           const campaign = await Campaign.findOne({ where: { id: camp.campaignId } });
           const competencies = await Competency.findAll({
             where: { campaignId: camp.campaignId },
             order: [['createdAt', 'ASC']],
-            attributes: {
-              exclude: ['campaignId']
-            }
+            attributes: { exclude: ['campaignId'] }
           });
           const userCompetencies = await Promise.all(competencies.map(async (comp) => {
             const userCompetency = await UserCompetency.findOne({
@@ -278,23 +277,16 @@ class UserController {
       }*/
       const data = await Promise.all(users.map(async (user) => {
         const userCompetencies = await UserCompetency.findAll({
-          where: {
-            userId: user.id,
-            strikeable: false
-          },
-          attributes: {
-            exclude: ['userId']
-          }
+          where: { userId: user.id, strikeable: false },
+          attributes: { exclude: ['userId'] },
+          order: [['createdAt', 'ASC']],
         });
         let totalScore = 0;
         const components = await Promise.all(userCompetencies.map(async (comp) => {
           totalScore += (comp.score || 0);
           const competency = await Competency.findOne({
             where: { id: comp.competencyId },
-            order: [['createdAt', 'ASC']],
-            /*attributes: {
-              exclude: ['campaignId']
-            }*/
+            /*attributes: { exclude: ['campaignId']}*/
           });
           return { score: comp.score, status: comp.status, title: competency.title, type: competency.type, id: competency.id };
         }));
