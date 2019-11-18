@@ -286,7 +286,9 @@ class UserController {
             exclude: ['userId']
           }
         });
+        let totalScore = 0;
         const components = await Promise.all(userCompetencies.map(async (comp) => {
+          totalScore += (comp.score || 0);
           const competency = await Competency.findOne({
             where: { id: comp.competencyId },
             order: [['createdAt', 'ASC']],
@@ -296,7 +298,7 @@ class UserController {
           });
           return { score: comp.score, status: comp.status, title: competency.title, type: competency.type, id: competency.id };
         }));
-        return { ...user, components: components };
+        return { ...user, totalScore: totalScore, components: components };
       }));
       resp.status(200).send(data);
     } catch (error) {
