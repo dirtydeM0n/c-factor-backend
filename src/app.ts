@@ -106,7 +106,7 @@ app.use('/campaigns', ValidateToken, validateRoles(['admin', 'client']), Campaig
 app.use('/campaignInvites', ValidateToken, validateRoles(['admin', 'client']), CampaignInviteRouter);
 app.use('/competencies', ValidateToken, validateRoles(['admin', 'client']), CompetencyRouter);
 app.use('/competencyData', CompetencyDataRouter);
-app.use('/execute', ValidateToken, QueryRouter);
+app.use('/execute', ValidateToken, validateRoles(['admin']), QueryRouter);
 
 /**
  * Add swagger endpoints
