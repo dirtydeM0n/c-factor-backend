@@ -12,6 +12,14 @@ DELETE     |  /users/:id                        | http://localhost:3000/users/:i
 GET        |  /users/:id/activate               | http://localhost:3000/users/:id/activate
 GET        |  /users/:id/deactivate             | http://localhost:3000/users/:id/deactivate
 
+// User Game Plays
+GET        |  /users/count                      | http://localhost:3000/users/count
+GET        |  /users/gameplay                   | http://localhost:3000/users/gameplay
+GET        |  /users/gameplay/count             | http://localhost:3000/users/gameplay/count
+
+GET        |  /users/:userId/gameplay           | http://localhost:3000/users/:userId/gameplay
+GET        |  /users/:userId/gameplay/count     | http://localhost:3000/users/:userId/gameplay/count
+
 // User Avatars
 GET        |  /users/:userId/avatar                 | http://localhost:3000/users/:userId/avatar
 POST       |  /users/:userId/avatar                 | http://localhost:3000/users/:userId/avatar
@@ -27,19 +35,25 @@ GET        |  /users/:userId/:campaignId                    | http://localhost:3
 PUT        |  /users/:userId/:campaignId                    | http://localhost:3000/users/:userId/:campaignId 
 POST       |  /users/:userId/:campaignId                    | http://localhost:3000/users/:userId/:campaignId 
 DELETE     |  /users/:userId/:campaignId                    | http://localhost:3000/users/:userId/:campaignId 
+POST       |  /users/:userId/:campaignId/assign             | http://localhost:3000/users/:userId/:campaignId/assign
 GET        |  /users/:userId/:campaignId/score              | http://localhost:3000/users/:userId/:campaignId/score
 PUT        |  /users/:userId/:campaignId/score              | http://localhost:3000/users/:userId/:campaignId/score
 POST       |  /users/:userId/:campaignId/score              | http://localhost:3000/users/:userId/:campaignId/score
+GET        |  /users/:userId/:campaignId/status             | http://localhost:3000/users/:userId/:campaignId/status
+PUT        |  /users/:userId/:campaignId/status             | http://localhost:3000/users/:userId/:campaignId/status
 POST       |  /users/:userId/:campaignId/status             | http://localhost:3000/users/:userId/:campaignId/status
-POST       |  /users/:userId/:campaignId/assign             | http://localhost:3000/users/:userId/:campaignId/assign
 
 // User Competencies
 GET        |  /users/competencies                             | http://localhost:3000/users/competencies
+GET        |  /users/:userId/:campaignId/:competencyId        | http://localhost:3000/users/:userId/:campaignId/:competencyId
 PUT        |  /users/:userId/:campaignId/:competencyId        | http://localhost:3000/users/:userId/:campaignId/:competencyId
 POST       |  /users/:userId/:campaignId/:competencyId        | http://localhost:3000/users/:userId/:campaignId/:competencyId
-POST       |  /users/:userId/:campaignId/:competencyId/score  | http://localhost:3000/users/:userId/:campaignId/:competencyId/score
+GET        |  /users/:userId/:campaignId/:competencyId/score  | http://localhost:3000/users/:userId/:campaignId/:competencyId/score
 PUT        |  /users/:userId/:campaignId/:competencyId/score  | http://localhost:3000/users/:userId/:campaignId/:competencyId/score
-
+POST       |  /users/:userId/:campaignId/:competencyId/score  | http://localhost:3000/users/:userId/:campaignId/:competencyId/score
+GET        |  /users/:userId/:campaignId/:competencyId/status | http://localhost:3000/users/:userId/:campaignId/:competencyId/status
+PUT        |  /users/:userId/:campaignId/:competencyId/status | http://localhost:3000/users/:userId/:campaignId/:competencyId/status
+POST       |  /users/:userId/:campaignId/:competencyId/status | http://localhost:3000/users/:userId/:campaignId/:competencyId/status
 --------------------------------------------------------------------------------------------
 
 1. GET  /users
