@@ -223,10 +223,6 @@ class UserController {
           exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
         }
       });
-      // console.log('users:', users);
-      /*if (users.length === 0) {
-        return resp.status(404).send({ msg: 'No users found!' });
-      }*/
       const data = await Promise.all(users.map(async (user) => {
         const userCampaigns = await UserCampaign.findAll({
           where: { userId: user.id, strikeable: false },
@@ -271,10 +267,6 @@ class UserController {
           exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
         }
       });
-      // console.log('users:', users);
-      /*if (users.length === 0) {
-        return resp.status(404).send({ msg: 'No users found!' });
-      }*/
       const data = await Promise.all(users.map(async (user) => {
         const userCompetencies = await UserCompetency.findAll({
           where: { userId: user.id, strikeable: false },
