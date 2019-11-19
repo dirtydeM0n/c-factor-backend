@@ -204,17 +204,6 @@ class UserController {
     }
   }
 
-  /*
-  async createCampaign(req: Request, resp: Response) { // client
-    try {
-      const campaign = await Campaign.create({ ...req.body, userId: req.params.id });
-      resp.status(200).send(campaign);
-    } catch (error) {
-      resp.status(404).send({ msg: 'Not found' });
-    }
-  }
-  */
-
   async getAllUsersCampaigns(req: Request, resp: Response) {
     try {
       const users = await User.findAll({
@@ -647,92 +636,6 @@ class UserController {
     }
   }
 
-  async getCompetencies(req: Request, resp: Response) {
-    try {
-      const user = await User.findOne({
-        where: { id: req.params.id }
-      });
-      if (!user) {
-        return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
-      }
-      const competencies = user.getCompetencies();
-      console.log('user competencies:', competencies);
-      resp.status(200).send({ ...user, components: competencies });
-    } catch (error) {
-      resp.status(404).send({ msg: 'Not found' });
-    }
-  }
-
-  async selectCompetency(req: Request, resp: Response) {
-    try {
-      const user = await User.findOne({
-        where: { id: req.params.id }
-      });
-      if (!user) {
-        return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
-      }
-      user.addCompetency(req.params.competencyId, { through: { state: req.body.state || 'active' } });
-      const competencies = user.getCompetencies();
-      console.log('user competencies:', competencies);
-      resp.status(200).send({ ...user, components: competencies });
-    } catch (error) {
-      resp.status(404).send({ msg: 'Not found' });
-    }
-  }
-
-  async getCompetencyById(req: Request, resp: Response) {
-    try {
-      const user = await User.findOne({
-        where: { id: req.params.id }
-      });
-      if (!user) {
-        return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
-      }
-      const competency = user.getCompetency(req.params.competencyId);
-      console.log('get user competency by Id:', competency);
-      resp.status(200).send(competency);
-    } catch (error) {
-      resp.status(404).send({ msg: 'Not found' });
-    }
-  }
-
-  async editCompetency(req: Request, resp: Response) {
-    try {
-      const user = await User.findOne({
-        where: { id: req.params.id }
-      });
-      if (!user) {
-        return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
-      }
-      let opts = {};
-      if (req.body.state) {
-        opts = { state: req.body.state };
-      }
-      user.setCompetency(req.params.competencyId, { through: opts });
-      const competency = user.getCompetency();
-      console.log('edit user competency:', competency);
-      resp.status(200).send(competency);
-    } catch (error) {
-      resp.status(404).send({ msg: 'Not found' });
-    }
-  }
-
-  async deleteCompetency(req: Request, resp: Response) {
-    try {
-      const user = await User.findOne({
-        where: { id: req.params.id }
-      });
-      if (!user) {
-        return resp.status(404).send({ msg: 'Invalid user id or No user found!' });
-      }
-      user.removeCompetency(req.params.competencyId);
-      const competency = user.getCompetency();
-      console.log('delete user competency:', competency);
-      resp.status(200).send(competency);
-    } catch (error) {
-      resp.status(404).send({ msg: 'Not found' });
-    }
-  }
 }
 
 export default new UserController();

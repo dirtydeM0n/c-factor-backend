@@ -23,18 +23,9 @@ const UserRouter = Router()
   .put('/:userId/avatar/:id', UserController.editAvatar)
   .post('/:userId/avatar/:id', UserController.editAvatar)
   .delete('/:userId/avatar/:id', UserController.deleteAvatar)
-  // User Compentencies
-  .get('/:id/campaigns/:campaignId/competencies', UserController.getCompetencies)
-  .post('/:id/campaigns/:campaignId/competencies/:competencyId/select', UserController.selectCompetency)
-  .get('/:id/campaigns/:campaignId/competencies/:competencyId', UserController.getCompetencyById)
-  .put('/:id/campaigns/:campaignId/competencies/:competencyId', UserController.editCompetency)
-  .post('/:id/campaigns/:campaignId/competencies/:competencyId', UserController.editCompetency)
-  .delete('/:id/campaigns/:campaignId/competencies/:competencyId', UserController.deleteCompetency)
-
   // User Game plays
   .get('/:userId/gameplay', UserController.getUserGamePlayCountById)
   .get('/:userId/gameplay/count', UserController.getUserGamePlayCountById)
-
   // User Campaigns
   .get('/:userId/campaigns', UserController.getUserCampaigns)
   .get('/:userId/:campaignId', UserController.getUserCampaignById)
@@ -48,7 +39,7 @@ const UserRouter = Router()
   .get('/:userId/:campaignId/status', UserController.getUserCampaignStatus)
   .put('/:userId/:campaignId/status', UserController.updateUserCampaignStatus)
   .post('/:userId/:campaignId/status', UserController.updateUserCampaignStatus)
-  // Competencies
+  // User Compentencies
   .get('/:userId/:campaignId/:competencyId', UserController.getUserCompetencyById)
   .put('/:userId/:campaignId/:competencyId', UserController.saveUserCompetency)
   .post('/:userId/:campaignId/:competencyId', UserController.saveUserCompetency)
