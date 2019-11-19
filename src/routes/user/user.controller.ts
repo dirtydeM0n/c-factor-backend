@@ -283,11 +283,13 @@ class UserController {
         });
         let totalScore = 0;
         const components = await Promise.all(userCompetencies.map(async (comp) => {
-          totalScore += (comp.score || 0);
           const competency = await Competency.findOne({
             where: { id: comp.competencyId },
             /*attributes: { exclude: ['campaignId']}*/
           });
+          if ((competency.title || '').trim()) {
+            totalScore += (comp.score || 0);
+          }
           return { score: comp.score, status: comp.status, title: competency.title, type: competency.type, id: competency.id };
         }));
         return { ...user, totalScore: totalScore, components: components };
