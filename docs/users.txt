@@ -29,6 +29,7 @@ POST       |  /users/:userId/avatar/:id             | http://localhost:3000/user
 DELETE     |  /users/:userId/avatar/:id             | http://localhost:3000/users/:userId/avatar/:id
 
 // User Campaigns
+GET        | /users/:campaignId/competencies                | http://localhost:3000/users/:campaignId/competencies
 GET        |  /users/campaigns                              | http://localhost:3000/users/campaigns
 GET        | /users/:userId/campaigns                       | http://localhost:3000/users/:userId/campaigns 
 GET        |  /users/:userId/:campaignId                    | http://localhost:3000/users/:userId/:campaignId 
@@ -341,4 +342,85 @@ userType:client
     },
     ....
 ]
+```
+
+13. GET  /users/:campaignId/competencies
+
+**Description:** GET single campaign all users and competencies.
+
+** Request Payload:
+
+```{}```
+
+** Response:
+
+```
+{
+    "id": "47b80ea0-fc87-11e9-ae6f-e3bee3b375e1",
+    "startupComponentId": "1",
+    "name": "Grameen Phone",
+    "title": "Grameen Phone",
+    "description": "This is a test Grameen Phone campaign!",
+    "image_url": null,
+    "state": "active",
+    "start_date": "2019-10-25",
+    "end_date": "2019-11-25",
+    "active": true,
+    "allow_direct_applications": false,
+    "allow_invites_only": false,
+    "createdAt": "2019-11-01T09:09:16.554Z",
+    "updatedAt": "2019-11-01T09:09:16.554Z",
+    "clientId": null,
+    "components": [
+        {
+            "id": "6f8b1070-ffbc-11e9-9411-dfabb9d8e446",
+            "type": "Registration",
+            "title": "Register Component44",
+            "description": "This is Register component",
+            "timer": 15,
+            "componentId": "2",
+            "nextComponentId": "-1",
+            "icon": null,
+            "url": null,
+            "startupData": "{\"component\": \"startup-data\"}",
+            "dataURL": "http://18.217.28.50:3000/competencyData/6f94d470-ffbc-11e9-9411-dfabb9d8e446",
+            "assetsURL": "https://s3.us-east-2.amazonaws.com/demo.grameenphone.c-factor.live/grameen3/assetsgrameen3/assets/SJTImages/SCENE1/",
+            "state": "open",
+            "active": true,
+            "createdAt": "2019-11-05T11:07:20.184Z",
+            "updatedAt": "2019-11-05T11:07:20.253Z"
+        },
+        ....
+    ],
+    "users": [
+        {
+            "id": "75788dd0-fd1b-11e9-b81f-53a93b69f49f",
+            "email": "ataullahkirmani@yahoo.com",
+            "userType": "applicant",
+            "status": "accepted",
+            "name": "Ata Kirmani",
+            "gender": "Male",
+            "cnic": "11111",
+            "fatherName": "Kirmani",
+            "phone": "222111",
+            "gradingSystem": "Percent",
+            "gradingValue": "",
+            "university": "Bangladesh University of Professionals",
+            "otherUniversity": "NUST2",
+            "graduationDate": "Thu Aug 01 2019 12:12:00 GMT+0500 (Pakistan Standard Time)",
+            "qualification": "Bachelors - completed ",
+            "specialization": null,
+            "city": null,
+            "region": null,
+            "country": "",
+            "address": "",
+            "dob": "Thu Feb 28 2019 23:02:00 GMT+0500 (Pakistan Standard Time)",
+            "bio": "",
+            "createdAt": "2019-11-02T02:49:58.830Z",
+            "updatedAt": "2019-11-23T19:14:31.668Z",
+            "roleId": "63e1d2d0-f702-11e9-846b-b7702e3b2426"
+        },
+        ...
+    ]
+}
 ```
