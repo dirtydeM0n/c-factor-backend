@@ -5,6 +5,7 @@ import UserController from './user.controller';
 const UserRouter = Router()
   .get('/campaigns', UserController.getAllUsersCampaigns)
   .get('/competencies', UserController.getAllUsersCompetencies)
+  .get('/:campaignId/competencies', UserController.getAllUsersCompetenciesByCampaignId)
   .get('/gameplay', UserController.getAllUsersGamePlayCount)
   .get('/gameplay/count', UserController.getAllUsersGamePlayCount)
   .get('/count', UserController.getUsersCount)

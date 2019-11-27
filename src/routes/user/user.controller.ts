@@ -282,6 +282,36 @@ class UserController {
     }
   }
 
+  async getAllUsersCompetenciesByCampaignId(req: Request, resp: Response) {
+    try {
+      const campaign = await Campaign.findOne({ where: { id: req.params.campaignId } });
+      if (!campaign) {
+        return resp.status(404).send({ msg: 'Invalid campaign id or No campaign found!' });
+      }
+      const competencies = await Competency.findAll({
+        where: { campaignId: req.params.campaignId },
+        order: [['createdAt', 'ASC']],
+        attributes: {
+          exclude: ['campaignId']
+        }
+      });
+      const campaignUsers = await UserCampaign.findAll({ where: { campaignId: req.params.campaignId, strikeable: false } });
+      // console.log('campaignUsers:', campaignUsers);
+      const users = await Promise.all([...new Set(campaignUsers.map(ob => ob.userId))].map(async (userId) => {
+        const user = await User.findOne({
+          where: { id: userId },
+          attributes: {
+            exclude: ['password', 'resetToken', 'resetTokenSentAt', 'resetTokenExpireAt', 'activationToken', 'activationTokenExpireAt']
+          }
+        });
+        return { ...user };
+      }));
+      resp.status(200).send({ ...campaign, components: competencies, users: users });
+    } catch (error) {
+      resp.status(404).send({ msg: 'Not found' });
+    }
+  }
+
   async getUserCampaigns(req: Request, resp: Response) {
     try {
       const user = await User.findOne({
